@@ -217,8 +217,14 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-03T05:27:32Z",
+      "updated_at": "2026-08-03T06:03:42Z",
       "watermark": {
+        "bottom_right_box": {
+          "h": 26,
+          "w": 138,
+          "x": 1100,
+          "y": 657
+        },
         "bottom_right_segments": [
           {
             "end": 22.5,
@@ -227,7 +233,7 @@
             "start": 0.0
           },
           {
-            "end": 43.3,
+            "end": 43.4,
             "light_logo": true,
             "plate": "0x0060FC",
             "start": 22.5
@@ -236,10 +242,10 @@
             "end": 126.7,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 43.3
+            "start": 43.4
           },
           {
-            "end": 145.0,
+            "end": 145.1,
             "light_logo": true,
             "plate": "0x0060FC",
             "start": 126.7
@@ -248,7 +254,7 @@
             "end": 266.7,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 145.0
+            "start": 145.1
           },
           {
             "end": 275.1,
@@ -263,7 +269,7 @@
             "start": 275.1
           },
           {
-            "end": 388.6,
+            "end": 388.7,
             "light_logo": true,
             "plate": "0x0060FC",
             "start": 379.7
@@ -272,7 +278,7 @@
             "end": 520.7,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 388.6
+            "start": 388.7
           },
           {
             "end": 530.9,
@@ -297,14 +303,16 @@
             "light_logo": false,
             "plate": "0xFCFCFC",
             "start": 635.0
-          },
-          {
-            "end": 708.1,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 706.1
           }
         ],
+        "centre_top_box": {
+          "frames_agreeing": 5,
+          "frames_sampled": 50,
+          "h": 0.04777777777777778,
+          "w": 0.152625,
+          "x": 0.415875,
+          "y": 0.12333333333333334
+        },
         "centre_top_segments": [
           {
             "end": 4.17,
@@ -318,6 +326,11 @@
           4.166666666666666
         ],
         "clamped_to_slide_cut": 4.208,
+        "encode": {
+          "crf": "16",
+          "preset": "slow",
+          "tune": "stillimage"
+        },
         "outro_cut_at": 705.75
       }
     },
