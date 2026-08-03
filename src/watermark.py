@@ -462,6 +462,59 @@ def _ocr_boxes(img, min_conf: int = 40) -> list[dict]:
     return hits
 
 
+def refine_extent(frame, box: dict, W: int, H: int, drop: int = 40,
+                  gap_ratio: float = 0.7) -> dict:
+    """Grow an OCR text box to the mark's true painted extent.
+
+    OCR returns the text only, so a fixed "icon is 1.5x the text height" guess
+    left the icon and the final M poking out either side of the replacement logo.
+    Measuring instead: dark column runs around the OCR box are merged across gaps
+    up to 0.7x the mark height - the icon sits 11px from the text on a 20px mark,
+    while inter-letter gaps are 1-2px - and the run overlapping the OCR box wins.
+    """
+    import numpy as np
+
+    x, y, w, h = int(box["x"]), int(box["y"]), int(box["w"]), int(box["h"])
+    ny0, ny1 = max(y - int(h * 1.2), 0), min(y + h + int(h * 1.2), H)
+    nx0, nx1 = max(x - int(h * 4), 0), min(x + w + int(h * 4), W)
+    sub = frame[ny0:ny1, nx0:nx1].astype(float)
+    if sub.size == 0:
+        return box
+
+    bg = np.percentile(sub, 85)
+    mask = sub < (bg - drop)
+    cols = mask.any(axis=0)
+
+    runs, start = [], None
+    for i, v in enumerate(list(cols) + [False]):
+        if v and start is None:
+            start = i
+        elif not v and start is not None:
+            runs.append([start, i - 1])
+            start = None
+    if not runs:
+        return box
+
+    merged = [runs[0]]
+    for r in runs[1:]:
+        if r[0] - merged[-1][1] - 1 <= max(int(h * gap_ratio), 2):
+            merged[-1][1] = r[1]
+        else:
+            merged.append(r)
+
+    lo, hi = x - nx0, x + w - nx0
+    chosen = next((r for r in merged if r[0] <= hi and r[1] >= lo), None)
+    if chosen is None:
+        return box
+
+    band = mask[:, chosen[0]:chosen[1] + 1]
+    rws = np.nonzero(band.any(axis=1))[0]
+    if not len(rws):
+        return box
+    return {"x": nx0 + chosen[0], "y": ny0 + int(rws[0]),
+            "w": chosen[1] - chosen[0] + 1, "h": int(rws[-1] - rws[0]) + 1}
+
+
 def locate_mark_ocr(ff: str, mp4: str, W: int, H: int,
                     region: tuple[float, float, float, float],
                     limit: float = 20.0, fps: float = 2.0, upscale: int = 3,
@@ -493,20 +546,17 @@ def locate_mark_ocr(ff: str, mp4: str, W: int, H: int,
         img = Image.fromarray(crop.astype(np.uint8)).resize(
             (rw * upscale, rh * upscale), Image.LANCZOS)
         for hit in _ocr_boxes(img):
-            x = rx0 + hit["x"] / upscale
-            y = ry0 + hit["y"] / upscale
-            w = hit["w"] / upscale
-            h = hit["h"] / upscale
-            # The icon sits to the left of the text, about 1.5x the text height.
-            x -= h * icon_ratio
-            w += h * icon_ratio
-            votes[(int(x) // 4, int(y) // 4, int(w) // 4, int(h) // 4)] += 1
+            raw_box = {"x": rx0 + hit["x"] / upscale, "y": ry0 + hit["y"] / upscale,
+                       "w": hit["w"] / upscale, "h": hit["h"] / upscale}
+            ext = refine_extent(fr, raw_box, W, H)
+            votes[(ext["x"] // 2, ext["y"] // 2, ext["w"] // 2, ext["h"] // 2)] += 1
 
     if not votes:
         return None
     (qx, qy, qw, qh), seen = votes.most_common(1)[0]
-    x, y, w, h = qx * 4, qy * 4, qw * 4, qh * 4
-    px, py = w * 0.04, h * pad
+    x, y, w, h = qx * 2, qy * 2, qw * 2, qh * 2
+    # Small uniform pad: the extent is measured, so this only covers antialiasing.
+    px, py = max(w * 0.02, 2.0), max(h * 0.25, 3.0)
     return {
         "x": max((x - px) / W, 0.0),
         "y": max((y - py) / H, 0.0),
