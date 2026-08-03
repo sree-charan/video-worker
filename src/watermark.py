@@ -224,6 +224,123 @@ def detect_outro(ff: str, mp4: str, duration: float, tail: float = 20.0,
     return cut
 
 
+def _frames_gray(ff: str, mp4: str, W: int, H: int, limit: float | None,
+                 fps: float) -> list[tuple[float, "np.ndarray"]]:
+    """Full-resolution greyscale frames, for measuring where a mark actually is."""
+    import numpy as np
+
+    cmd = [ff, "-v", "error"]
+    if limit:
+        cmd += ["-t", f"{limit:.2f}"]
+    cmd += ["-i", mp4, "-vf", f"fps={fps}", "-pix_fmt", "gray",
+            "-f", "rawvideo", "-"]
+    raw = subprocess.run(cmd, capture_output=True, check=True).stdout
+    per = W * H
+    return [(i / fps,
+             np.frombuffer(raw[i * per:(i + 1) * per], dtype=np.uint8).reshape(H, W))
+            for i in range(len(raw) // per)]
+
+
+def _candidates(frame, region: tuple[float, float, float, float],
+                W: int, H: int, thr: int = 120) -> list[dict]:
+    """Dark row-bands inside a region, with their bounding boxes."""
+    import numpy as np
+
+    y0f, y1f, x0f, x1f = region
+    y0, y1 = int(H * y0f), int(H * y1f)
+    x0, x1 = int(W * x0f), int(W * x1f)
+    sub = frame[y0:y1, x0:x1] < thr
+    rows = sub.any(axis=1)
+
+    out, start = [], None
+    for i, v in enumerate(list(rows) + [False]):
+        if v and start is None:
+            start = i
+        elif not v and start is not None:
+            seg = sub[start:i]
+            xs = np.nonzero(seg.any(axis=0))[0]
+            if len(xs):
+                out.append({"x": x0 + int(xs[0]), "y": y0 + start,
+                            "w": int(xs[-1] - xs[0]) + 1, "h": i - start})
+            start = None
+    return out
+
+
+# The wordmark's shape, as fractions of the frame. Measured across five renders:
+# 179x19 to 182x25 at 1280x720, so aspect 7-10 and about 14% of frame width.
+# The title text fails these tests by being far taller and wider, and corner
+# decorations by being nearly square.
+MARK_MIN_H, MARK_MAX_H = 0.018, 0.055
+MARK_MIN_W, MARK_MAX_W = 0.070, 0.230
+MARK_MIN_AR, MARK_MAX_AR = 4.5, 14.0
+
+
+def _mark_like(b: dict, W: int, H: int) -> bool:
+    nh, nw = b["h"] / H, b["w"] / W
+    ar = b["w"] / max(b["h"], 1)
+    return (MARK_MIN_H <= nh <= MARK_MAX_H and MARK_MIN_W <= nw <= MARK_MAX_W
+            and MARK_MIN_AR <= ar <= MARK_MAX_AR)
+
+
+def locate_mark(ff: str, mp4: str, W: int, H: int,
+                region: tuple[float, float, float, float],
+                limit: float = 20.0, fps: float = 2.0,
+                pad_x: float = 0.006, pad_y: float = 0.010) -> dict | None:
+    """Find the wordmark by shape, instead of trusting fixed coordinates.
+
+    The title-card mark is positioned relative to the title block, so its height
+    on screen depends on how many lines the title takes. Across five units it sat
+    at y=100 for a one-line title and y=50 for a two-line one. A hardcoded box
+    hit unit 1, missed unit 4 completely, and on unit 5 stamped our logo over the
+    title text while the original mark stayed visible 30px above.
+
+    So the mark is measured per video: dark row-bands in the search region are
+    filtered by the wordmark's shape, and the box agreed on by the most frames
+    wins. Returns normalised coordinates, padded, or None if nothing matches.
+    """
+    from collections import Counter
+
+    frames = _frames_gray(ff, mp4, W, H, limit, fps)
+    if not frames:
+        return None
+
+    votes: Counter = Counter()
+    for _t, fr in frames:
+        for b in _candidates(fr, region, W, H):
+            if _mark_like(b, W, H):
+                # Quantise so tiny per-frame jitter still agrees on one box.
+                votes[(b["x"] // 4, b["y"] // 4, b["w"] // 4, b["h"] // 4)] += 1
+    if not votes:
+        return None
+
+    (qx, qy, qw, qh), seen = votes.most_common(1)[0]
+    x, y, w, h = qx * 4, qy * 4, qw * 4, qh * 4
+    return {
+        "x": max(x / W - pad_x, 0.0),
+        "y": max(y / H - pad_y, 0.0),
+        "w": min(w / W + 2 * pad_x, 1.0),
+        "h": min(h / H + 2 * pad_y, 1.0),
+        "frames_agreeing": seen,
+        "frames_sampled": len(frames),
+    }
+
+
+def presence_series(ff: str, mp4: str, box: dict, W: int, H: int,
+                    limit: float | None = None, fps: float = SAMPLE_FPS,
+                    margin: float = 6.0) -> list[tuple[float, bool]]:
+    """Whether the mark is actually on screen, sampled over time.
+
+    A mark must only be covered where it exists. NotebookLM omits the
+    bottom-right wordmark on the title card when it shows the centred one, so
+    plating that corner there destroys background and adds a logo the original
+    never had.
+    """
+    box_lum = darkness_series(ff, mp4, box, limit=limit, fps=fps)
+    bg = region_series(ff, mp4, box, W, H, limit=limit, fps=fps)
+    return [(t, (_lum(bgc) - bl) > margin)
+            for (t, bl), (_, bgc) in zip(box_lum, bg)]
+
+
 # ------------------------------------------------------------- segmenting
 
 def _q(c: tuple[int, int, int]) -> tuple[int, int, int]:
@@ -252,14 +369,23 @@ def plate_for(colour: tuple[int, int, int]) -> tuple[str, bool]:
 
 
 def segments(series: list[tuple[float, tuple[int, int, int]]],
-             window: tuple[float, float] | None = None) -> list[dict]:
-    """Merge the sampled series into runs sharing one plate colour."""
+             window: tuple[float, float] | None = None,
+             presence: list[tuple[float, bool]] | None = None) -> list[dict]:
+    """Merge the sampled series into runs sharing one plate colour.
+
+    `presence` restricts the runs to times the mark is actually on screen, so no
+    plate is ever drawn over a frame that never had a watermark.
+    """
+    present = dict(presence or [])
     runs: list[dict] = []
     for t, colour in series:
         if window and not (window[0] <= t <= window[1]):
             continue
+        if presence is not None and not present.get(t, False):
+            continue
         plate, light = plate_for(colour)
-        if runs and runs[-1]["plate"] == plate:
+        contiguous = runs and (t - runs[-1]["end"]) <= (1.5 / SAMPLE_FPS)
+        if runs and runs[-1]["plate"] == plate and contiguous:
             runs[-1]["end"] = t
         else:
             runs.append({"start": t, "end": t, "plate": plate, "light_logo": light})
@@ -273,8 +399,10 @@ def segments(series: list[tuple[float, tuple[int, int, int]]],
     # No padding. Padding bled each segment into its neighbour, which is exactly
     # how an orange plate ended up on a white slide. Boundaries butt against
     # each other so every frame is covered exactly once.
+    # Butt boundaries together only where the runs are actually adjacent; a real
+    # gap (the mark absent) must stay a gap.
     for i, r in enumerate(merged):
-        r["start"] = (window[0] if window else 0.0) if i == 0 else merged[i - 1]["end"]
-        if i == len(merged) - 1:
-            r["end"] = r["end"] + 1.0 / SAMPLE_FPS
+        if i and (r["start"] - merged[i - 1]["end"]) <= (1.5 / SAMPLE_FPS):
+            r["start"] = merged[i - 1]["end"]
+        r["end"] = r["end"] + 1.0 / SAMPLE_FPS
     return merged

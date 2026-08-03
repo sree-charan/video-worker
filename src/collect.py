@@ -87,17 +87,24 @@ def collect_unit(syl: dict, unit: dict, rec: dict, retry_failed: bool) -> str:
     return f"downloaded ({size_mb:.1f} MB)"
 
 
-def collect_once(syl: dict, units: list[dict], retry_failed: bool) -> int:
+def collect_once(syl: dict, units: list[dict], retry_failed: bool,
+                 reprocess: bool = False) -> int:
     """One pass. Returns how many units are still generating."""
     subject_id = syl["subject"]["id"]
     manifest = read_manifest()
     pending = 0
     for u in units:
         rec = manifest["units"].get(f"{subject_id}/{u['id']}", {})
-        if rec.get("state") in ("postprocessed", "published"):
+        if rec.get("state") in ("postprocessed", "published") and not reprocess:
             continue
+        if reprocess and rec.get("state") == "postprocessed":
+            # Re-run the video pipeline without touching generation. Watermark and
+            # caption fixes cost nothing but runner time, so they must not require
+            # burning a video from the daily quota.
+            record(subject_id, u["id"], state="generating")
+            rec = {**rec, "state": "generating"}
         try:
-            result = collect_unit(syl, u, rec, retry_failed)
+                result = collect_unit(syl, u, rec, retry_failed)
         except CliError as e:
             # One unit's download failing must not abandon the others, and the
             # unit must stay collectable on the next pass.
@@ -116,6 +123,9 @@ def main() -> None:
     ap.add_argument("--unit", action="append", default=[])
     ap.add_argument("--retry-failed", action="store_true",
                     help="issue an in-place retry for upstream generation failures")
+    ap.add_argument("--reprocess", action="store_true",
+                    help="re-download and re-postprocess units already finished; "
+                         "spends no video quota")
     ap.add_argument("--watch-minutes", type=int, default=0,
                     help="keep polling for up to this long instead of exiting "
                          "after one pass (0 = single pass)")
@@ -126,7 +136,7 @@ def main() -> None:
     syl = load_syllabus(a.syllabus)
     units = [unit_by_id(syl, u) for u in a.unit] if a.unit else syl["units"]
 
-    pending = collect_once(syl, units, a.retry_failed)
+    pending = collect_once(syl, units, a.retry_failed, a.reprocess)
     if not a.watch_minutes or not pending:
         log(f"{pending} unit(s) still generating")
         return
@@ -141,7 +151,7 @@ def main() -> None:
         remaining = int(deadline - time.monotonic())
         log(f"{pending} pending; sleeping {a.interval}s ({remaining}s of watch left)")
         time.sleep(min(a.interval, max(remaining, 1)))
-        pending = collect_once(syl, units, a.retry_failed)
+        pending = collect_once(syl, units, a.retry_failed, a.reprocess)
 
     log(f"watch finished with {pending} unit(s) still generating")
 

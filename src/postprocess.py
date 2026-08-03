@@ -180,8 +180,26 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
 
     light = light_variant(logo, (workdir or dst.parent) / "logo-light.png")
 
-    br = resolve_box(cfg["bottom_right"], W, H)
-    br_segs = watermark.segments(watermark.region_series(ff, str(src), br, W, H))
+    # Locate rather than trust config. Config supplies only the search region.
+    br_cfg = cfg["bottom_right"]
+    found_br = watermark.locate_mark(
+        ff, str(src), W, H, tuple(br_cfg["search_region"]),
+        limit=float(br_cfg.get("search_seconds", 60)))
+    if found_br:
+        log(f"  bottom-right mark located at y={found_br['y']:.4f} "
+            f"x={found_br['x']:.4f} ({found_br['frames_agreeing']}"
+            f"/{found_br['frames_sampled']} frames agree)")
+        br = resolve_box(found_br, W, H)
+    else:
+        log("  bottom-right mark not located; using the configured fallback box")
+        br = resolve_box(br_cfg["fallback"], W, H)
+    report["bottom_right_box"] = br
+
+    br_present = watermark.presence_series(ff, str(src), br, W, H)
+    br_segs = watermark.segments(watermark.region_series(ff, str(src), br, W, H),
+                                 presence=br_present)
+    covered = sum(1 for _t, p in br_present if p)
+    log(f"  bottom-right mark present in {covered}/{len(br_present)} sampled frames")
     report["bottom_right_segments"] = [
         {**s, "start": round(s["start"], 1), "end": round(s["end"], 1)} for s in br_segs]
 
@@ -196,8 +214,18 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
     # because a coarse window overshoots onto the next slide.
     tc_cfg = cfg.get("centre_top")
     if tc_cfg:
-        tc = resolve_box(tc_cfg, W, H)
         search = float(tc_cfg.get("search_seconds", 25))
+        found_tc = watermark.locate_mark(
+            ff, str(src), W, H, tuple(tc_cfg["search_region"]), limit=search)
+        report["centre_top_box"] = found_tc
+        if not found_tc:
+            log("  centre-top mark not present in this video")
+            tc_cfg = None
+    if tc_cfg:
+        log(f"  centre-top mark located at y={found_tc['y']:.4f} "
+            f"x={found_tc['x']:.4f} ({found_tc['frames_agreeing']}"
+            f"/{found_tc['frames_sampled']} frames agree)")
+        tc = resolve_box(found_tc, W, H)
         fps = watermark.SAMPLE_FPS
         tc_bg = watermark.region_series(ff, str(src), tc, W, H, limit=search, fps=fps)
         window = watermark.detect_presence(
@@ -213,7 +241,9 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
                 report["clamped_to_slide_cut"] = round(cuts[0], 3)
         report["centre_top_window"] = window
         if window:
-            tc_segs = watermark.segments(tc_bg, window=window)
+            tc_present = watermark.presence_series(ff, str(src), tc, W, H,
+                                                   limit=search, fps=fps)
+            tc_segs = watermark.segments(tc_bg, window=window, presence=tc_present)
             report["centre_top_segments"] = [
                 {**s, "start": round(s["start"], 2), "end": round(s["end"], 2)}
                 for s in tc_segs]

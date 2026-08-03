@@ -6,3 +6,5 @@ PyYAML>=6,<7
 faster-whisper>=1.0,<2
 # Pillow recolours the logo to white for saturated slides.
 pillow>=10,<12
+# numpy is used to locate the watermark by shape in full-res frames.
+numpy>=1.26,<3

@@ -38,6 +38,11 @@ on:
         required: false
         default: false
         type: boolean
+      reprocess:
+        description: "Re-download and re-postprocess finished units (no video quota)"
+        required: false
+        default: false
+        type: boolean
       watch_minutes:
         description: "Keep polling in-job for up to this many minutes (0 = single pass)"
         required: false
@@ -103,6 +108,7 @@ jobs:
           ARGS=""
           for u in ${{ inputs.units }}; do ARGS="$ARGS --unit $u"; done
           python src/collect.py --syllabus "$SYL" $ARGS \
+            ${{ inputs.reprocess == true && '--reprocess' || '' }} \
             --watch-minutes "${{ inputs.watch_minutes || 45 }}" --interval 180 \
             ${{ inputs.retry_failed == true && '--retry-failed' || '' }}
 

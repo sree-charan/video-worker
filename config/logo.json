@@ -1,26 +1,20 @@
 {
-  "_comment": "NotebookLM stamps two wordmarks plus a full-frame end card. Boxes are NORMALISED (fractions of frame size) because render resolution varies: the supplied sample frames were 1600x900 while the real render came back 1280x720. Plate colour is NOT configured - it is sampled per segment from the frame behind the mark, because the background is (250,250,250) grey for most of the video, white on the title and closing cards, and full-bleed orange (252,138,0) on every section-transition slide.",
-
-  "_geometry_comment": "The box is the MINIMAL footprint of the original mark plus about 2px of pad, not a larger area sized to suit our logo. An opaque plate destroys whatever is behind it, and on the title card a wider box visibly cut through an orange decoration bar. logo_height_ratio then lets our logo render taller than the plate and overhang onto untouched background - it has an alpha channel, so overhanging costs nothing while the destroyed rectangle stays as small as possible.",
+  "_comment": "NotebookLM stamps a wordmark bottom-right, a second one centred above the title on the opening card, and a full-frame end card. Positions are NOT hardcoded: the title-card mark sits relative to the title block, so it moved from y=100 with a one-line title to y=50 with a two-line one. Across five units a fixed box hit one, missed one entirely, and on a third stamped our logo over the title text while the original stayed visible above it. So only a SEARCH REGION is configured and the mark is measured per video by shape. A mark is also only covered where it is actually present - NotebookLM omits the bottom-right one on the title card when it shows the centred one.",
 
   "bottom_right": {
-    "_comment": "Persistent wordmark, whole video. Measured on a 1600x900 sample: x=1384..1539 y=830..845. Left edge held at 0.8625 because in another sample the word 'goals' ends at 0.8606 and the mark starts at 0.8650 - the only safe gap.",
-    "x": 0.8625,
-    "y": 0.9178,
-    "w": 0.1025,
-    "h": 0.0244,
+    "_comment": "search_region is (y0, y1, x0, x1) as fractions. fallback is used only if detection finds nothing, and is the box measured from two 1600x900 samples.",
+    "search_region": [0.86, 1.0, 0.74, 1.0],
+    "search_seconds": 60,
     "align": "right",
-    "logo_height_ratio": 1.5
+    "logo_height_ratio": 1.5,
+    "fallback": { "x": 0.8625, "y": 0.9178, "w": 0.1025, "h": 0.0244 }
   },
 
   "centre_top": {
-    "_comment": "Second wordmark on the opening title card only. Measured on the real 1280x720 render: x=543..722 y=99..118, present t=0-7s. Height covers to y=121 at 720p: at h=0.0320 the plate stopped at y=117 and left a single row of the mark's descender visible at y=118. The window is re-measured per video at frame rate and clamped to the following slide cut.",
-    "x": 0.4220,
-    "y": 0.1340,
-    "w": 0.1440,
-    "h": 0.0361,
+    "_comment": "Sits above the title, so its height varies with the number of title lines. Region spans y 3-32% to cover both observed positions.",
+    "search_region": [0.03, 0.32, 0.28, 0.72],
+    "search_seconds": 25,
     "align": "centre",
-    "logo_height_ratio": 1.4,
-    "search_seconds": 25
+    "logo_height_ratio": 1.4
   }
 }
