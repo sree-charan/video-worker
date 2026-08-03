@@ -48,24 +48,53 @@ def probe(mp4: Path) -> dict:
     }
 
 
-def swap_logo(src: Path, dst: Path, logo: Path, box: dict) -> None:
-    """Cover the source watermark with our own, same box, no geometry change.
+def resolve_box(cfg: dict, width: int, height: int) -> dict:
+    """Normalised config -> integer pixel box for this frame size.
 
-    `delogo` is deliberately not used: it blurs a smeared patch rather than
-    replacing the mark. An opaque overlay scaled to the measured box keeps the
-    frame size and aspect identical, which is what the app's 16:9 thumbnails
-    and the player both assume.
+    The box is stored as fractions because explainer output is not guaranteed to
+    be one fixed resolution; hardcoded pixels would silently drift if Google
+    changes the render size.
+    """
+    x = int(round(cfg["x"] * width))
+    y = int(round(cfg["y"] * height))
+    w = int(round(cfg["w"] * width))
+    h = int(round(cfg["h"] * height))
+    # Keep the box inside the frame and even-sized, which libx264 prefers.
+    w = max(2, min(w - w % 2, width - x))
+    h = max(2, min(h - h % 2, height - y))
+    return {"x": x, "y": y, "w": w, "h": h,
+            "plate": cfg.get("plate"), "align": cfg.get("align", "right")}
+
+
+def swap_logo(src: Path, dst: Path, logo: Path, box: dict) -> None:
+    """Cover the source watermark with our own: same box, no geometry change.
+
+    `delogo` is deliberately not used - it blurs a smeared patch rather than
+    replacing the mark. An opaque plate plus an aspect-preserving overlay keeps
+    frame size and aspect identical, which the app's 16:9 thumbnails and the
+    player both assume.
+
+    The GCTC logo is 5:1 while the NotebookLM mark is ~9.75:1, so the logo is
+    fitted inside the box by height rather than stretched to fill it.
     """
     w, h, x, y = box["w"], box["h"], box["x"], box["y"]
-    filt = (
-        # Optional flat plate first, for when the watermark sits on moving
-        # background and our logo has transparency.
-        (f"[0:v]drawbox=x={x}:y={y}:w={w}:h={h}:color={box.get('plate', 'black')}@1:t=fill[bg];"
-         if box.get("plate") else "[0:v]null[bg];")
-        + f"[1:v]scale={w}:{h}[lg];[bg][lg]overlay={x}:{y}:format=auto[v]"
-    )
+    plate = box.get("plate")
+
+    steps = []
+    if plate:
+        steps.append(f"[0:v]drawbox=x={x}:y={y}:w={w}:h={h}:color={plate}@1:t=fill[bg]")
+    else:
+        steps.append("[0:v]null[bg]")
+    # force_original_aspect_ratio=decrease fits inside the box without distortion.
+    steps.append(f"[1:v]scale={w}:{h}:force_original_aspect_ratio=decrease[lg]")
+
+    # Right-align inside the plate, matching where the original mark sat.
+    ox = f"{x}+{w}-overlay_w" if box.get("align") == "right" else f"{x}+({w}-overlay_w)/2"
+    oy = f"{y}+({h}-overlay_h)/2"
+    steps.append(f"[bg][lg]overlay={ox}:{oy}:format=auto[v]")
+
     run(["ffmpeg", "-y", "-i", str(src), "-i", str(logo),
-         "-filter_complex", filt, "-map", "[v]", "-map", "0:a?",
+         "-filter_complex", ";".join(steps), "-map", "[v]", "-map", "0:a?",
          "-c:v", "libx264", "-crf", "20", "-preset", "veryfast",
          "-pix_fmt", "yuv420p", "-movflags", "+faststart",
          "-c:a", "copy", str(dst)])
@@ -224,19 +253,25 @@ def main() -> None:
     log(f"source: {meta['width']}x{meta['height']}, {meta['duration_sec']}s")
 
     final = outdir / "final.mp4"
-    box = json.loads(LOGO_CFG.read_text(encoding="utf-8")) if LOGO_CFG.exists() else {}
-    if a.skip_logo or not box.get("w"):
+    cfg = json.loads(LOGO_CFG.read_text(encoding="utf-8")) if LOGO_CFG.exists() else {}
+    if a.skip_logo or not cfg.get("w"):
         log("watermark box not configured; copying source through unchanged")
         shutil.copy2(raw, final)
     else:
+        box = resolve_box(cfg, meta["width"], meta["height"])
+        log(f"replacing watermark at x={box['x']} y={box['y']} "
+            f"w={box['w']} h={box['h']} (plate={box['plate']})")
         swap_logo(raw, final, Path(a.logo), box)
-        log("watermark replaced in place")
 
     segs = transcribe(final, outdir, a.whisper_model)
     write_vtt(segs, outdir / "captions.vtt")
 
+    # Chapter labels are the course file's verbatim headings, captured in fire.py.
+    # Anchors are the distinctive word from each heading, so alignment searches
+    # for the same wording the student sees in their own notes.
     labels = rec.get("chapter_labels") or [t.title() for t in unit.get("anchors", [])]
-    chapters = build_chapters(segs, labels, unit.get("anchors", []), meta["duration_sec"])
+    anchors = rec.get("chapter_anchors") or unit.get("anchors", [])
+    chapters = build_chapters(segs, labels, anchors, meta["duration_sec"])
     log(f"{len(chapters)} chapters: " + ", ".join(f"{c['t']}s {c['label']}" for c in chapters))
 
     thumbnail(final, outdir / "thumb.jpg", at=min(meta["duration_sec"] * 0.1, 30))

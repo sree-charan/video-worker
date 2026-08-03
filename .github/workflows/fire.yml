@@ -22,13 +22,18 @@ on:
       minutes:
         description: "Target video length in minutes"
         required: false
-        default: "10"
+        default: "12"
       style:
         description: "Visual style"
         required: false
         default: "classic"
         type: choice
         options: ["classic", "whiteboard", "watercolor", "retro-print", "heritage", "paper-craft", "auto"]
+      deep_research:
+        description: "Use deep (not fast) research when the course file has gaps"
+        required: false
+        default: true
+        type: boolean
       dry_run:
         description: "Build and print the prompt without spending quota"
         required: false
@@ -94,6 +99,7 @@ jobs:
             --minutes "${{ inputs.minutes }}" \
             --style "${{ inputs.style }}" \
             $ARGS \
+            ${{ inputs.deep_research == true && '--deep-research' || '' }} \
             ${{ inputs.dry_run == true && '--dry-run' || '' }}
 
       - name: Upload prompts for review

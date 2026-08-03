@@ -1,8 +1,10 @@
 {
-  "_comment": "Bounding box of the NotebookLM watermark, in pixels, for a 1920x1080 explainer. Measure it once from build/<unit>/frames/*.png (python src/postprocess.py --sample-frames) and fill these in. 'plate' paints an opaque rectangle before overlaying, needed only if our logo has transparency or the mark sits on moving background; set to null to overlay directly.",
-  "w": 0,
-  "h": 0,
-  "x": 0,
-  "y": 0,
-  "plate": null
+  "_comment": "NotebookLM watermark box, measured from real explainer frames (1600x900 and 1600x916 samples). Stored NORMALISED (fractions of frame width/height) so it holds at any output resolution. The mark is the bottom-right 'NotebookLM' wordmark plus its icon; measured bbox was x=1384 y=830 w=156 h=16 at 1600x900, aspect 9.75:1, sitting on a near-white background (level 254). Values below add a small pad so anti-aliased edges are fully covered.",
+  "x": 0.8605,
+  "y": 0.9160,
+  "w": 0.1075,
+  "h": 0.0300,
+  "plate": "white",
+  "fit": "contain",
+  "align": "right"
 }

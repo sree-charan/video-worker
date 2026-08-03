@@ -1,16 +1,16 @@
 """Stage: fire.
 
-Per unit: create a notebook, attach the course file by reference, spend one chat
-to extract the beat sheet, then start video generation and exit immediately.
+Per unit: notebook, source, three scrutinised chat rounds, then start the video
+and exit. Never blocks on generation - see README for why.
 
-Deliberately does NOT wait for the video. Generation takes 20-30+ minutes, and
-blocking a runner for that would cost ~1800 Actions-minutes/day at full rate.
-`collect.py` picks the artifact up later.
+Round results are cached in the manifest, so a re-run after a failure resumes at
+the round that failed instead of re-spending chat quota.
 """
 
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -18,99 +18,202 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import plan as P  # noqa: E402
 from common import (  # noqa: E402
-    BUILD, CliError, get_record, load_syllabus, log, nlm, nlm_retry, record,
+    BUILD, CliError, get_record, load_syllabus, log, nlm_retry, record,
     unit_by_id, unit_key,
 )
 
+STOPWORDS = {
+    "the", "a", "an", "and", "or", "of", "to", "in", "for", "with", "its", "it",
+    "definition", "introduction", "overview", "basic", "basics", "using", "use",
+    "uses", "concepts", "concept", "types", "type", "understanding", "creating",
+    "accessing", "defining", "implementing", "preventing", "between", "vs",
+}
+
 
 def ensure_notebook(syl: dict, unit: dict, profile: str | None) -> str:
-    """Reuse the notebook from a previous run if the manifest has one."""
-    subject_id = syl["subject"]["id"]
-    rec = get_record(subject_id, unit["id"])
+    sid = syl["subject"]["id"]
+    rec = get_record(sid, unit["id"])
     if rec.get("notebook_id"):
         log(f"reusing notebook {rec['notebook_id']}")
         return rec["notebook_id"]
-
     title = f"{syl['subject']['title']} - Unit {unit['n']}: {unit['title']}"
     out = nlm_retry("create", title, "--json", profile=profile)
     nb = out.get("id") or out.get("notebook_id")
     if not nb:
         raise SystemExit(f"create returned no id: {out}")
     log(f"created notebook {nb}")
-    record(subject_id, unit["id"], notebook_id=nb, notebook_title=title,
-           profile=profile, state="notebook")
+    record(sid, unit["id"], notebook_id=nb, notebook_title=title, profile=profile,
+           state="notebook")
     return nb
 
 
 def ensure_source(syl: dict, unit: dict, nb: str, profile: str | None) -> None:
-    subject_id = syl["subject"]["id"]
-    if get_record(subject_id, unit["id"]).get("source_added"):
+    sid = syl["subject"]["id"]
+    if get_record(sid, unit["id"]).get("source_added"):
         return
     subj = syl["subject"]
-    # A Drive PDF goes in by reference - the file never leaves Google.
     nlm_retry("source", "add-drive", subj["source_drive_id"], subj["source_title"],
               "--mime-type", "pdf", "-n", nb, "--json", profile=profile)
     log("attached course file by Drive reference")
-    record(subject_id, unit["id"], source_added=True, state="sourced")
+    record(sid, unit["id"], source_added=True, state="sourced")
 
 
-def build_beats(syl: dict, unit: dict, nb: str, profile: str | None) -> tuple[str, list[str]]:
-    """Spend one cheap chat to ground the expensive video prompt."""
-    subject_id = syl["subject"]["id"]
-    rec = get_record(subject_id, unit["id"])
-    outline = rec.get("outline")
-
-    if not outline:
-        prompt = P.outline_prompt(syl, unit)
-        log("asking notebook for the unit beat sheet")
-        out = nlm_retry("ask", prompt, "-n", nb, "--json", profile=profile, timeout=600)
-        outline = out.get("answer") or out.get("response") or out.get("text") or ""
-        if not outline.strip():
-            log("WARNING outline came back empty; falling back to raw syllabus scope")
-        record(subject_id, unit["id"], outline=outline, state="outlined")
-
-    beats = P.beats_from_outline(outline, unit["topics"])
-    return beats, P.chapter_labels(outline, unit)
+def ask(prompt: str, nb: str, profile: str | None, label: str) -> str:
+    log(f"chat round: {label}")
+    out = nlm_retry("ask", prompt, "-n", nb, "--json", profile=profile, timeout=900)
+    text = out.get("answer") or out.get("response") or out.get("text") or ""
+    if not text.strip():
+        raise SystemExit(f"round '{label}' returned an empty answer")
+    return text
 
 
-def fire(syl: dict, unit: dict, profile: str | None, minutes: int,
-         style: str, dry_run: bool) -> None:
-    subject_id = syl["subject"]["id"]
-    rec = get_record(subject_id, unit["id"])
-    if rec.get("artifact_id") and rec.get("state") not in ("failed",):
+def fill_gaps(syl: dict, unit: dict, nb: str, profile: str | None,
+              gaps: list[str], deep: bool) -> None:
+    """The book does not cover something the syllabus demands.
+
+    Rather than let the video invent it or skip it, pull real sources in with
+    Deep Research and let the later rounds ground on those instead.
+    """
+    q = P.research_prompt(syl, unit, gaps)
+    log(f"{len(gaps)} gap(s) in the course file; running "
+        f"{'deep' if deep else 'fast'} research to fill them")
+    nlm_retry("source", "add-research", q,
+              "--from", "web", "--mode", "deep" if deep else "fast",
+              "--import-all", "--cited-only", "-n", nb,
+              "--timeout", "1800", "--json", profile=profile, timeout=3900)
+    record(syl["subject"]["id"], unit["id"], gaps_filled=gaps)
+
+
+def build_spec(syl: dict, unit: dict, nb: str, profile: str | None,
+               minutes: int, deep_research: bool) -> dict:
+    """Rounds 1-3. Each round's raw text is cached in the manifest."""
+    sid = syl["subject"]["id"]
+    rec = get_record(sid, unit["id"])
+
+    # ---- round 1: verbatim structure -------------------------------------
+    r1_raw = rec.get("round1")
+    if not r1_raw:
+        r1_raw = ask(P.round1_prompt(syl, unit), nb, profile, "1/3 structure")
+        record(sid, unit["id"], round1=r1_raw)
+    r1 = P.parse_round1(r1_raw)
+    log(f"  {len(r1['sections'])} sections, {len(r1['terms'])} locked terms, "
+        f"notes_present={r1['notes_present']}, {len(r1['missing'])} gap(s)")
+    if not r1["sections"]:
+        raise SystemExit("round 1 produced no sections; inspect manifest 'round1'")
+
+    # ---- optional: repair a thin course file ------------------------------
+    needs_research = (not r1["notes_present"]) or len(r1["missing"]) >= 2
+    if needs_research and not rec.get("gaps_filled"):
+        targets = r1["missing"] or [unit["title"]]
+        try:
+            fill_gaps(syl, unit, nb, profile, targets, deep_research)
+            # Structure may improve once real sources exist, so re-ask round 1.
+            r1_raw = ask(P.round1_prompt(syl, unit), nb, profile, "1/3 structure (post-research)")
+            record(sid, unit["id"], round1=r1_raw)
+            r1 = P.parse_round1(r1_raw)
+            log(f"  after research: {len(r1['sections'])} sections, "
+                f"{len(r1['missing'])} gap(s) remain")
+        except CliError as e:
+            log(f"  research unavailable ({'quota' if e.rate_limited else 'error'}); "
+                "continuing with the book as-is")
+
+    # ---- round 2: substance ----------------------------------------------
+    r2_raw = rec.get("round2")
+    if not r2_raw:
+        r2_raw = ask(P.round2_prompt(unit, r1["sections"], unit["example"]),
+                     nb, profile, "2/3 substance")
+        record(sid, unit["id"], round2=r2_raw)
+
+    # ---- round 3: audit + time budget ------------------------------------
+    r3_raw = rec.get("round3")
+    if not r3_raw:
+        r3_raw = ask(P.round3_prompt(unit, P.plan_text(r1["sections"], r2_raw), minutes),
+                     nb, profile, "3/3 scrutiny and time budget")
+        record(sid, unit["id"], round3=r3_raw)
+
+    spec = P.parse_round3(r3_raw, r1["sections"], minutes * 60)
+    spec["terms"] = r1["terms"][:24]
+
+    log(f"  final spec: {len(spec['sections'])} sections, "
+        f"{spec['budgeted']}s budgeted of {minutes * 60}s target")
+    if spec["gaps"]:
+        log(f"  WARNING still uncovered after audit: {'; '.join(spec['gaps'])}")
+
+    # Verify the lock actually held: every final heading must have come from
+    # round 1 verbatim. A reworded heading is the exact failure we are guarding
+    # against, so surface it loudly rather than shipping a renamed chapter.
+    known = {h.lower() for h in r1["sections"]}
+    drifted = [s["heading"] for s in spec["sections"] if s["heading"].lower() not in known]
+    if drifted:
+        log(f"  WARNING round 3 reworded {len(drifted)} heading(s): {drifted}")
+    record(sid, unit["id"], heading_drift=drifted or None)
+
+    return spec
+
+
+def anchor_for(heading: str) -> str:
+    """Transcript search phrase for a heading.
+
+    Prefers a technical token (ALLCAPS or CamelCase, e.g. CLASSPATH, ArrayList,
+    JDBC) because those are spoken distinctively and rarely appear by accident.
+    Otherwise falls back to the longest content word. Plain longest-word alone
+    is wrong: "understanding CLASSPATH" would anchor on "understanding".
+    """
+    words = re.findall(r"[A-Za-z][\w'-]*", heading)
+    content = [w for w in words if w.lower() not in STOPWORDS]
+    if not content:
+        content = words or [heading]
+    technical = [w for w in content
+                 if w.isupper() and len(w) > 2 or re.match(r"^[A-Z][a-z]+[A-Z]", w)]
+    pick = max(technical, key=len) if technical else max(content, key=len)
+    return pick.lower()
+
+
+def fire(syl: dict, unit: dict, profile: str | None, minutes: int, style: str,
+         deep_research: bool, dry_run: bool) -> None:
+    sid = syl["subject"]["id"]
+    rec = get_record(sid, unit["id"])
+    if rec.get("artifact_id") and rec.get("state") != "failed":
         log(f"unit {unit['id']} already fired (artifact {rec['artifact_id']}); skipping")
         return
 
-    nb = None if dry_run else ensure_notebook(syl, unit, profile)
-    if not dry_run:
-        ensure_source(syl, unit, nb, profile)
-        beats, labels = build_beats(syl, unit, nb, profile)
-    else:
-        beats, labels = P._bullets(unit["topics"]), P.chapter_labels("", unit)
-
-    prompt = P.video_prompt(syl, unit, beats, minutes=minutes)
-
     outdir = BUILD / unit_key(syl, unit)
     outdir.mkdir(parents=True, exist_ok=True)
-    pf = outdir / "video-prompt.txt"
-    pf.write_text(prompt, encoding="utf-8")
-    log(f"steering prompt written to {pf} ({len(prompt)} chars)")
 
     if dry_run:
-        print(prompt)
+        # No quota spent. Round 1 has not run, so headings here are faked from
+        # the syllabus line and will look long; in a real run they are the
+        # book's own short headings ("Member access rules"). This preview is for
+        # reviewing structure and constraints, not final heading text.
+        headings = [s.strip().rstrip(".") for s in
+                    P.clean(unit["topics"]).replace(";", ".").split(".") if s.strip()][:8]
+        per = max(minutes * 60 // max(len(headings), 1), 25)
+        spec = {"sections": [{"k": str(i + 1), "heading": h, "points": [],
+                              "spec": "", "step": "", "seconds": per}
+                             for i, h in enumerate(headings)],
+                "terms": [], "gaps": [], "budgeted": minutes * 60}
+        print(P.video_prompt(syl, unit, spec, minutes))
         return
 
-    # explainer = 16:9 horizontal and the only format with a workable daily cap
-    # (cinematic is 2/day on Pro, and 'short' is vertical).
+    nb = ensure_notebook(syl, unit, profile)
+    ensure_source(syl, unit, nb, profile)
+    spec = build_spec(syl, unit, nb, profile, minutes, deep_research)
+
+    prompt = P.video_prompt(syl, unit, spec, minutes)
+    pf = outdir / "video-prompt.txt"
+    pf.write_text(prompt, encoding="utf-8")
+    (outdir / "spec.json").write_text(
+        __import__("json").dumps(spec, indent=2), encoding="utf-8")
+    log(f"steering prompt written to {pf} ({len(prompt)} chars)")
+
+    labels = P.chapter_labels(spec)
     out = nlm_retry(
         "generate", "video",
         "--prompt-file", str(pf),
-        "--format", "explainer",
+        "--format", "explainer",      # 16:9; 'short' is vertical, cinematic is 2/day
         "--style", style,
         "--language", "en",
-        "-n", nb,
-        "--no-wait",
-        "--json",
+        "-n", nb, "--no-wait", "--json",
         profile=profile,
     )
     task = out.get("task_id") or out.get("id") or out.get("artifact_id")
@@ -118,20 +221,23 @@ def fire(syl: dict, unit: dict, profile: str | None, minutes: int,
         raise SystemExit(f"generate video returned no task id: {out}")
 
     log(f"generation started: task {task}")
-    record(subject_id, unit["id"], artifact_id=task, state="generating",
-           chapter_labels=labels, prompt_chars=len(prompt), style=style)
+    record(sid, unit["id"], artifact_id=task, state="generating", style=style,
+           chapter_labels=labels,
+           chapter_anchors=[anchor_for(h) for h in labels],
+           section_seconds=[s["seconds"] for s in spec["sections"]],
+           prompt_chars=len(prompt), target_minutes=minutes)
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Start video generation for one or more units.")
+    ap = argparse.ArgumentParser(description="Plan and start video generation.")
     ap.add_argument("--syllabus", required=True)
-    ap.add_argument("--unit", action="append", default=[],
-                    help="unit id or number; repeat for several. Default: all.")
-    ap.add_argument("--profile", default=None, help="notebooklm profile (= which Google account)")
-    ap.add_argument("--minutes", type=int, default=10)
+    ap.add_argument("--unit", action="append", default=[])
+    ap.add_argument("--profile", default=None)
+    ap.add_argument("--minutes", type=int, default=12)
     ap.add_argument("--style", default="classic")
-    ap.add_argument("--dry-run", action="store_true",
-                    help="build and print the prompt without spending quota")
+    ap.add_argument("--deep-research", action="store_true",
+                    help="use deep (not fast) research when filling course-file gaps")
+    ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 
     syl = load_syllabus(a.syllabus)
@@ -141,13 +247,13 @@ def main() -> None:
     for u in units:
         log(f"=== unit {u['n']} ({u['id']}): {u['title']}")
         try:
-            fire(syl, u, a.profile, a.minutes, a.style, a.dry_run)
-        except CliError as e:
+            fire(syl, u, a.profile, a.minutes, a.style, a.deep_research, a.dry_run)
+        except (CliError, SystemExit) as e:
             failures += 1
             log(f"FAILED unit {u['id']}: {e}")
             record(syl["subject"]["id"], u["id"], state="failed", error=str(e)[:500])
     if failures:
-        raise SystemExit(f"{failures} unit(s) failed to start")
+        raise SystemExit(f"{failures} unit(s) failed")
 
 
 if __name__ == "__main__":

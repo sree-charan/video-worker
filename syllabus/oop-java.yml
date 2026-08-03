@@ -33,6 +33,15 @@ subject:
     - Class and individual time tables
     - University question papers, question bank, assignment questions, quiz questions
 
+# Per-subject teaching rules, injected into the video prompt.
+#   code_language : show real code on screen in this language (omit for
+#                   non-programming subjects, e.g. Basic Electrical Engineering)
+#   math          : "none"   state relationships, no derivations, no numericals
+#                   "worked" show steps that carry meaning, one numeric case max
+pedagogy:
+  code_language: Java
+  math: none
+
 units:
   - n: 1
     id: u1
