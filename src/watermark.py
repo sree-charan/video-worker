@@ -745,6 +745,52 @@ def presence_template(ff: str, mp4: str, box: dict, W: int, H: int,
     return out
 
 
+def smooth_presence(series: list[tuple[float, bool]], max_gap: float = 1.5,
+                    extend: float = 0.5) -> list[tuple[float, bool]]:
+    """Close short holes in a presence series and extend its trailing edge.
+
+    OCR does not read the mark in every single frame - motion blur during a slide
+    transition is enough to miss one - and a single missed sample used to end
+    coverage, which is how NotebookLM became visible for the last few frames of a
+    title card while the log cheerfully reported it covered.
+
+    Holes shorter than `max_gap` between two positives are filled, and each run
+    of positives is extended `extend` seconds past its last positive sample, so
+    coverage outlasts the mark rather than stopping just short of it.
+    """
+    if not series:
+        return series
+    times = [t for t, _ in series]
+    vals = [v for _, v in series]
+
+    # Fill short holes.
+    i = 0
+    while i < len(vals):
+        if vals[i]:
+            i += 1
+            continue
+        j = i
+        while j < len(vals) and not vals[j]:
+            j += 1
+        before = i > 0 and vals[i - 1]
+        after = j < len(vals) and vals[j]
+        if before and after and (times[min(j, len(times) - 1)] - times[i]) <= max_gap:
+            for k in range(i, j):
+                vals[k] = True
+        i = max(j, i + 1)
+
+    # Extend each trailing edge.
+    out = list(vals)
+    for i, v in enumerate(vals):
+        if not v or (i + 1 < len(vals) and vals[i + 1]):
+            continue
+        for k in range(i + 1, len(vals)):
+            if times[k] - times[i] > extend:
+                break
+            out[k] = True
+    return list(zip(times, out))
+
+
 # ------------------------------------------------------------- segmenting
 
 def _q(c: tuple[int, int, int]) -> tuple[int, int, int]:

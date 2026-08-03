@@ -195,8 +195,9 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
         br = resolve_box(br_cfg["fallback"], W, H)
     report["bottom_right_box"] = br
 
-    br_present = watermark.presence_any(ff, str(src), br, W, H, MARK_TEMPLATE,
-                                        fps=1.0)
+    br_present = watermark.smooth_presence(
+        watermark.presence_any(ff, str(src), br, W, H, MARK_TEMPLATE, fps=1.0),
+        max_gap=2.0, extend=1.0)
     br_segs = watermark.segments(watermark.region_series(ff, str(src), br, W, H),
                                  presence=br_present)
     if not br_segs:
@@ -235,18 +236,22 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
             watermark.darkness_series(ff, str(src), tc, limit=search, fps=fps),
             tc_bg, limit=search, step=1.0 / fps)
         if window:
-            # Clamp to the slide cut. Presence detection alone left the logo on
-            # screen for a frame of the next slide, which reads as a glitch.
+            # Clamp to the slide cut, but never earlier than the cut itself: the
+            # mark stays on screen until the card leaves, so ending before the cut
+            # exposes it for the last few frames.
             cuts = [c for c in watermark.slide_changes(ff, str(src), search)
                     if c > window[0] + 0.5]
             if cuts:
-                window = (window[0], min(window[1], cuts[0] - 1.0 / fps))
+                window = (window[0], max(min(window[1], cuts[0]), cuts[0] - 0.05))
                 report["clamped_to_slide_cut"] = round(cuts[0], 3)
         report["centre_top_window"] = window
         if window:
-            tc_present = watermark.presence_any(ff, str(src), tc, W, H,
-                                                MARK_TEMPLATE, fps=2.0,
-                                                limit=search)
+            # 4fps and generous smoothing: the title card is short, and its last
+            # few frames are exactly where a missed OCR sample shows the mark.
+            tc_present = watermark.smooth_presence(
+                watermark.presence_any(ff, str(src), tc, W, H, MARK_TEMPLATE,
+                                       fps=4.0, limit=search),
+                max_gap=1.5, extend=0.75)
             tc_segs = watermark.segments(tc_bg, window=window, presence=tc_present)
             report["centre_top_segments"] = [
                 {**s, "start": round(s["start"], 2), "end": round(s["end"], 2)}
