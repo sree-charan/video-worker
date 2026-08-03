@@ -440,12 +440,12 @@
       "raw_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u2/raw.mp4",
       "raw_size_mb": 33.97,
       "readability": {
-        "flesch_reading_ease": 45.6,
+        "flesch_reading_ease": 45.7,
         "grade_level": 9.5,
         "long_word_pct": 6.0,
-        "sentences": 172,
+        "sentences": 173,
         "words": 1802,
-        "words_per_sentence": 10.5
+        "words_per_sentence": 10.4
       },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Inheritance\nSECTION | 2 | Method Overriding\nSECTION | 3 | Preventing inheritance\nSECTION | 4 | Abstract classes\nSECTION | 5 | Single Inheritance in Java\nSECTION | 6 | Multiple Inheritance\nSECTION | 7 | Hierarchical inheritance\nSECTION | 8 | Hybrid Inheritance in Java\nSECTION | 9 | Interfaces\nSECTION | 10 | Interfaces Vs Abstract Classes\nSECTION | 11 | Inner classes\nSECTION | 12 | Packages\nTERM | superclass\nTERM | subclass\nTERM | extends\nTERM | overridden method\nTERM | runtime polymorphism\nTERM | abstract class\nTERM | abstract method\nTERM | concrete class\nTERM | Single Inheritance\nTERM | Multiple Inheritance\nTERM | Multilevel Inheritance\nTERM | Hierarchical inheritance\nTERM | Hybrid Inheritance\nTERM | interface\nTERM | implements\nTERM | Inner classes\nTERM | nested classes\nTERM | package\nTERM | User defined package\nTERM | Built-in package\nTERM | import\nMISSING | the Object class and its methods\nMISSING | dynamic binding\nMISSING | local inner classes\nMISSING | anonymous inner classes\nMISSING | static inner classes\nMISSING | understanding CLASSPATH",
       "round2": "DEF | 1 | Inheritance allows a subclass or child class to access all methods and variables of a parent class using the keyword extends to derive a new class from an existing superclass [1, 2].\nMECH | 1 | A subclass inherits data fields and methods from its superclass and can invoke superclass constructors using the super keyword [1, 2].\nSPEC | 1 | class subclassname extends superclassname [2]\nSTEP | 1 | Extend BankAccount into SavingsAccount and CurrentAccount using the extends keyword to inherit base account fields and behaviors.\nTHIN | 1 | no\nDEF | 2 | When a method in a subclass has the same name and type signature as a method in its superclass, the method is known as an overridden method [3].\nMECH | 2 | Method overriding provides runtime polymorphism by executing the specific subclass method definition rather than the superclass method at runtime [3, 4].\nSPEC | 2 | Method overriding is also referred to as runtime polymorphism [3, 4].\nSTEP | 2 | Override calculateInterest in SavingsAccount and CurrentAccount to demonstrate dynamic binding when invoked on account objects.\nTHIN | 2 | no\nDEF | 3 | Preventing inheritance makes sure the way a class behaves is not corrupted by a subclass [5].\nMECH | 3 | Declaring a class with the final keyword prevents it from being inherited, while declaring a method with final prevents it from being overridden [4, 6].\nSPEC | 3 | Use the final keyword in the class or method declaration [4, 6].\nSTEP | 3 | Declare calculateInterest or SavingsAccount as final to prevent further overriding or subclassing.\nTHIN | 3 | yes\nDEF | 4 | An abstract class is a class that is declared as abstract, which cannot be instantiated but can be subclassed [7].\nMECH | 4 | Abstract classes contain abstract methods without bodies that must be implemented by non-abstract subclasses [7-9].\nSPEC | 4 | The subclass of an abstract class which can create an object is called a concrete class [9].\nSTEP | 4 | Make BankAccount an abstract class with an abstract calculateInterest method that subclasses must implement.\nTHIN | 4 | no\nDEF | 5 | Single Inheritance is the simple inheritance where a class extends only one class [10].\nMECH | 5 | A derived subclass inherits directly from a single superclass, establishing a single parent-child relationship [10].\nSPEC | 5 | Class B extends only one class Class A [10].\nSTEP | 5 | Demonstrate SavingsAccount extending BankAccount as a direct single inheritance relationship.\nTHIN | 5 | yes\nDEF | 6 | Multiple Inheritance is one class extending more than one class [10].\nMECH | 6 | Multiple inheritance is not supported directly for classes in Java, but it can be achieved through interfaces [10, 11].\nSPEC | 6 | Achieved in Java using Interfaces [10, 11].\nSTEP | 6 | Show why SavingsAccount cannot extend multiple classes, establishing the necessity of using an interface.\nTHIN | 6 | yes\nDEF | 7 | In Hierarchical inheritance, one parent class is inherited by many subclasses [11, 12].\nMECH | 7 | A single superclass serves as the common parent for multiple distinct derived subclasses [11, 12].\nSPEC | 7 | ClassA will be acting as a parent class for ClassB, ClassC, and ClassD [11, 12].\nSTEP | 7 | Derive both SavingsAccount and CurrentAccount from BankAccount to form a hierarchical structure.\nTHIN | 7 | yes\nDEF | 8 | Hybrid Inheritance is the combination of both Single and Multiple Inheritance [12].\nMECH | 8 | It combines single and multiple inheritance patterns, which Java supports only by using interfaces [12].\nSPEC | 8 | Achieved in Java only through interface [12].\nSTEP | 8 | Show how combining class inheritance from BankAccount with interface implementations forms a hybrid inheritance structure.\nTHIN | 8 | yes\nDEF | 9 | An interface provides a mechanism to define a class with absolutely no implementation [13].\nMECH | 9 | Interfaces are defined using the interface keyword, and classes implement them using the implements keyword to provide code for all declared methods [13, 14].\nSPEC | 9 | Use the interface keyword instead of the class keyword [13].\nSTEP | 9 | Hoist calculateInterest to an Interest interface implemented by SavingsAccount and CurrentAccount.\nTHIN | 9 | no\nDEF | 10 | Interfaces provide a mechanism with no method implementations and static final properties, whereas abstract classes can contain method implementations and non-static final fields [15, 16].\nMECH | 10 | A class can extend only one abstract class using the extends keyword, but it can implement multiple interfaces using the implements keyword [16].\nSPEC | 10 | All methods in an interface are abstract and all properties in an interface are static final [16].\nSTEP | 10 | Compare using BankAccount as an abstract class versus using the Interest interface for calculateInterest.\nTHIN | 10 | no\nDEF | 11 | Inner classes are classes that are declared within other classes and are also known as nested classes [5].\nMECH | 11 | An inner class is limited in scope to its enclosing outer class, and its objects can access members of the outer class [5].\nSPEC | 11 | class { class { } } [5]\nSTEP | 11 | Add an inner class inside BankAccount to handle internal account processing.\nTHIN | 11 | yes\nDEF | 12 | A package is a namespace that organizes a set of related classes and interfaces [6].\nMECH | 12 | Packages organize classes into directory structures using the package keyword, and classes from packages are accessed using the import keyword [6, 17, 18].\nSPEC | 12 | Packages are divided into User defined package and Built-in package [17, 18].\nSTEP | 12 | Group BankAccount, SavingsAccount, CurrentAccount, and Interest into a banking package and access them via an interface reference.\nTHIN | 12 | no",
@@ -471,33 +471,34 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u2/thumb.jpg",
       "unit": "u2",
-      "updated_at": "2026-08-03T06:03:06Z",
+      "updated_at": "2026-08-03T06:41:17Z",
       "watermark": {
         "bottom_right_box": {
-          "h": 18,
+          "h": 20,
           "w": 130,
-          "x": 1104,
-          "y": 661
+          "x": 1105,
+          "y": 660
         },
         "bottom_right_segments": [
           {
-            "end": 675.6,
+            "end": 675.5,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 0.0
+            "start": 19.5
           }
         ],
         "centre_top_box": {
-          "frames_agreeing": 29,
+          "frames_agreeing": 40,
           "frames_sampled": 50,
-          "h": 0.042222222222222223,
-          "w": 0.152625,
-          "x": 0.415875,
-          "y": 0.12333333333333334
+          "h": 0.041666666666666664,
+          "method": "ocr",
+          "w": 0.14625,
+          "x": 0.42062499999999997,
+          "y": 0.12916666666666668
         },
         "centre_top_segments": [
           {
-            "end": 19.92,
+            "end": 19.79,
             "light_logo": false,
             "plate": "0xFCFCFC",
             "start": 0.0
