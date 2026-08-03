@@ -42,6 +42,29 @@ pedagogy:
   code_language: Java
   math: none
 
+  # Subject-specific vocabulary for the LANGUAGE rules. The rules themselves
+  # (sentence length, one idea per sentence, term-then-meaning, no stacked
+  # adjectives) are universal and live in plan.py; only the wordlists and the
+  # illustrations belong to a subject. A syllabus may omit this whole block.
+  language:
+    plain_words:
+      instantiate: make
+      encapsulated: hidden
+      mutate: change
+      component: part
+      maintains: keeps
+      invoke: call
+    banned_words:
+      - reusable software artifact
+      - execution space
+      - structural vulnerabilities
+    term_example: >-
+      a constructor, the block of code that runs when an object is made, sets
+      the starting values.
+    adjective_example:
+      bad: a highly specific logical object encapsulating its exact balance
+      good: an object that holds one account's balance
+
 units:
   - n: 1
     id: u1

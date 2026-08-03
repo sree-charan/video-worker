@@ -81,14 +81,12 @@ Re-answer using the same line formats. Return between {lo} and {hi} SECTION
 lines, each naming a single concept in eight words or fewer, copied verbatim
 from a sub-heading inside the course file's Detailed notes for UNIT-{n}.
 
-These are examples of the granularity required, for a different unit:
-  SECTION | 1 | Member access rules
-  SECTION | 2 | The Object class and its methods
-  SECTION | 3 | Dynamic binding
+This is the granularity required - short, one concept each:
+{good}
 
-These would be rejected, because each is a syllabus line rather than a heading:
-  SECTION | 1 | Inheritance: definition, hierarchies, super and subclasses, member access rules
-  SECTION | 2 | Polymorphism: dynamic binding, method overriding, abstract classes and methods
+These would be rejected, because each is a syllabus line rather than a heading
+printed in the book:
+{bad}
 """
 
 # A heading with more commas or words than this is a syllabus line, not a
@@ -111,8 +109,27 @@ def round1_prompt(syl: dict, unit: dict) -> str:
 
 
 def round1_retry_prompt(unit: dict, problem: str) -> str:
+    """Illustrate granularity with this unit's OWN topics.
+
+    Hardcoded examples would have to come from some subject, and examples from
+    Java are noise when the subject is Basic Electrical Engineering. Taking the
+    short comma-separated fragments as "good" and the full syllabus sentences as
+    "bad" is both subject-correct and exactly the distinction being taught: the
+    bad examples are the lines the model just echoed back.
+    """
+    flat = clean(unit["topics"]).replace(";", ".")
+    sentences = [x.strip() for x in flat.split(".") if x.strip()]
+    fragments = [q.strip() for s in sentences for q in s.split(",")
+                 if 1 <= len(q.split()) <= 6]
+    good = "\n".join(f"  SECTION | {i + 1} | {t}"
+                      for i, t in enumerate(fragments[:3])) or \
+           "  SECTION | 1 | <one concept, in six words or fewer>"
+    bad = "\n".join(f"  SECTION | {i + 1} | {s[:110]}"
+                     for i, s in enumerate(sentences[:2])) or \
+          "  SECTION | 1 | <a whole comma-separated syllabus line>"
     return ROUND1_RETRY.format(problem=problem, n=unit["n"],
-                               lo=MIN_SECTIONS + 2, hi=MAX_SECTIONS)
+                               lo=MIN_SECTIONS + 2, hi=MAX_SECTIONS,
+                               good=good, bad=bad)
 
 
 def audit_round1(r1: dict) -> str | None:
@@ -350,30 +367,22 @@ term already defined.
 
 ## LANGUAGE - treat this as important as the content
 
-Your listener is a second-year engineering student who has never written a line
-of {lang_hint}, and whose first language is usually not English. Every sentence
-must be understood the first time it is heard, without pausing or rewinding.
+{audience}
+Every sentence must be understood the first time it is heard, without pausing or
+rewinding.
 
 - Keep sentences short. Aim for about 12 words. Never go past 20.
 - One idea per sentence. If a sentence has two ideas, split it.
-- Always choose the plainest word that is still correct: "uses" not "utilises",
-  "part" not "component", "keeps" not "maintains", "change" not "mutate",
-  "make" not "instantiate", "hidden" not "encapsulated".
+- Always choose the plainest word that is still correct.{plain_swaps}
 - A technical term may only appear after you have said what it means in plain
-  words, in the same breath. Like this: "a constructor, the block of code that
-  runs when an object is made, sets the starting values." Never introduce two
-  new terms in one sentence.
-- Never use these words: paradigm, artifact, mechanism, entity, architecture,
-  conceptualise, systematically, inherent, robust, leverage, facilitate,
-  cohesive, singular, vulnerabilities, fundamentally, uniformly, precise,
-  reusable software artifact, execution space.
-- Do not stack adjectives in front of a noun. "a highly specific logical object
-  encapsulating its exact balance" is wrong. "an object that holds one account's
-  balance" is right.
-- Use the active voice and the present tense. "The compiler checks the type",
-  not "the type is checked by the compiler".
-- Use a real number or a real line of code instead of an abstract description
-  wherever you can.
+  words, in the same breath.{term_example} Never introduce two new terms in one
+  sentence.
+- Never use these words: {banned}.
+- Do not stack adjectives in front of a noun.{adjective_example}
+- Use the active voice and the present tense: say what a thing does, rather than
+  what is done to it.
+- Use a real number, a real value or a real worked line instead of an abstract
+  description wherever you can.
 
 Simple words are NOT the same as filler. Every sentence must still teach
 something. Say the same substance in words a beginner already knows.
@@ -389,6 +398,79 @@ you use a comparison to everyday life, keep it to one sentence and then drop it.
 The result should feel like the clearest explanation the student has ever heard
 of this topic - not like a textbook read aloud.
 """
+
+# Subject-independent. Every one of these appeared in, or is of a kind with, the
+# jargon that made the first pilot unreadable (grade level 18).
+BANNED_WORDS = [
+    "paradigm", "artifact", "mechanism", "entity", "architecture",
+    "conceptualise", "systematically", "inherent", "robust", "leverage",
+    "facilitate", "cohesive", "singular", "fundamentally", "uniformly",
+    "utilise", "comprise", "delineate", "myriad", "plethora", "vis-a-vis",
+]
+
+
+ORDINALS = {"I": "first", "1": "first", "II": "second", "2": "second",
+            "III": "third", "3": "third", "IV": "fourth", "4": "fourth"}
+
+
+def year_word(year: str) -> str:
+    """Syllabuses record the year as a Roman numeral; prompts need a word."""
+    return ORDINALS.get(str(year).strip().upper(), str(year))
+
+
+def language_block(syl: dict, unit: dict) -> dict[str, str]:
+    """Render the language rules for THIS subject.
+
+    The rules themselves are universal - sentence length, one idea per sentence,
+    term-then-meaning, no stacked adjectives. What differs per subject is the
+    vocabulary: telling a Basic Electrical Engineering narration to prefer "make"
+    over "instantiate" is noise, and telling a Java narration to avoid
+    "electromotive force" is too.
+
+    So `pedagogy.language` in the syllabus supplies the subject's own jargon
+    swaps, extra banned words and illustrations; everything here has a neutral
+    default so a syllabus that omits the block still gets the universal rules.
+    """
+    subj = syl["subject"]
+    ped = syl.get("pedagogy", {})
+    lang = ped.get("language", {}) or {}
+
+    code = ped.get("code_language")
+    if lang.get("audience"):
+        audience = clean(lang["audience"])
+    elif code:
+        audience = (f"Your listener is a {year_word(subj['year'])}-year engineering "
+                    f"student who has never written a line of {code}, and whose first "
+                    f"language is usually not English.")
+    else:
+        audience = (f"Your listener is a {year_word(subj['year'])}-year engineering "
+                    f"student meeting {subj['title']} for the first time, and whose "
+                    f"first language is usually not English.")
+
+    swaps = lang.get("plain_words") or {}
+    swaps_text = ""
+    if swaps:
+        pairs = ", ".join(f'"{plain}" not "{jargon}"' for jargon, plain in swaps.items())
+        swaps_text = f" For this subject: {pairs}."
+
+    term_example = ""
+    if lang.get("term_example"):
+        term_example = f' Like this: "{clean(lang["term_example"])}"'
+
+    adj = lang.get("adjective_example") or {}
+    adj_example = ""
+    if adj.get("bad") and adj.get("good"):
+        adj_example = (f' "{clean(adj["bad"])}" is wrong. '
+                       f'"{clean(adj["good"])}" is right.')
+
+    banned = BANNED_WORDS + list(lang.get("banned_words") or [])
+    return {
+        "audience": audience,
+        "plain_swaps": swaps_text,
+        "term_example": term_example,
+        "adjective_example": adj_example,
+        "banned": ", ".join(banned),
+    }
 
 CODE_RULE = "Show real, correct {lang} code on screen for it.\n"
 MATH_NONE = ("## MATHEMATICS\n\nDo not derive formulas and do not solve numerical problems. "
@@ -476,7 +558,7 @@ def video_prompt(syl: dict, unit: dict, spec: dict, minutes: int) -> str:
         code_rule=CODE_RULE.format(lang=ped["code_language"]) if ped.get("code_language") else "",
         exam_focus="\n".join(f"  - {i}" for i in unit.get("exam_focus", [])) or "  - (none)",
         math_rule=MATH_WORKED if ped.get("math") == "worked" else MATH_NONE,
-        lang_hint=ped.get("code_language") or subj["title"],
+        **language_block(syl, unit),
     )
 
 

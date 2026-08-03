@@ -89,6 +89,32 @@ Because generated length is not controllable, the prompt states per-section
 second budgets and an explicit instruction: if running short, add depth to the
 highest-budget sections — never padding, never repetition, never a recap.
 
+### Language level, and what belongs to a subject
+
+The first pilot measured Flesch reading ease **-1.7** and grade level **18** —
+postgraduate prose. Its opening line was *"Software engineering demands a precise
+mechanism for encapsulating state and behavior into a reusable software
+artifact."* Asking for "precise terminology" got jargon.
+
+The prompt now carries checkable language rules: about 12 words per sentence and
+never past 20, one idea per sentence, the plainest correct word, a technical term
+only after its plain-words meaning in the same breath, no stacked adjectives,
+active voice. It states outright that plain words are not filler — every sentence
+must still teach. `postprocess.py` measures reading ease and grade level and logs
+a verdict, so "too complex" is a number rather than an opinion.
+
+Those rules are **universal**. What is subject-specific lives in
+`pedagogy.language` in the syllabus: jargon-to-plain swaps, extra banned words,
+and the two illustrations. Telling a Basic Electrical Engineering narration to
+prefer "make" over "instantiate" is noise, and telling Java to avoid
+"electromotive force" is too. Omit the block entirely and a subject still gets
+the universal rules with a sensible audience line.
+
+For the same reason, round 1's corrective re-ask builds its granularity examples
+from the unit's **own** syllabus — short fragments as the good shape, the full
+comma-separated lines as the rejected shape. Those bad examples are literally the
+lines the model just echoed back.
+
 `pedagogy:` in the syllabus adapts this per subject — `code_language: Java` puts
 real code on screen, while omitting it suits a conceptual subject; `math: none`
 forbids derivations and numericals, `worked` allows one numeric case per section.
