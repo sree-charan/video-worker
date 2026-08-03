@@ -69,6 +69,48 @@ This matters downstream too: chapter labels **are** the locked headings, so a
 student can match each chapter in the app to a section in their own course file
 by name.
 
+### Continuity between units
+
+Generating unit 2 is not independent of unit 1. Each unit gets its own notebook,
+so there is no shared conversation memory — continuity is entirely what the
+prompt carries forward, and it is built from what earlier units **actually
+delivered**, read from the manifest:
+
+```
+Unit 1 of this course has already been delivered. What the student has
+already been taught, section by section:
+
+  unit 1 - OOP Concepts and Java Fundamentals
+      - CLASSES
+      - Method Overloading
+      - Constructors
+      - String handling
+      ...
+
+Do not re-teach or re-define any of it. Open by connecting from unit 1 in a
+single clause, then go straight to new material.
+
+Terms already introduced in earlier units. Use exactly these spellings, and do
+not define them again:
+class, object, constructor, this keyword, String
+```
+
+Titles alone were too vague: told only that unit 1 was "OOP Concepts and Java
+Fundamentals", unit 2 would happily re-explain what a class is. Feeding the
+locked headings forward also keeps wording consistent across the course, since
+those headings are the course file's own.
+
+Units can still be fired out of order or in parallel. A prior unit with no
+recorded coverage degrades to `(not generated yet; assume its syllabus scope was
+covered)` and `fire.py` logs which units are missing. Heading budget is capped,
+spent newest-unit-first since the immediately preceding unit matters most, with
+an explicit `... and N more` when truncated.
+
+The running example is the other half of continuity, and that part is
+hand-authored: `example:` for unit 2 says to extend unit 1's `BankAccount` into
+`SavingsAccount` and `CurrentAccount`. Deliberately manual — it is the highest-
+leverage field in the syllabus.
+
 ### Filling in a thin course file
 
 If round 1 reports no real detailed notes, or two or more syllabus topics

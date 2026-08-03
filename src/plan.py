@@ -489,13 +489,77 @@ course as a whole.
 LATER_CONTINUITY = """\
 ## CONTINUITY
 
-{delivered} of this course {has} already been delivered, covering:
+{delivered} of this course {has} already been delivered. What the student has
+already been taught, section by section:
+
 {covered}
 
-The student has seen all of it. Do not re-teach or re-define any of it. Open by
-connecting from unit {prev} in a single clause, then proceed to new material.
-Where this unit builds on an earlier concept, name it in passing and move on.
+Do not re-teach or re-define any of it. Open by connecting from unit {prev} in a
+single clause, then go straight to new material. Where this unit builds on an
+earlier section, name it in the same words used above and move on.
+{terms}"""
+
+CONTINUITY_TERMS = """
+Terms already introduced in earlier units. Use exactly these spellings, and do
+not define them again:
+{terms}
 """
+
+# Enough prior detail to prevent repetition, without crowding out this unit's own
+# spec. The most recent unit matters most, so it is listed first and in full.
+MAX_PRIOR_HEADINGS = 24
+MAX_PRIOR_TERMS = 20
+
+
+def continuity(syl: dict, unit: dict, prior: list[dict] | None) -> str:
+    """The continuity block, built from what earlier units ACTUALLY delivered.
+
+    Titles alone are too vague: told only that unit 1 was "OOP Concepts and Java
+    Fundamentals", a later unit will happily re-explain what a class is. The
+    manifest already records each generated unit's locked headings and terms, so
+    those are fed forward instead.
+
+    A prior unit that has not been generated yet degrades to its syllabus scope,
+    flagged as such, so the chain still works when units are produced out of
+    order or in parallel.
+    """
+    prev_units = [u for u in syl["units"] if u["n"] < unit["n"]]
+    if not prev_units:
+        return FIRST_CONTINUITY.strip()
+
+    by_n = {p["n"]: p for p in (prior or [])}
+    blocks, terms, budget = [], [], MAX_PRIOR_HEADINGS
+
+    for u in sorted(prev_units, key=lambda x: -x["n"]):      # newest first
+        rec = by_n.get(u["n"])
+        lines = [f"  unit {u['n']} - {u['title']}"]
+        if rec and rec.get("headings"):
+            take = rec["headings"][:max(budget, 0)]
+            budget -= len(take)
+            lines += [f"      - {h}" for h in take]
+            if len(rec["headings"]) > len(take):
+                lines.append(f"      - ... and {len(rec['headings']) - len(take)} more")
+            terms += rec.get("terms") or []
+        else:
+            lines.append("      - (not generated yet; assume its syllabus scope "
+                         "was covered)")
+        blocks.append("\n".join(lines))
+
+    prev = unit["n"] - 1
+    seen, uniq = set(), []
+    for t in terms:
+        if t and t.lower() not in seen:
+            seen.add(t.lower())
+            uniq.append(t)
+
+    return LATER_CONTINUITY.format(
+        delivered="Unit 1" if prev == 1 else f"Units 1 to {prev}",
+        has="has" if prev == 1 else "have",
+        prev=prev,
+        covered="\n".join(reversed(blocks)),          # render oldest first
+        terms=(CONTINUITY_TERMS.format(terms=", ".join(uniq[:MAX_PRIOR_TERMS]))
+               if uniq else ""),
+    ).strip()
 
 
 REQUIRED_EXTRA = """
@@ -511,22 +575,12 @@ Do not create a separate section for them and do not skip them.
 """
 
 
-def video_prompt(syl: dict, unit: dict, spec: dict, minutes: int) -> str:
+def video_prompt(syl: dict, unit: dict, spec: dict, minutes: int,
+                 prior: list[dict] | None = None) -> str:
     subj = syl["subject"]
     units = syl["units"]
     ped = syl.get("pedagogy", {})
-    prev_units = [u for u in units if u["n"] < unit["n"]]
-
-    if prev_units:
-        prev = unit["n"] - 1
-        continuity = LATER_CONTINUITY.format(
-            delivered="Unit 1" if prev == 1 else f"Units 1 to {prev}",
-            has="has" if prev == 1 else "have",
-            prev=prev,
-            covered="\n".join(f"  - unit {u['n']}: {u['title']}" for u in prev_units),
-        )
-    else:
-        continuity = FIRST_CONTINUITY
+    continuity_text = continuity(syl, unit, prior)
 
     lines = []
     for s in spec["sections"]:
@@ -553,7 +607,7 @@ def video_prompt(syl: dict, unit: dict, spec: dict, minutes: int) -> str:
         sections="\n".join(lines).strip(),
         required=(REQUIRED_EXTRA.format(gaps="\n".join(f"  - {g}" for g in gaps))
                   if gaps else ""),
-        continuity=continuity.strip(),
+        continuity=continuity_text,
         example=clean(unit["example"]),
         code_rule=CODE_RULE.format(lang=ped["code_language"]) if ped.get("code_language") else "",
         exam_focus="\n".join(f"  - {i}" for i in unit.get("exam_focus", [])) or "  - (none)",

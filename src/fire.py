@@ -225,6 +225,31 @@ def build_spec(syl: dict, unit: dict, nb: str, profile: str | None,
     return spec
 
 
+def prior_coverage(syl: dict, unit: dict) -> list[dict]:
+    """What earlier units actually delivered, read from the manifest.
+
+    Uses the locked headings and terms recorded when each earlier unit was fired,
+    so a later unit is told "unit 1 covered CLASSES, Constructors, Method
+    Overloading" rather than just "unit 1 was OOP Concepts and Java
+    Fundamentals". Units not yet generated are simply absent, and the prompt
+    degrades to their syllabus scope.
+    """
+    sid = syl["subject"]["id"]
+    out = []
+    for u in syl["units"]:
+        if u["n"] >= unit["n"]:
+            continue
+        rec = get_record(sid, u["id"])
+        headings = rec.get("chapter_labels") or []
+        terms = []
+        if rec.get("round1"):
+            terms = P.parse_round1(rec["round1"]).get("terms") or []
+        if headings or terms:
+            out.append({"n": u["n"], "title": u["title"],
+                        "headings": headings, "terms": terms})
+    return out
+
+
 def anchor_for(heading: str) -> str:
     """Transcript search phrase for a heading.
 
@@ -279,7 +304,16 @@ def fire(syl: dict, unit: dict, profile: str | None, minutes: int, style: str,
     ensure_source(syl, unit, nb, profile)
     spec = build_spec(syl, unit, nb, profile, minutes, deep_research, outdir)
 
-    prompt = P.video_prompt(syl, unit, spec, minutes)
+    prior = prior_coverage(syl, unit)
+    if unit["n"] > 1:
+        known = {p["n"] for p in prior}
+        missing = [u["n"] for u in syl["units"]
+                   if u["n"] < unit["n"] and u["n"] not in known]
+        log(f"continuity: {len(prior)} earlier unit(s) with recorded coverage"
+            + (f"; units {missing} not generated yet, using syllabus scope only"
+               if missing else ""))
+
+    prompt = P.video_prompt(syl, unit, spec, minutes, prior=prior)
     pf = outdir / "video-prompt.txt"
     pf.write_text(prompt, encoding="utf-8")
     (outdir / "spec.json").write_text(
