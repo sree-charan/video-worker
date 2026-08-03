@@ -346,6 +346,13 @@ together. State these exam-critical distinctions as direct contrasts:
 {exam_focus}
 Do not re-explain anything. Connect only.
 
+## SOURCES AND BRANDING
+
+Sources may have been written or published by other institutions. Never show or
+say any institution's name, logo, letterhead, watermark, cover page or branding
+other than {college}. Do not reproduce a source's title page or headers. Use
+sources for their subject content only, never for their imagery.
+
 ## INFORMATION DENSITY - highest priority
 
 Every sentence must do one of: introduce an idea, explain how something works,
@@ -601,6 +608,7 @@ def video_prompt(syl: dict, unit: dict, spec: dict, minutes: int,
         branch=subj["branch"],
         year=subj["year"],
         sem=subj["semester"],
+        college=subj.get("college", "the student's own college"),
         minutes=minutes,
         headings="\n".join(f'  {s["k"]}. "{s["heading"]}"' for s in spec["sections"]),
         terms=", ".join(spec.get("terms", [])) or "(as printed in the course file)",

@@ -88,6 +88,55 @@ def ensure_source(syl: dict, unit: dict, nb: str, profile: str | None) -> None:
     record(sid, unit["id"], source_added=True, state="sourced")
 
 
+def list_sources(nb: str, profile: str | None) -> list[dict]:
+    payload = nlm_retry("source", "list", "-n", nb, "--json", profile=profile)
+    if isinstance(payload, list):
+        return payload
+    return payload.get("sources") or payload.get("items") or []
+
+
+def prune_sources(syl: dict, unit: dict, nb: str, profile: str | None,
+                  keep_research: bool) -> None:
+    """Remove anything in the notebook that is not this subject's course file.
+
+    Deep Research imports web sources to fill syllabus gaps, and those sources
+    belong to whoever published them. One import turned out to be another
+    college's notes, and the generated video put that college's imagery on
+    screen. Sources also persist in a reused notebook, so a single research run
+    contaminates every later regeneration.
+
+    Provenance is logged either way, so what the video was grounded on is always
+    visible in the run log.
+    """
+    keep = (syl["subject"]["source_title"] or "").strip()
+    sources = list_sources(nb, profile)
+    log(f"notebook has {len(sources)} source(s):")
+    for src in sources:
+        title = (src.get("title") or "?").strip()
+        log(f"    - {title}")
+
+    if keep_research:
+        log("  keeping non-course-file sources (--keep-research)")
+        return
+
+    foreign = [(src.get("title") or "").strip() for src in sources
+               if (src.get("title") or "").strip() and
+               (src.get("title") or "").strip() != keep]
+    if not foreign:
+        return
+    log(f"  removing {len(foreign)} source(s) that are not the course file")
+    removed = []
+    for title in foreign:
+        try:
+            nlm_retry("source", "delete-by-title", title, "-n", nb, "-y", "--json",
+                      profile=profile)
+            removed.append(title)
+            log(f"    removed: {title}")
+        except CliError as e:
+            log(f"    could not remove {title}: {e}")
+    record(syl["subject"]["id"], unit["id"], pruned_sources=removed or None)
+
+
 def ask(prompt: str, nb: str, profile: str | None, label: str,
         outdir: Path, slot: str) -> str:
     """One chat round, with the prompt passed as a file.
@@ -269,7 +318,7 @@ def anchor_for(heading: str) -> str:
 
 
 def fire(syl: dict, unit: dict, profile: str | None, minutes: int, style: str,
-         deep_research: bool, dry_run: bool) -> None:
+         deep_research: bool, dry_run: bool, keep_research: bool = False) -> None:
     sid = syl["subject"]["id"]
     rec = get_record(sid, unit["id"])
     if rec.get("artifact_id") and rec.get("state") != "failed":
@@ -302,6 +351,7 @@ def fire(syl: dict, unit: dict, profile: str | None, minutes: int, style: str,
 
     nb = ensure_notebook(syl, unit, profile)
     ensure_source(syl, unit, nb, profile)
+    prune_sources(syl, unit, nb, profile, keep_research)
     spec = build_spec(syl, unit, nb, profile, minutes, deep_research, outdir)
 
     prior = prior_coverage(syl, unit)
@@ -354,6 +404,8 @@ def main() -> None:
     ap.add_argument("--style", default="classic")
     ap.add_argument("--deep-research", action="store_true",
                     help="use deep (not fast) research when filling course-file gaps")
+    ap.add_argument("--keep-research", action="store_true",
+                    help="do not prune web sources imported by Deep Research")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 
@@ -364,7 +416,8 @@ def main() -> None:
     for u in units:
         log(f"=== unit {u['n']} ({u['id']}): {u['title']}")
         try:
-            fire(syl, u, a.profile, a.minutes, a.style, a.deep_research, a.dry_run)
+            fire(syl, u, a.profile, a.minutes, a.style, a.deep_research, a.dry_run,
+                 a.keep_research)
         except (CliError, SystemExit) as e:
             failures += 1
             log(f"FAILED unit {u['id']}: {e}")
