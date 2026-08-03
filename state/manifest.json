@@ -2,6 +2,7 @@
   "units": {
     "cse404-java/u1": {
       "artifact_id": "397b88ba-d46c-4672-9ea1-881a29ae386b",
+      "captions": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/captions.vtt",
       "chapter_anchors": [
         "object-oriented",
         "history",
@@ -32,6 +33,66 @@
         "Constructors",
         "String handling"
       ],
+      "chapters": [
+        {
+          "label": "Overview",
+          "t": 0
+        },
+        {
+          "label": "Object-Oriented Programming :",
+          "t": 22
+        },
+        {
+          "label": "History of Java",
+          "t": 98
+        },
+        {
+          "label": "Data types:",
+          "t": 126
+        },
+        {
+          "label": "Variables:",
+          "t": 180
+        },
+        {
+          "label": "Constant:",
+          "t": 231
+        },
+        {
+          "label": "Comments:",
+          "t": 266
+        },
+        {
+          "label": "Operators:",
+          "t": 295
+        },
+        {
+          "label": "Type conversions and casting",
+          "t": 344
+        },
+        {
+          "label": "Control Structure:",
+          "t": 379
+        },
+        {
+          "label": "CLASSES",
+          "t": 438
+        },
+        {
+          "label": "Method Overloading",
+          "t": 520
+        },
+        {
+          "label": "Constructors",
+          "t": 566
+        },
+        {
+          "label": "String handling",
+          "t": 628
+        }
+      ],
+      "duration_sec": 705,
+      "final_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/final.mp4",
       "gaps_filled": [
         "enumerated types",
         "arrays",
@@ -121,6 +182,16 @@
         "object oriented programming through java - JNTUA College of Engineering Pulivendula",
         "\u25cb Learn fundamental features of object oriented language and JAVA \u25cb Set up Java JDK environment to create, debug and run s"
       ],
+      "raw_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/raw.mp4",
+      "raw_size_mb": 34.43,
+      "readability": {
+        "flesch_reading_ease": 44.9,
+        "grade_level": 9.2,
+        "long_word_pct": 6.6,
+        "sentences": 210,
+        "words": 1877,
+        "words_per_sentence": 8.9
+      },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Object-Oriented Programming :\nSECTION | 2 | History of Java\nSECTION | 3 | Data types:\nSECTION | 4 | Variables:\nSECTION | 5 | Constant:\nSECTION | 6 | Comments:\nSECTION | 7 | Operators:\nSECTION | 8 | Type conversions and casting\nSECTION | 9 | Control Structure:\nSECTION | 10 | CLASSES\nSECTION | 11 | Method Overloading\nSECTION | 12 | Constructors\nSECTION | 13 | String handling\nTERM | Object\nTERM | Classes\nTERM | Data abstraction\nTERM | Data Encapsulation\nTERM | Inheritance\nTERM | Polymorphism\nTERM | Dynamic Binding\nTERM | Data hiding\nTERM | Abstract Data Type\nTERM | Bytecode\nTERM | Java Virtual machine\nTERM | Literals\nTERM | Identifiers\nTERM | Keywords\nTERM | Type casting\nTERM | Instance Variable\nTERM | Method Overloading\nTERM | Default constructor\nTERM | Parameterized constructor\nTERM | Pass by Value\nTERM | Pass by Reference\nTERM | StringBuffer\nTERM | StringBuilder\nMISSING | enumerated types\nMISSING | arrays\nMISSING | recursion",
       "round2": "DEF | 1 | Object-Oriented Programming is a methodology or paradigm to design a program using classes and objects [1, 2].\nMECH | 1 | Programs are organized into objects combining data and code that communicate with each other through message passing [2, 3].\nSPEC | 1 | The book lists seven basic concepts: Object, Class, Data abstraction, Data encapsulation, Inheritance, Polymorphism, and Dynamic binding [2].\nSTEP | 1 | Conceptualize BankAccount as an object combining state like balance and behavior like deposit and withdrawal operations.\nTHIN | 1 | no\nDEF | 2 | History of Java describes the creation and evolution of the language initiated by James Gosling and the Green Team at Sun Microsystems in 1991 [4, 5].\nMECH | 2 | Java source code is compiled into platform-independent bytecode that is dynamically verified and executed by the Java Virtual Machine [6].\nSPEC | 2 | Java was initially named Oak before being renamed Java in 1995 when incorporated by Netscape [7, 8].\nSTEP | 2 | Note that the BankAccount class source file compiles into bytecode executable across different operating system JVMs.\nTHIN | 2 | no\nDEF | 3 | Data types represent the different values to be stored in a variable [9, 10].\nMECH | 3 | Primitive data types directly store raw values in memory, whereas non-primitive data types store references to objects [9, 11].\nSPEC | 3 | Java defines eight primitive data types: boolean (1 bit), byte (1 byte), char (2 bytes), short (2 bytes), int (4 bytes), long (8 bytes), float (4 bytes), and double (8 bytes) [9, 12, 13].\nSTEP | 3 | Choose double for the balance field and int for the account ID field of BankAccount.\nTHIN | 3 | no\nDEF | 4 | A variable is a name of a memory location used to hold data of a declared type during program execution [14, 15].\nMECH | 4 | Declaring a variable allocates memory according to its type, assigning default zero or false values to primitives and null to reference objects [11, 15].\nSPEC | 4 | Java classifies variables into three types: local variable, instance variable, and static variable [14, 15].\nSTEP | 4 | Declare instance variables balance and accountNumber alongside a static variable accountCount inside BankAccount.\nTHIN | 4 | no\nDEF | 5 | A constant is a variable whose value cannot be changed after declaration during program execution [12, 16].\nMECH | 5 | Java uses the final keyword to lock variable assignment, causing any attempt to reassign the value to generate a compile-time error [12, 17].\nSPEC | 5 | The syntax form within a class is modifier static final dataType variableName = value [14, 17].\nSTEP | 5 | Declare a private static final constant MINIMUM_BALANCE in BankAccount to enforce an unalterable minimum balance floor.\nTHIN | 5 | no\nDEF | 6 | Comments are statements that are not executed by the compiler and interpreter, written to provide information or explanations to human readers [18-20].\nMECH | 6 | The compiler ignores single-line and multi-line comments, while the javadoc tool extracts documentation comments to generate HTML API documentation [9, 19-21].\nSPEC | 6 | Java provides three comment types: Single Line Comment (//), Multi Line Comment (/* */), and Documentation Comment (/** */) [19, 21, 22].\nSTEP | 6 | Add documentation comments above the BankAccount class definition and its constructors to document their functionality.\nTHIN | 6 | no\nDEF | 7 | Operators are special symbols used in expressions to perform operations on operands [23-25].\nMECH | 7 | Binary operators compute values from operands, and compound assignment operators evaluate expressions before storing results directly back into the variable [24].\nSPEC | 7 | Shorthand assignment operators include +=, -=, *=, /=, and %= [24].\nSTEP | 7 | Apply the += shorthand operator inside a deposit method to add incoming funds directly to the balance field.\nTHIN | 7 | no\nDEF | 8 | Type conversion and casting convert a value from one compatible or incompatible data type to another [26-28].\nMECH | 8 | Widening conversion automatically promotes smaller compatible types to larger destination types, whereas narrowing requires explicit casting syntax for incompatible or larger-to-smaller assignments [26-28].\nSPEC | 8 | The automatic widening hierarchy is byte -> short -> int -> long -> float -> double [29].\nSTEP | 8 | Explicitly cast a floating-point interest calculation to double when adding earned interest to the account balance.\nTHIN | 8 | no\nDEF | 9 | Control structures direct the execution flow of a program through selection decisions and iterative loops [30, 31].\nMECH | 9 | Conditional statements evaluate boolean expressions to branch execution, while loop statements repeat execution until a controlling condition becomes false [30].\nSPEC | 9 | The jump statements break and continue exit a loop entirely or skip immediately to its next iteration [32, 33].\nSTEP | 9 | Implement an if conditional statement in a withdraw method to confirm the balance exceeds the requested withdrawal amount.\nTHIN | 9 | no\nDEF | 10 | A class is a logical template or blueprint from which object instances sharing common properties and behaviors are created [34-36].\nMECH | 10 | Memory for a class instance is dynamically allocated using the new operator, and instance members are accessed using the dot operator on object references [37, 38].\nSPEC | 10 | General class declaration syntax uses the class keyword followed by the class name and a curly-brace delimited class body containing variable and method declarations [39].\nSTEP | 10 | Define the BankAccount class block, instantiate an object using new BankAccount(), and access its members via the dot operator.\nTHIN | 10 | no\nDEF | 11 | Method overloading is the capability of defining multiple methods within the same class that share the same name but different parameter lists [40].\nMECH | 11 | The Java compiler resolves overloaded method calls by matching the number, types, and sequence of argument values provided in the call [40].\nSPEC | 11 | Overloaded methods must differ in their parameter signatures; differing solely by return type is invalid [40].\nSTEP | 11 | Overload the deposit method to accept either a single double amount or both a double amount and a String description parameter.\nTHIN | 11 | no\nDEF | 12 | A constructor is a special member method used to initialize newly created objects of a class upon instantiation [41, 42].\nMECH | 12 | A constructor shares the exact class name, has no return type, and executes automatically when an object is instantiated via the new operator [41, 42].\nSPEC | 12 | Java supports default constructors with no arguments, parameterized constructors, and constructor overloading [41, 42].\nSTEP | 12 | Provide a default constructor initializing balance to zero and an overloaded parameterized constructor accepting an initial deposit, using this to disambiguate parameters from instance variables.\nTHIN | 12 | no\nDEF | 13 | String handling encompasses creating and manipulating character sequences using String, StringBuffer, and StringBuilder classes [43, 44].\nMECH | 13 | String instances store immutable character sequences in memory, whereas StringBuffer and StringBuilder objects provide mutable sequences that can be modified dynamically [43-45].\nSPEC | 13 | The String class provides methods like charAt(), concat(), equals(), length(), and substring() [44, 46].\nSTEP | 13 | Use StringBuilder within an accountSummary method to build and return a formatted String representation of the BankAccount state.\nTHIN | 13 | no",
       "round3": "TOTAL | 720\nSECTION | 1 | Object-Oriented Programming : | 70\nPOINT | 1 | Object-Oriented Programming organizes software around objects combining data and behavior rather than procedures acting on global data.\nPOINT | 1 | Encapsulation wraps state and methods into a single unit, hiding private implementation details from external functions.\nPOINT | 1 | Inheritance allows subclasses to reuse and extend superclass code, while polymorphism enables different object types to respond to uniform method calls.\nSPEC | 1 | Object, Class, Data abstraction, Data encapsulation, Inheritance, Polymorphism, Dynamic binding\nSTEP | 1 | Conceptualize BankAccount as an object encapsulating balance and account number state with deposit and withdrawal behaviors.\nSECTION | 2 | History of Java | 35\nPOINT | 2 | Java was initiated by James Gosling and the Green Team at Sun Microsystems in 1991 for digital consumer devices.\nPOINT | 2 | Originally named Oak, it was renamed Java in 1995 and integrated into Netscape Navigator for internet programming.\nPOINT | 2 | Java source code compiles into platform-independent bytecode executed by the Java Virtual Machine.\nSPEC | 2 | JDK 1.0 released January 23, 1996\nSTEP | 2 | Note that the BankAccount class compiles into bytecode executable on any platform JVM.\nSECTION | 3 | Data types: | 50\nPOINT | 3 | Data types specify the size and type of values that can be stored in memory locations.\nPOINT | 3 | Java strictly distinguishes primitive types storing raw values from reference types storing memory addresses of objects.\nPOINT | 3 | Primitive integral types default to signed two's complement representations with fixed byte sizes.\nSPEC | 3 | Eight primitives: boolean (1 bit), byte (1 byte), char (2 bytes), short (2 bytes), int (4 bytes), long (8 bytes), float (4 bytes), double (8 bytes)\nSTEP | 3 | Select double for storing balance and int for storing accountNumber in BankAccount.\nSECTION | 4 | Variables: | 55\nPOINT | 4 | A variable is a named storage location allocated in memory according to its declared data type.\nPOINT | 4 | Instance variables exist as long as their owning object exists, while local variables exist only during method execution.\nPOINT | 4 | Static variables belong to the class itself and are shared among all instances.\nSPEC | 4 | Syntax: type identifier [ = value ];\nSTEP | 4 | Declare instance fields balance and accountNumber alongside a static field accountCount in BankAccount.\nSECTION | 5 | Constant: | 30\nPOINT | 5 | Constants store fixed values that cannot be modified after initial assignment during execution.\nPOINT | 5 | The final modifier prevents variable reassignment and causes compile-time errors upon modification attempts.\nPOINT | 5 | Class-level constants combine static and final modifiers to create single shared immutable values.\nSPEC | 5 | modifier static final dataType variableName = value\nSTEP | 5 | Declare a private static final constant MINIMUM_BALANCE in BankAccount.\nSECTION | 6 | Comments: | 25\nPOINT | 6 | Comments are compiler-ignored annotations that document program functionality for developers.\nPOINT | 6 | Single-line comments start with double slashes, while multi-line comments are bounded by slash-asterisk delimiters.\nPOINT | 6 | Documentation comments are processed by the javadoc utility to generate external HTML API documentation.\nSPEC | 6 | Three types: // single-line, /* multi-line */, /** javadoc */\nSTEP | 6 | Add javadoc comments documenting the BankAccount class and method behaviors.\nSECTION | 7 | Operators: | 60\nPOINT | 7 | Operators perform specific mathematical, relational, logical, or bitwise operations on operands.\nPOINT | 7 | Operator precedence and associativity rules dictate the exact sequence in which unparenthesized expressions evaluate.\nPOINT | 7 | Compound assignment operators evaluate an expression and assign the result directly back to the target variable.\nSPEC | 7 | Shorthand assignment operators: +=, -=, *=, /=, %=\nSTEP | 7 | Use the += compound operator in deposit to update the balance field.\nSECTION | 8 | Type conversions and casting | 45\nPOINT | 8 | Type conversion alters a value from its original data type to another compatible or explicitly requested type.\nPOINT | 8 | Automatic widening conversion occurs when assigning a smaller compatible type to a larger destination type.\nPOINT | 8 | Explicit narrowing casting is mandatory when assigning larger types to smaller types to acknowledge potential precision loss.\nSPEC | 8 | Widening order: byte -> short -> int -> long -> float -> double\nSTEP | 8 | Explicitly cast a floating-point interest calculation to double before updating BankAccount balance.\nSECTION | 9 | Control Structure: | 70\nPOINT | 9 | Control structures govern program execution flow through conditional branching and iterative loops.\nPOINT | 9 | Selection statements evaluate boolean conditions to branch execution along alternative code paths.\nPOINT | 9 | Iteration loops repeat statement blocks until a controlling termination condition evaluates to false.\nPOINT | 9 | Jump statements break and continue immediately exit loops or skip to the next iteration.\nSPEC | 9 | Control constructs: if-else, switch, while, do-while, for, break, continue\nSTEP | 9 | Use an if condition in withdraw to verify sufficient balance before deducting funds.\nSECTION | 10 | CLASSES | 100\nPOINT | 10 | A class defines a user-defined template specifying instance fields and instance methods for object creation.\nPOINT | 10 | Object instantiation allocates memory dynamically on the heap via the new operator and returns a reference.\nPOINT | 10 | Access modifiers control member visibility across class, package, and subclass boundaries.\nPOINT | 10 | The this reference resolves namespace collisions between instance variables and local parameter names.\nSPEC | 10 | Access specifiers: public, private, protected, default (package-private)\nSTEP | 10 | Define class BankAccount with private balance, public methods, and use this to disambiguate field assignments.\nSECTION | 11 | Method Overloading | 50\nPOINT | 11 | Method overloading permits multiple methods within the same class to share an identical name.\nPOINT | 11 | Overloaded methods must possess distinct parameter lists differing in parameter count, types, or order.\nPOINT | 11 | The compiler selects the appropriate overloaded method at compile time based on invocation argument types.\nSPEC | 11 | Method signature rule: parameter list must differ; return type alone cannot differentiate methods.\nSTEP | 11 | Overload deposit to accept either a single double amount or a double amount with a String description.\nSECTION | 12 | Constructors | 75\nPOINT | 12 | Constructors are special class members invoked automatically during object allocation to initialize state.\nPOINT | 12 | A constructor has no return type and must share the exact name of its enclosing class.\nPOINT | 12 | Classes support default zero-argument constructors, parameterized constructors, and constructor overloading.\nSPEC | 12 | Constructor syntax: [access_modifier] ClassName(parameter_list) { body }\nSTEP | 12 | Provide a default constructor setting balance to zero and a parameterized constructor taking an initial deposit.\nSECTION | 13 | String handling | 55\nPOINT | 13 | Strings in Java represent sequences of characters managed via dedicated standard library classes.\nPOINT | 13 | String object instances are immutable, meaning string modifications create new objects rather than altering existing instances.\nPOINT | 13 | StringBuffer and StringBuilder classes provide mutable character sequences for efficient string construction.\nSPEC | 13 | String methods: charAt(), concat(), equals(), length(), substring()\nSTEP | 13 | Use StringBuilder in an accountSummary method to construct a string representation of BankAccount.\nGAP | enumerated types\nGAP | arrays\nGAP | recursion",
@@ -140,15 +211,119 @@
         55
       ],
       "source_added": true,
-      "state": "generating",
+      "state": "postprocessed",
       "style": "classic",
       "subject": "cse404-java",
       "target_minutes": 12,
+      "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-03T04:35:10Z"
+      "updated_at": "2026-08-03T05:27:32Z",
+      "watermark": {
+        "bottom_right_segments": [
+          {
+            "end": 22.5,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 0.0
+          },
+          {
+            "end": 43.3,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 22.5
+          },
+          {
+            "end": 126.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 43.3
+          },
+          {
+            "end": 145.0,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 126.7
+          },
+          {
+            "end": 266.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 145.0
+          },
+          {
+            "end": 275.1,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 266.7
+          },
+          {
+            "end": 379.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 275.1
+          },
+          {
+            "end": 388.6,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 379.7
+          },
+          {
+            "end": 520.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 388.6
+          },
+          {
+            "end": 530.9,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 520.7
+          },
+          {
+            "end": 628.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 530.9
+          },
+          {
+            "end": 635.0,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 628.7
+          },
+          {
+            "end": 706.1,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 635.0
+          },
+          {
+            "end": 708.1,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 706.1
+          }
+        ],
+        "centre_top_segments": [
+          {
+            "end": 4.17,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 0.0
+          }
+        ],
+        "centre_top_window": [
+          0.0,
+          4.166666666666666
+        ],
+        "clamped_to_slide_cut": 4.208,
+        "outro_cut_at": 705.75
+      }
     },
     "cse404-java/u2": {
       "artifact_id": "040fb299-0c52-45f2-968c-3e9810840974",
+      "captions": "/home/runner/work/video-worker/video-worker/build/cse404-java-u2/captions.vtt",
       "chapter_anchors": [
         "inheritance",
         "overriding",
@@ -177,6 +352,62 @@
         "Inner classes",
         "Packages"
       ],
+      "chapters": [
+        {
+          "label": "Overview",
+          "t": 0
+        },
+        {
+          "label": "Inheritance",
+          "t": 39
+        },
+        {
+          "label": "Method Overriding",
+          "t": 119
+        },
+        {
+          "label": "Preventing inheritance",
+          "t": 294
+        },
+        {
+          "label": "Abstract classes",
+          "t": 506
+        },
+        {
+          "label": "Single Inheritance in Java",
+          "t": 654
+        },
+        {
+          "label": "Multiple Inheritance",
+          "t": 660
+        },
+        {
+          "label": "Hierarchical inheritance",
+          "t": 661
+        },
+        {
+          "label": "Hybrid Inheritance in Java",
+          "t": 662
+        },
+        {
+          "label": "Interfaces",
+          "t": 663
+        },
+        {
+          "label": "Interfaces Vs Abstract Classes",
+          "t": 664
+        },
+        {
+          "label": "Inner classes",
+          "t": 665
+        },
+        {
+          "label": "Packages",
+          "t": 666
+        }
+      ],
+      "duration_sec": 675,
+      "final_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u2/final.mp4",
       "gaps_filled": [
         "the Object class and its methods",
         "dynamic binding",
@@ -192,6 +423,16 @@
       "pruned_sources": [
         "Object Oriented Programming using Java.pdf"
       ],
+      "raw_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u2/raw.mp4",
+      "raw_size_mb": 33.97,
+      "readability": {
+        "flesch_reading_ease": 45.6,
+        "grade_level": 9.5,
+        "long_word_pct": 6.0,
+        "sentences": 172,
+        "words": 1802,
+        "words_per_sentence": 10.5
+      },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Inheritance\nSECTION | 2 | Method Overriding\nSECTION | 3 | Preventing inheritance\nSECTION | 4 | Abstract classes\nSECTION | 5 | Single Inheritance in Java\nSECTION | 6 | Multiple Inheritance\nSECTION | 7 | Hierarchical inheritance\nSECTION | 8 | Hybrid Inheritance in Java\nSECTION | 9 | Interfaces\nSECTION | 10 | Interfaces Vs Abstract Classes\nSECTION | 11 | Inner classes\nSECTION | 12 | Packages\nTERM | superclass\nTERM | subclass\nTERM | extends\nTERM | overridden method\nTERM | runtime polymorphism\nTERM | abstract class\nTERM | abstract method\nTERM | concrete class\nTERM | Single Inheritance\nTERM | Multiple Inheritance\nTERM | Multilevel Inheritance\nTERM | Hierarchical inheritance\nTERM | Hybrid Inheritance\nTERM | interface\nTERM | implements\nTERM | Inner classes\nTERM | nested classes\nTERM | package\nTERM | User defined package\nTERM | Built-in package\nTERM | import\nMISSING | the Object class and its methods\nMISSING | dynamic binding\nMISSING | local inner classes\nMISSING | anonymous inner classes\nMISSING | static inner classes\nMISSING | understanding CLASSPATH",
       "round2": "DEF | 1 | Inheritance allows a subclass or child class to access all methods and variables of a parent class using the keyword extends to derive a new class from an existing superclass [1, 2].\nMECH | 1 | A subclass inherits data fields and methods from its superclass and can invoke superclass constructors using the super keyword [1, 2].\nSPEC | 1 | class subclassname extends superclassname [2]\nSTEP | 1 | Extend BankAccount into SavingsAccount and CurrentAccount using the extends keyword to inherit base account fields and behaviors.\nTHIN | 1 | no\nDEF | 2 | When a method in a subclass has the same name and type signature as a method in its superclass, the method is known as an overridden method [3].\nMECH | 2 | Method overriding provides runtime polymorphism by executing the specific subclass method definition rather than the superclass method at runtime [3, 4].\nSPEC | 2 | Method overriding is also referred to as runtime polymorphism [3, 4].\nSTEP | 2 | Override calculateInterest in SavingsAccount and CurrentAccount to demonstrate dynamic binding when invoked on account objects.\nTHIN | 2 | no\nDEF | 3 | Preventing inheritance makes sure the way a class behaves is not corrupted by a subclass [5].\nMECH | 3 | Declaring a class with the final keyword prevents it from being inherited, while declaring a method with final prevents it from being overridden [4, 6].\nSPEC | 3 | Use the final keyword in the class or method declaration [4, 6].\nSTEP | 3 | Declare calculateInterest or SavingsAccount as final to prevent further overriding or subclassing.\nTHIN | 3 | yes\nDEF | 4 | An abstract class is a class that is declared as abstract, which cannot be instantiated but can be subclassed [7].\nMECH | 4 | Abstract classes contain abstract methods without bodies that must be implemented by non-abstract subclasses [7-9].\nSPEC | 4 | The subclass of an abstract class which can create an object is called a concrete class [9].\nSTEP | 4 | Make BankAccount an abstract class with an abstract calculateInterest method that subclasses must implement.\nTHIN | 4 | no\nDEF | 5 | Single Inheritance is the simple inheritance where a class extends only one class [10].\nMECH | 5 | A derived subclass inherits directly from a single superclass, establishing a single parent-child relationship [10].\nSPEC | 5 | Class B extends only one class Class A [10].\nSTEP | 5 | Demonstrate SavingsAccount extending BankAccount as a direct single inheritance relationship.\nTHIN | 5 | yes\nDEF | 6 | Multiple Inheritance is one class extending more than one class [10].\nMECH | 6 | Multiple inheritance is not supported directly for classes in Java, but it can be achieved through interfaces [10, 11].\nSPEC | 6 | Achieved in Java using Interfaces [10, 11].\nSTEP | 6 | Show why SavingsAccount cannot extend multiple classes, establishing the necessity of using an interface.\nTHIN | 6 | yes\nDEF | 7 | In Hierarchical inheritance, one parent class is inherited by many subclasses [11, 12].\nMECH | 7 | A single superclass serves as the common parent for multiple distinct derived subclasses [11, 12].\nSPEC | 7 | ClassA will be acting as a parent class for ClassB, ClassC, and ClassD [11, 12].\nSTEP | 7 | Derive both SavingsAccount and CurrentAccount from BankAccount to form a hierarchical structure.\nTHIN | 7 | yes\nDEF | 8 | Hybrid Inheritance is the combination of both Single and Multiple Inheritance [12].\nMECH | 8 | It combines single and multiple inheritance patterns, which Java supports only by using interfaces [12].\nSPEC | 8 | Achieved in Java only through interface [12].\nSTEP | 8 | Show how combining class inheritance from BankAccount with interface implementations forms a hybrid inheritance structure.\nTHIN | 8 | yes\nDEF | 9 | An interface provides a mechanism to define a class with absolutely no implementation [13].\nMECH | 9 | Interfaces are defined using the interface keyword, and classes implement them using the implements keyword to provide code for all declared methods [13, 14].\nSPEC | 9 | Use the interface keyword instead of the class keyword [13].\nSTEP | 9 | Hoist calculateInterest to an Interest interface implemented by SavingsAccount and CurrentAccount.\nTHIN | 9 | no\nDEF | 10 | Interfaces provide a mechanism with no method implementations and static final properties, whereas abstract classes can contain method implementations and non-static final fields [15, 16].\nMECH | 10 | A class can extend only one abstract class using the extends keyword, but it can implement multiple interfaces using the implements keyword [16].\nSPEC | 10 | All methods in an interface are abstract and all properties in an interface are static final [16].\nSTEP | 10 | Compare using BankAccount as an abstract class versus using the Interest interface for calculateInterest.\nTHIN | 10 | no\nDEF | 11 | Inner classes are classes that are declared within other classes and are also known as nested classes [5].\nMECH | 11 | An inner class is limited in scope to its enclosing outer class, and its objects can access members of the outer class [5].\nSPEC | 11 | class { class { } } [5]\nSTEP | 11 | Add an inner class inside BankAccount to handle internal account processing.\nTHIN | 11 | yes\nDEF | 12 | A package is a namespace that organizes a set of related classes and interfaces [6].\nMECH | 12 | Packages organize classes into directory structures using the package keyword, and classes from packages are accessed using the import keyword [6, 17, 18].\nSPEC | 12 | Packages are divided into User defined package and Built-in package [17, 18].\nSTEP | 12 | Group BankAccount, SavingsAccount, CurrentAccount, and Interest into a banking package and access them via an interface reference.\nTHIN | 12 | no",
       "round3": "TOTAL | 720\nSECTION | 1 | Inheritance | 90\nPOINT | 1 | Inheritance allows a subclass to derive properties and behaviors from a superclass using the extends keyword.\nPOINT | 1 | Subclasses inherit non-private fields and methods, enabling hierarchical classification and code reuse.\nPOINT | 1 | The super keyword invokes superclass constructors or accesses superclass members hidden by subclass declarations.\nPOINT | 1 | Member access rules enforce that private fields of a superclass cannot be accessed directly by a subclass.\nSPEC | 1 | class subclassname extends superclassname\nSTEP | 1 | Extend BankAccount into SavingsAccount and CurrentAccount using the extends keyword to inherit base account fields and behaviors.\nSECTION | 2 | Method Overriding | 85\nPOINT | 2 | Method overriding occurs when a subclass defines a method with the exact same name and signature as a superclass method.\nPOINT | 2 | Overridden methods implement runtime polymorphism by dynamically dispatching calls based on the object type at runtime.\nPOINT | 2 | A subclass can call the hidden superclass version of an overridden method using super.methodName().\nSPEC | 2 | Method overriding is also referred to as runtime polymorphism.\nSTEP | 2 | Override calculateInterest in SavingsAccount and CurrentAccount to demonstrate dynamic binding when invoked on account objects.\nSECTION | 3 | Preventing inheritance | 35\nPOINT | 3 | Declaring a class with the final keyword prevents any other class from extending it.\nPOINT | 3 | Declaring a method as final prevents subclasses from overriding that specific method.\nPOINT | 3 | A class cannot be declared as both final and abstract because an abstract class requires subclassing.\nSPEC | 3 | Use the final keyword in the class or method declaration.\nSTEP | 3 | Declare calculateInterest or SavingsAccount as final to prevent further overriding or subclassing.\nSECTION | 4 | Abstract classes | 90\nPOINT | 4 | An abstract class is declared using the abstract keyword and cannot be directly instantiated.\nPOINT | 4 | Abstract methods contain signatures followed by a semicolon without method bodies, forcing subclasses to provide implementations.\nPOINT | 4 | A concrete subclass must implement all abstract methods of its superclass to be instantiated.\nSPEC | 4 | The subclass of an abstract class which can create an object is called a concrete class.\nSTEP | 4 | Make BankAccount an abstract class with an abstract calculateInterest method that subclasses must implement.\nSECTION | 5 | Single Inheritance in Java | 35\nPOINT | 5 | Single inheritance occurs when a derived class extends exactly one base class.\nPOINT | 5 | Java restricts class extension to a single parent to maintain a simple object hierarchy.\nSPEC | 5 | Class B extends only one class Class A.\nSTEP | 5 | Demonstrate SavingsAccount extending BankAccount as a direct single inheritance relationship.\nSECTION | 6 | Multiple Inheritance | 35\nPOINT | 6 | Multiple inheritance refers to a single class deriving directly from more than one superclass.\nPOINT | 6 | Java does not support multiple inheritance for classes to prevent field and method ambiguity.\nPOINT | 6 | Multiple inheritance of type and behavior is achieved in Java exclusively through interfaces.\nSPEC | 6 | Achieved in Java using Interfaces.\nSTEP | 6 | Show why SavingsAccount cannot extend multiple classes, establishing the necessity of using an interface.\nSECTION | 7 | Hierarchical inheritance | 35\nPOINT | 7 | Hierarchical inheritance occurs when multiple distinct subclasses inherit from a single superclass.\nPOINT | 7 | Shared attributes and common methods are hoisted to the parent class to avoid code duplication across sibling classes.\nSPEC | 7 | ClassA will be acting as a parent class for ClassB, ClassC, and ClassD.\nSTEP | 7 | Derive both SavingsAccount and CurrentAccount from BankAccount to form a hierarchical structure.\nSECTION | 8 | Hybrid Inheritance in Java | 35\nPOINT | 8 | Hybrid inheritance combines single inheritance and multiple inheritance structural patterns.\nPOINT | 8 | Because Java disallows extending multiple classes, hybrid inheritance requires implementing interfaces alongside class extension.\nSPEC | 8 | Achieved in Java only through interface.\nSTEP | 8 | Show how combining class inheritance from BankAccount with interface implementations forms a hybrid inheritance structure.\nSECTION | 9 | Interfaces | 115\nPOINT | 9 | An interface is defined using the interface keyword to specify a fully abstract contract without instance variables or method bodies.\nPOINT | 9 | Classes use the implements keyword to provide concrete implementations for all declared interface methods.\nPOINT | 9 | Polymorphic behavior is achieved by assigning implementing objects to interface reference variables.\nPOINT | 9 | One interface can extend another interface using the extends keyword, requiring implementing classes to provide code for all inherited methods.\nSPEC | 9 | Use the interface keyword instead of the class keyword.\nSTEP | 9 | Hoist calculateInterest to an Interest interface implemented by SavingsAccount and CurrentAccount.\nSECTION | 10 | Interfaces Vs Abstract Classes | 75\nPOINT | 10 | Interfaces contain only public abstract methods and static final constants, whereas abstract classes can contain non-final fields and concrete methods.\nPOINT | 10 | A class can implement multiple interfaces simultaneously, but it can extend only one abstract or concrete class.\nPOINT | 10 | Abstract classes allow partial abstraction, whereas interfaces enforce complete abstraction.\nSPEC | 10 | All methods in an interface are abstract and all properties in an interface are static final.\nSTEP | 10 | Compare using BankAccount as an abstract class versus using the Interest interface for calculateInterest.\nSECTION | 11 | Inner classes | 40\nPOINT | 11 | Inner classes are non-static classes declared within an enclosing class scope.\nPOINT | 11 | An inner class instance has direct access to all members, including private fields, of its enclosing class instance.\nSPEC | 11 | class { class { } }\nSTEP | 11 | Add an inner class inside BankAccount to handle internal account processing.\nSECTION | 12 | Packages | 50\nPOINT | 12 | A package is a named group of related classes and interfaces that provides namespace management and access protection.\nPOINT | 12 | The package keyword at the top of a file places its classes in that package, mapping to directory structures.\nPOINT | 12 | The import keyword makes classes from other packages visible without requiring fully qualified class names.\nSPEC | 12 | Packages are divided into User defined package and Built-in package.\nSTEP | 12 | Group BankAccount, SavingsAccount, CurrentAccount, and Interest into a banking package and access them via an interface reference.\nGAP | the Object class and its methods\nGAP | dynamic binding\nGAP | local inner classes\nGAP | anonymous inner classes\nGAP | static inner classes\nGAP | understanding CLASSPATH",
@@ -210,15 +451,47 @@
         50
       ],
       "source_added": true,
-      "state": "generating",
+      "state": "postprocessed",
       "style": "classic",
       "subject": "cse404-java",
       "target_minutes": 12,
+      "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u2/thumb.jpg",
       "unit": "u2",
-      "updated_at": "2026-08-03T04:40:29Z"
+      "updated_at": "2026-08-03T05:31:04Z",
+      "watermark": {
+        "bottom_right_segments": [
+          {
+            "end": 675.6,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 0.0
+          },
+          {
+            "end": 677.6,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 675.6
+          }
+        ],
+        "centre_top_segments": [
+          {
+            "end": 19.92,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 0.0
+          }
+        ],
+        "centre_top_window": [
+          0.0,
+          19.875
+        ],
+        "clamped_to_slide_cut": 19.917,
+        "outro_cut_at": 675.25
+      }
     },
     "cse404-java/u3": {
       "artifact_id": "6c6843f9-c8f8-45ff-9a8c-a40a8cd42db5",
+      "captions": "/home/runner/work/video-worker/video-worker/build/cse404-java-u3/captions.vtt",
       "chapter_anchors": [
         "difference",
         "exception",
@@ -249,6 +522,66 @@
         "Creation of thread using Thread class",
         "Creation of thread using Runnable interface"
       ],
+      "chapters": [
+        {
+          "label": "Overview",
+          "t": 0
+        },
+        {
+          "label": "Difference Between Exceptions and Errors",
+          "t": 16
+        },
+        {
+          "label": "EXCEPTION HANDLING",
+          "t": 65
+        },
+        {
+          "label": "try...catch:",
+          "t": 116
+        },
+        {
+          "label": "Java Nested try block",
+          "t": 196
+        },
+        {
+          "label": "Using Multiple catch Blocks",
+          "t": 245
+        },
+        {
+          "label": "finally Block",
+          "t": 308
+        },
+        {
+          "label": "Using the throw Statement",
+          "t": 374
+        },
+        {
+          "label": "Using the throws Statement",
+          "t": 404
+        },
+        {
+          "label": "Creating and Using Your Own Exception Classes",
+          "t": 449
+        },
+        {
+          "label": "Multithreading",
+          "t": 516
+        },
+        {
+          "label": "Thread Life cycle:",
+          "t": 535
+        },
+        {
+          "label": "Creation of thread using Thread class",
+          "t": 587
+        },
+        {
+          "label": "Creation of thread using Runnable interface",
+          "t": 654
+        }
+      ],
+      "duration_sec": 746,
+      "final_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u3/final.mp4",
       "gaps_filled": [
         "rethrowing exceptions",
         "exception specification",
@@ -264,6 +597,16 @@
       "pruned_sources": [
         "Object Oriented Programming using Java.pdf"
       ],
+      "raw_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u3/raw.mp4",
+      "raw_size_mb": 30.34,
+      "readability": {
+        "flesch_reading_ease": 52.7,
+        "grade_level": 8.5,
+        "long_word_pct": 4.9,
+        "sentences": 201,
+        "words": 2083,
+        "words_per_sentence": 10.4
+      },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Difference Between Exceptions and Errors\nSECTION | 2 | EXCEPTION HANDLING\nSECTION | 3 | try...catch:\nSECTION | 4 | Java Nested try block\nSECTION | 5 | Using Multiple catch Blocks\nSECTION | 6 | finally Block\nSECTION | 7 | Throwing an Exception\nSECTION | 8 | Using the throw Statement\nSECTION | 9 | Using the throws Statement\nSECTION | 10 | Creating and Using Your Own Exception Classes\nSECTION | 11 | Multithreading\nSECTION | 12 | Thread Life cycle:\nSECTION | 13 | Creation of thread using Thread class\nSECTION | 14 | Creation of thread using Runnable interface\nTERM | Checked Exception\nTERM | Unchecked Exceptions\nTERM | try\nTERM | catch\nTERM | throw\nTERM | throws\nTERM | finally\nTERM | ArithmeticException\nTERM | ArrayIndexOutOfBoundsException\nTERM | ClassNotFoundException\nTERM | RuntimeException\nTERM | InterruptedException\nTERM | Thread\nTERM | Runnable\nTERM | asynchronous threads\nTERM | monitor\nTERM | semaphore\nTERM | synchronized\nTERM | critical region\nMISSING | rethrowing exceptions\nMISSING | exception specification\nMISSING | interrupting threads\nMISSING | thread priorities\nMISSING | inter thread communication\nMISSING | producer consumer pattern",
       "round2": "DEF | 1 | If exception occurs we can handle it by using try and catch block, whereas if error occurs program execution will be terminated.\nMECH | 1 | Checked exceptions are known to the compiler and handled at compile time, while unchecked exceptions and errors occur at runtime due to environment or application faults.\nSPEC | 1 | java.lang.Exception and java.lang.Error\nSTEP | 1 | We distinguish between system errors and domain exceptions before designing `BankAccount` withdrawal logic.\nTHIN | 1 | no\nDEF | 2 | An exception is an event, which occurs during the execution of the program, that disrupts the normal flow of the program's instruction.\nMECH | 2 | Exceptions are objects thrown at runtime when an error condition occurs, allowing application flow to be maintained.\nSPEC | 2 | FIVE keywords: try, catch, throw, throws, finally\nSTEP | 2 | We prepare the `BankAccount` class to handle invalid withdrawal operations using exception handling mechanism.\nTHIN | 2 | no\nDEF | 3 | If a method is going to resolve potential exception internally, the line of code that could generate the exception is placed inside a try block.\nMECH | 3 | Risky code is placed in a try block, and if an exception occurs, execution jumps directly to the matching catch block while skipping the rest of the try block.\nSPEC | 3 | catch (ExceptionClassName exceptionObjectName)\nSTEP | 3 | The caller encloses the withdrawal call on `BankAccount` in a try block and catches the resulting exception.\nTHIN | 3 | no\nDEF | 4 | The try block within a try block is known as nested try block in java.\nMECH | 4 | An inner try block handles specific errors within a part of a block, and if an unhandled exception occurs, it propagates outward to the enclosing try block.\nSPEC | 4 | NONE\nSTEP | 4 | We nest a try block inside another try block while executing multiple bank transactions to catch specific operation errors locally.\nTHIN | 4 | yes\nDEF | 5 | If a statement might throw more than one kind of exception, a sequence of catch blocks can be listed for each possible exception.\nMECH | 5 | The JVM evaluates catch blocks sequentially from top to bottom and executes the first block whose exception parameter matches the thrown exception.\nSPEC | 5 | ArithmeticException and ArrayIndexOutOfBoundsException\nSTEP | 5 | We append multiple catch blocks to handle both arithmetic calculation errors and account balance exceptions during withdrawal.\nTHIN | 5 | no\nDEF | 6 | Java finally block is a block that is used to execute important code such as closing connection or stream whether exception is handled or not.\nMECH | 6 | Code inside the finally block always executes after try or catch blocks complete, even if an uncaught exception or return statement occurs.\nSPEC | 6 | try { ... } catch (...) { ... } finally { ... }\nSTEP | 6 | We put cleanup logging code in a finally block to ensure transaction logs print whether the `BankAccount` withdrawal succeeds or fails.\nTHIN | 6 | no\nDEF | 7 | You can throw an exception explicitly using the throw statement when an error condition arises.\nMECH | 7 | Executing an explicit throw interrupts normal control flow and immediately transfers control to the nearest surrounding exception handler.\nSPEC | 7 | NONE\nSTEP | 7 | The `BankAccount` checks the requested withdrawal amount against current balance and explicitly throws an exception when funds are inadequate.\nTHIN | 7 | yes\nDEF | 8 | The Java throw keyword is used to explicitly throw an exception.\nMECH | 8 | The throw statement accepts a single argument which is an object of the Exception class and passes control to the nearest matching catch handler.\nSPEC | 8 | throw ThrowableObj;\nSTEP | 8 | Inside the withdraw method, we execute `throw new InsufficientFundsException()` when the balance is less than the requested withdrawal amount.\nTHIN | 8 | no\nDEF | 9 | The Java throws keyword is used to declare an exception that a method may raise but does not handle internally.\nMECH | 9 | It specifies exception types in the method signature to inform calling methods that they must provide exception handling code.\nSPEC | 9 | return_type method_name() throws exception_class_name\nSTEP | 9 | We add `throws InsufficientFundsException` to the signature of the `withdraw` method in `BankAccount`.\nTHIN | 9 | no\nDEF | 10 | If you are creating your own Exception that is known as custom exception or user-defined exception.\nMECH | 10 | A user-defined class extends Exception or its subclasses and passes custom error strings to superclass constructors via super(s).\nSPEC | 10 | class NewExceptionClassName extends ExceptionClassName\nSTEP | 10 | We define `class InsufficientFundsException extends Exception` with a constructor calling `super(s)` to represent bank balance deficits.\nTHIN | 10 | no\nDEF | 11 | Multithreading in java is a process of executing multiple threads simultaneously.\nMECH | 11 | Threads execute concurrently as lightweight sub-processes sharing a common memory area, allowing multitasking with low context-switching overhead.\nSPEC | 11 | NONE\nSTEP | 11 | We introduce multithreading by creating two concurrent threads attempting simultaneous withdrawals from the same `BankAccount` object.\nTHIN | 11 | yes\nDEF | 12 | A thread in Java transitions through various thread states during its execution life cycle.\nMECH | 12 | A thread moves between states including new, runnable, running, waiting, and dead under the control of the thread scheduler.\nSPEC | 12 | New, Runnable, Running, Waiting, Dead\nSTEP | 12 | The two withdrawal threads transition from New to Runnable state as they get scheduled to execute on the `BankAccount`.\nTHIN | 12 | no\nDEF | 13 | A thread can be created by extending the Thread class and overriding its run method.\nMECH | 13 | Instantiating the Thread subclass and calling start() creates a new execution stack and invokes its run() method concurrently.\nSPEC | 13 | start() and run()\nSTEP | 13 | We instantiate a subclass of Thread that calls `withdraw()` in its `run()` method, exposing a race condition on `BankAccount` that we fix with `synchronized`.\nTHIN | 13 | no\nDEF | 14 | A thread can be created by creating a class that implements Runnable interface and defining the run method.\nMECH | 14 | An object implementing Runnable is passed to a Thread constructor, and calling start() executes the Runnable instance's run() method in a new thread.\nSPEC | 14 | public void run()\nSTEP | 14 | We implement Runnable for Producer and Consumer threads on `BankAccount`, using `wait()` and `notify()` to coordinate deposits and withdrawals.\nTHIN | 14 | no",
       "round3": "TOTAL | 720\nSECTION | 1 | Difference Between Exceptions and Errors | 40\nPOINT | 1 | Exceptions are abnormal conditions arising during program execution that can be caught and handled by application code.\nPOINT | 1 | Errors represent irrecoverable runtime environmental failures, such as OutOfMemoryError, that applications should not attempt to handle.\nPOINT | 1 | Checked exceptions are verified by the compiler at compile time, whereas unchecked exceptions and errors occur dynamically at runtime.\nSPEC | 1 | java.lang.Exception and java.lang.Error\nSTEP | 1 | We distinguish between system errors and domain exceptions before designing BankAccount withdrawal logic.\nSECTION | 2 | EXCEPTION HANDLING | 70\nPOINT | 2 | Exception handling is a mechanism in Java designed to maintain the normal execution flow of an application when runtime errors occur.\nPOINT | 2 | The Throwable class stands at the top of the Java exception hierarchy, dividing into Exception and Error branches.\nPOINT | 2 | The core benefit of exception handling is preventing unhandled exceptions from terminating remaining instructions in a program.\nPOINT | 2 | Five reserved keywords\u2014try, catch, throw, throws, and finally\u2014form the complete linguistic framework for managing exceptions in Java.\nSPEC | 2 | FIVE keywords: try, catch, throw, throws, finally\nSTEP | 2 | We prepare the BankAccount class to handle invalid withdrawal operations using exception handling mechanism.\nSECTION | 3 | try...catch: | 65\nPOINT | 3 | Risky statements that may generate exceptions are enclosed inside a try block within a method.\nPOINT | 3 | A catch block follows the try block to intercept and process thrown exception objects of matching types.\nPOINT | 3 | If an exception occurs inside try, remaining statements in try are skipped and control jumps directly to the catch block.\nPOINT | 3 | Unhandled exceptions cause program execution to terminate immediately, skipping all subsequent code.\nSPEC | 3 | catch (ExceptionClassName exceptionObjectName)\nSTEP | 3 | The caller encloses the withdrawal call on BankAccount in a try block and catches the resulting exception.\nSECTION | 4 | Java Nested try block | 35\nPOINT | 4 | A nested try block consists of a try-catch structure placed inside the execution block of another outer try statement.\nPOINT | 4 | Inner try blocks isolate localized failure conditions so an inner exception can be handled independently without aborting the outer block.\nPOINT | 4 | If an inner try block encounters an exception without a matching local catch, the exception propagates outward to the enclosing try block.\nSPEC | 4 | NONE\nSTEP | 4 | We nest a try block inside another try block while executing multiple bank transactions to catch specific operation errors locally.\nSECTION | 5 | Using Multiple catch Blocks | 55\nPOINT | 5 | A single try block can be followed by a sequence of catch blocks to handle different types of exceptions generated by statements in the try block.\nPOINT | 5 | The JVM evaluates catch handlers sequentially from top to bottom and executes only the first block whose exception type matches the thrown object.\nPOINT | 5 | Specific exception subclasses, such as ArithmeticException or ArrayIndexOutOfBoundsException, must precede general superclasses like Exception to avoid compilation errors.\nSPEC | 5 | ArithmeticException and ArrayIndexOutOfBoundsException\nSTEP | 5 | We append multiple catch blocks to handle both arithmetic calculation errors and account balance exceptions during withdrawal.\nSECTION | 6 | finally Block | 50\nPOINT | 6 | A finally block executes clean-up code, such as closing open streams or resource connections, regardless of whether an exception is thrown or caught.\nPOINT | 6 | The code within a finally block runs even if a return statement is encountered inside the preceding try or catch blocks.\nPOINT | 6 | A try statement must be followed by at least one catch block or a finally block to constitute valid Java syntax.\nSPEC | 6 | try { ... } catch (...) { ... } finally { ... }\nSTEP | 6 | We put cleanup logging code in a finally block to ensure transaction logs print whether the BankAccount withdrawal succeeds or fails.\nSECTION | 7 | Using the throw Statement | 50\nPOINT | 7 | The throw keyword is used to explicitly instantiate and raise an exception object in Java program code.\nPOINT | 7 | Executing a throw statement immediately halts the normal control flow and passes the thrown object to the nearest matching catch handler.\nPOINT | 7 | The throw statement takes a single argument, which must be an instance of a class extending Throwable.\nSPEC | 7 | throw ThrowableObj;\nSTEP | 7 | Inside the withdraw method, we execute throw new InsufficientFundsException() when the balance is less than the requested withdrawal amount.\nSECTION | 8 | Using the throws Statement | 50\nPOINT | 8 | The throws keyword is added to a method signature to declare the checked exceptions that the method might propagate rather than handle internally.\nPOINT | 8 | Declaring throws informs calling methods that they must either catch the specified exceptions or declare them in their own throws clause.\nPOINT | 8 | Unchecked exceptions extending RuntimeException do not need to be explicitly declared using the throws keyword.\nSPEC | 8 | return_type method_name() throws exception_class_name\nSTEP | 8 | We add throws InsufficientFundsException to the signature of the withdraw method in BankAccount.\nSECTION | 9 | Creating and Using Your Own Exception Classes | 65\nPOINT | 9 | Custom or user-defined exception classes are created in Java by extending class Exception or one of its existing subclasses.\nPOINT | 9 | Custom exception constructors typically invoke super(s) to pass custom descriptive error messages to the Throwable superclass.\nPOINT | 9 | Extending Exception creates a checked user-defined exception, whereas extending RuntimeException creates an unchecked custom exception.\nSPEC | 9 | class NewExceptionClassName extends ExceptionClassName\nSTEP | 9 | We define class InsufficientFundsException extends Exception with a constructor calling super(s) to represent bank balance deficits.\nSECTION | 10 | Multithreading | 45\nPOINT | 10 | Multithreading is a mechanism in Java that enables simultaneous execution of two or more lightweight sub-processes within a single program.\nPOINT | 10 | Unlike operating system processes, threads share a common memory space within a process, drastically reducing context-switching overhead and memory usage.\nPOINT | 10 | Multithreading improves application responsiveness because an exception or blocked task in one thread does not halt execution of independent threads.\nSPEC | 10 | NONE\nSTEP | 10 | We introduce multithreading by creating two concurrent threads attempting simultaneous withdrawals from the same BankAccount object.\nSECTION | 11 | Thread Life cycle: | 50\nPOINT | 11 | A Java thread moves through distinct states managed by the JVM scheduler, including New, Runnable, Running, Non-Runnable, and Terminated.\nPOINT | 11 | A thread enters the New state upon instantiation and moves to Runnable when its start() method is invoked.\nPOINT | 11 | A thread transitions to Non-Runnable when blocked waiting for resources or sleeping, and reaches Terminated when its run() method completes execution.\nSPEC | 11 | New, Runnable, Running, Non-Runnable, Terminated\nSTEP | 11 | The two withdrawal threads transition from New to Runnable state as they get scheduled to execute on the BankAccount.\nSECTION | 12 | Creation of thread using Thread class | 70\nPOINT | 12 | A custom thread class is created by extending java.lang.Thread and overriding its public void run() method to define thread behavior.\nPOINT | 12 | Calling start() on a Thread instance allocates a new execution call stack and asynchronously invokes the overridden run() method.\nPOINT | 12 | Direct invocation of run() executes the method sequentially on the current thread rather than starting a new concurrent thread.\nSPEC | 12 | start() and run()\nSTEP | 12 | We instantiate a subclass of Thread that calls withdraw() in its run() method, exposing a race condition on BankAccount that we fix with synchronized.\nSECTION | 13 | Creation of thread using Runnable interface | 75\nPOINT | 13 | Thread execution logic can be defined by implementing the java.lang.Runnable interface, which contains a single public void run() method.\nPOINT | 13 | An instance of a Runnable class is passed to a Thread constructor, allowing separation of task code from thread lifecycle management.\nPOINT | 13 | Implementing Runnable is preferred over extending Thread because Java does not support multiple class inheritance.\nSPEC | 13 | public void run()\nSTEP | 13 | We implement Runnable for Producer and Consumer threads on BankAccount, using wait() and notify() to coordinate deposits and withdrawals.\nGAP | rethrowing exceptions\nGAP | exception specification\nGAP | interrupting threads\nGAP | thread priorities\nGAP | inter thread communication\nGAP | producer consumer pattern",
@@ -283,15 +626,179 @@
         75
       ],
       "source_added": true,
-      "state": "generating",
+      "state": "postprocessed",
       "style": "classic",
       "subject": "cse404-java",
       "target_minutes": 12,
+      "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u3/thumb.jpg",
       "unit": "u3",
-      "updated_at": "2026-08-03T04:45:59Z"
+      "updated_at": "2026-08-03T05:35:02Z",
+      "watermark": {
+        "bottom_right_segments": [
+          {
+            "end": 16.8,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 0.0
+          },
+          {
+            "end": 43.7,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 16.8
+          },
+          {
+            "end": 65.5,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 43.7
+          },
+          {
+            "end": 100.4,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 65.5
+          },
+          {
+            "end": 131.3,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 100.4
+          },
+          {
+            "end": 164.5,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 131.3
+          },
+          {
+            "end": 196.5,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 164.5
+          },
+          {
+            "end": 222.1,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 196.5
+          },
+          {
+            "end": 245.6,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 222.1
+          },
+          {
+            "end": 272.1,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 245.6
+          },
+          {
+            "end": 308.5,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 272.1
+          },
+          {
+            "end": 332.0,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 308.5
+          },
+          {
+            "end": 356.9,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 332.0
+          },
+          {
+            "end": 379.3,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 356.9
+          },
+          {
+            "end": 404.3,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 379.3
+          },
+          {
+            "end": 424.7,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 404.3
+          },
+          {
+            "end": 449.4,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 424.7
+          },
+          {
+            "end": 560.9,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 449.4
+          },
+          {
+            "end": 587.3,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 560.9
+          },
+          {
+            "end": 617.0,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 587.3
+          },
+          {
+            "end": 654.0,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 617.0
+          },
+          {
+            "end": 690.2,
+            "light_logo": true,
+            "plate": "0x0060FC",
+            "start": 654.0
+          },
+          {
+            "end": 746.3,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 690.2
+          },
+          {
+            "end": 748.3,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 746.3
+          }
+        ],
+        "centre_top_segments": [
+          {
+            "end": 16.79,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 0.0
+          }
+        ],
+        "centre_top_window": [
+          0.0,
+          16.75
+        ],
+        "clamped_to_slide_cut": 16.792,
+        "outro_cut_at": 746.25
+      }
     },
     "cse404-java/u4": {
       "artifact_id": "187179fe-a7d2-482f-83b4-a3a3c96d5ee0",
+      "captions": "/home/runner/work/video-worker/video-worker/build/cse404-java-u4/captions.vtt",
       "chapter_anchors": [
         "gui",
         "managers",
@@ -322,6 +829,66 @@
         "Applet Lifecycle",
         "Passing Parameters to Applet"
       ],
+      "chapters": [
+        {
+          "label": "Overview",
+          "t": 0
+        },
+        {
+          "label": "Graphical User Interface(GUI)",
+          "t": 24
+        },
+        {
+          "label": "Layout managers",
+          "t": 87
+        },
+        {
+          "label": "EventHandling",
+          "t": 116
+        },
+        {
+          "label": "Event Classes",
+          "t": 205
+        },
+        {
+          "label": "Event Listener:",
+          "t": 259
+        },
+        {
+          "label": "Adapter Classes:",
+          "t": 318
+        },
+        {
+          "label": "Swing",
+          "t": 371
+        },
+        {
+          "label": "Difference between Swing and AWT",
+          "t": 441
+        },
+        {
+          "label": "JFrame",
+          "t": 499
+        },
+        {
+          "label": "JPannel",
+          "t": 522
+        },
+        {
+          "label": "Applet",
+          "t": 601
+        },
+        {
+          "label": "Applet Lifecycle",
+          "t": 646
+        },
+        {
+          "label": "Passing Parameters to Applet",
+          "t": 694
+        }
+      ],
+      "duration_sec": 755,
+      "final_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u4/final.mp4",
       "gaps_filled": [
         "JDialog",
         "applet security issues"
@@ -330,6 +897,16 @@
       "notebook_title": "Object Oriented Programming through Java - Unit 4: GUI Programming, Event Handling and Applets",
       "profile": "default",
       "prompt_chars": 16155,
+      "raw_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u4/raw.mp4",
+      "raw_size_mb": 30.82,
+      "readability": {
+        "flesch_reading_ease": 56.8,
+        "grade_level": 7.8,
+        "long_word_pct": 3.9,
+        "sentences": 202,
+        "words": 2032,
+        "words_per_sentence": 10.1
+      },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Graphical User Interface(GUI)\nSECTION | 2 | Layout managers\nSECTION | 3 | EventHandling\nSECTION | 4 | Event Classes\nSECTION | 5 | Event Listener:\nSECTION | 6 | Adapter Classes:\nSECTION | 7 | Swing\nSECTION | 8 | Difference between Swing and AWT\nSECTION | 9 | JFrame\nSECTION | 10 | JPannel\nSECTION | 11 | Applet\nSECTION | 12 | Applet Lifecycle\nSECTION | 13 | Passing Parameters to Applet\nTERM | GUI\nTERM | AWT\nTERM | Abstract Window Toolkit\nTERM | Swing\nTERM | Java Foundation Classes\nTERM | JFC\nTERM | FlowLayout\nTERM | Grid Layout\nTERM | BorderLayout\nTERM | Event Source\nTERM | EventObject\nTERM | ActionListener\nTERM | MouseListener\nTERM | MouseMotionListener\nTERM | WindowAdapter\nTERM | JComponent\nTERM | JFrame\nTERM | JApplet\nTERM | JPanel\nTERM | JButton\nTERM | JCheckBox\nTERM | JRadioButton\nTERM | ButtonGroup\nTERM | Applet\nMISSING | JDialog\nMISSING | applet security issues",
       "round2": "DEF | 1 | A type of user interface item that allows people to interact with programs in more ways than typing such as graphical icons and visual indicators is called a graphical user interface (GUI) [1].\nMECH | 1 | Java AWT components copy GUI controls from the local machine operating system, making them platform-dependent and heavyweight because they use operating system resources [2-4].\nSPEC | 1 | Useful methods of the Component class include add(Component c), setSize(int width, int height), setLayout(LayoutManager m), and setVisible(boolean status) [5-7].\nSTEP | 1 | We outline the requirements for a BankAccount deposit form using graphical components [1].\nTHIN | 1 | no\nDEF | 2 | Layout managers are classes that implement the LayoutManager interface to arrange components in a container in a particular manner [8-11].\nMECH | 2 | Layout managers achieve positioning by automatically resizing and moving child components within a container when the container is resized [10].\nSPEC | 2 | The three primary layout manager types printed in the notes are border, grid, and flow [12-20].\nSTEP | 2 | We lay out the BankAccount form components\u2014a JLabel, JTextField, and JButton\u2014first with FlowLayout, then re-lay them with BorderLayout [12, 14, 15, 17, 18, 20].\nTHIN | 2 | no\nDEF | 3 | EventHandling is the mechanism that controls an event and decides what code should execute when an event occurs [21-24].\nMECH | 3 | Java uses the Delegation Event Model where an event source generates an event on state change and sends it to a registered event listener [21, 22, 24-28].\nSPEC | 3 | Performing EventHandling requires implementing the listener interface, overriding its methods, and registering the component using methods like addActionListener() [29-32].\nSTEP | 3 | We attach an ActionListener to the JButton on the BankAccount form to handle button clicks [29, 30, 33, 34].\nTHIN | 3 | no\nDEF | 4 | Event Classes represent state changes in a source object, descending from EventObject in java.util with specific event types in java.awt.event [35-38].\nMECH | 4 | An event class object encapsulates event information, providing getSource() to return the initiating object and getID() to return the nature of the event [37].\nSPEC | 4 | Printed Event Classes include ActionEvent, MouseEvent, MouseWheelEvent, KeyEvent, ItemEvent, TextEvent, AdjustmentEvent, WindowEvent, ComponentEvent, ContainerEvent, and FocusEvent [35, 36, 38-40].\nSTEP | 4 | Clicking the deposit button generates an ActionEvent carrying details to the handler [27, 35, 36, 38].\nTHIN | 4 | no\nDEF | 5 | Event Listener: objects are event handlers that define methods to receive and process specific types of events from an event source [25, 26, 28, 40].\nMECH | 5 | An Event Listener: object waits for event notifications, executes its defined handling methods upon receipt, and returns [25, 26, 28, 31].\nSPEC | 5 | MouseListener defines five abstract methods: mouseClicked(), mouseEntered(), mouseExited(), mousePressed(), and mouseReleased() [41-44].\nSTEP | 5 | The BankAccount listener implements actionPerformed() to parse the deposit amount from the JTextField and update the balance [33, 34, 45].\nTHIN | 5 | no\nDEF | 6 | Adapter Classes: provide default empty implementations of listener interfaces so extending subclasses are not forced to implement all methods [46-49].\nMECH | 6 | A user-defined class inherits an Adapter Classes: class and selectively overrides only the required handler methods, saving code [46-49].\nSPEC | 6 | Printed java.awt.event adapter classes include WindowAdapter, KeyAdapter, MouseAdapter, MouseMotionAdapter, FocusAdapter, ComponentAdapter, ContainerAdapter, and HierarchyBoundsAdapter [48, 50-52].\nSTEP | 6 | We rewrite the BankAccount button handler as an anonymous adapter class extending MouseAdapter [48, 52-54].\nTHIN | 6 | no\nDEF | 7 | Swing is a part of Java Foundation Classes (JFC) built on top of AWT to create window-based applications [55-58].\nMECH | 7 | Swing provides platform-independent lightweight visual components written in Java that support pluggable look and feel and Model-View-Controller architecture [58-62].\nSPEC | 7 | Classes provided in javax.swing include JButton, JTextField, JTextArea, JRadioButton, JCheckBox, JMenu, and JColorChooser [58-60].\nSTEP | 7 | We construct the BankAccount deposit form using Swing components like JFrame, JLabel, JTextField, and JButton [58-60, 63-65].\nTHIN | 7 | no\nDEF | 8 | Difference between Swing and AWT compares Swing's lightweight platform-independent components against AWT's heavyweight platform-dependent components [59, 60, 66-68].\nMECH | 8 | AWT relies on native OS peers and lacks pluggable look and feel or MVC, whereas Swing draws components in pure Java on a single OS window peer and supports MVC [59, 60, 66-69].\nSPEC | 8 | The detailed notes print a comparison table contrasting platform dependency, weight, look and feel, component set, and MVC support [59, 60, 66-69].\nSTEP | 8 | We confirm that using Swing components for the BankAccount form ensures identical appearance across platforms [59, 60, 67, 68].\nTHIN | 8 | no\nDEF | 9 | JFrame is a top-level Swing container inheriting Frame that functions as the main window with a title, border, minimize, and maximize buttons [63, 65, 70, 71].\nMECH | 9 | JFrame acts as a heavyweight window container where components are added, and provides setDefaultCloseOperation(int) to manage window closing [63-65, 71].\nSPEC | 9 | Methods of JFrame include createRootPane(), frameInit(), getContentPane(), getGlassPane(), getJMenuBar(), getLayeredPane(), setContentPane(), setGlassPane(), and setJMenuBar() [72].\nSTEP | 9 | We create the BankAccount form window as a JFrame instance titled \"BankAccount Deposit Form\" and configure EXIT_ON_CLOSE [63-65, 71].\nTHIN | 9 | no\nDEF | 10 | JPannel is a lightweight Swing container extending JComponent used for grouping components within a frame or applet [73].\nMECH | 10 | JPannel provides a concrete container with double buffering and FlowLayout by default to organize child GUI components [10, 73, 74].\nSPEC | 10 | Constructors for JPannel include JPannel(), JPannel(boolean isDoubleBuffered), JPannel(LayoutManager layout), and JPannel(LayoutManager layout, boolean isDoubleBuffered) [74].\nSTEP | 10 | We add a JPannel into the BankAccount JFrame to hold the deposit components [10, 64, 65].\nTHIN | 10 | no\nDEF | 11 | Applet is a special type of Java program embedded in a webpage that runs inside a client web browser or appletviewer [53, 75-79].\nMECH | 11 | Applets run at the client side in a restricted environment with limited resource access to safely execute dynamic multimedia without security risks [77, 78].\nSPEC | 11 | An Applet must extend java.applet.Applet or javax.swing.JApplet [80-84].\nSTEP | 11 | NONE\nTHIN | 11 | no\nDEF | 12 | Applet Lifecycle consists of four operational states governed by browser JVM calls to specific lifecycle methods [80, 82-85].\nMECH | 12 | The browser invokes init() upon loading, start() when visited, stop() when leaving the page, and destroy() before unloading from memory [80, 82-85].\nSPEC | 12 | The five core Applet Lifecycle methods listed in the detailed notes table are init(), start(), stop(), destroy(), and paint(Graphics g) [82].\nSTEP | 12 | NONE\nTHIN | 12 | no\nDEF | 13 | Passing Parameters to Applet allows user-defined values to be supplied from HTML tags into an applet at runtime [86-91].\nMECH | 13 | Parameter values specified in HTML <param name=\"...\" value=\"...\"> tags are retrieved within the applet using getParameter(String name) [90].\nSPEC | 13 | The book demonstrates retrieving param values for Font Name, Font Size, Leading, and Account Active [90].\nSTEP | 13 | NONE\nTHIN | 13 | no",
       "round3": "TOTAL | 720\nSECTION | 1 | Graphical User Interface(GUI) | 50\nPOINT | 1 | A graphical user interface allows users to interact with a program through visual indicators and icons rather than typing text commands.\nPOINT | 1 | Java Abstract Window Toolkit provides platform-dependent heavyweight components that rely on underlying operating system resources.\nPOINT | 1 | The AWT class hierarchy places Component at the top, branching into Container, which includes Window, Frame, Dialog, and Panel.\nSPEC | 1 | Component methods include add(Component c), setSize(int width, int height), setLayout(LayoutManager m), and setVisible(boolean status).\nSTEP | 1 | Define the initial visual design requirements for a BankAccount deposit window.\nSECTION | 2 | Layout managers | 65\nPOINT | 2 | Layout managers implement the LayoutManager interface to automatically position and resize child components within a container.\nPOINT | 2 | FlowLayout places components in a left-to-right row according to their preferred sizes.\nPOINT | 2 | BorderLayout arranges components into five geographic regions using constants NORTH, SOUTH, EAST, WEST, and CENTER.\nPOINT | 2 | GridLayout arranges components in a rectangular grid of equal-sized cells.\nSPEC | 2 | BorderLayout constants: NORTH, SOUTH, EAST, WEST, and CENTER.\nSTEP | 2 | Lay out the BankAccount form components\u2014a JLabel, JTextField, and JButton\u2014first using FlowLayout, then re-lay them using BorderLayout.\nSECTION | 3 | EventHandling | 70\nPOINT | 3 | Event handling controls user interactions like button clicks or mouse movements by executing event handler code upon state changes.\nPOINT | 3 | Java uses the Delegation Event Model where an event source generates an event object and delegates processing to registered listeners.\nPOINT | 3 | Foreground events result from direct user interactions, while background events arise from system interrupts or timers.\nPOINT | 3 | Registering a component requires invoking specific registration methods such as addActionListener().\nSPEC | 3 | Registration method signature: public void addActionListener(ActionListener a).\nSTEP | 3 | Register an ActionListener on the deposit JButton of the BankAccount form.\nSECTION | 4 | Event Classes | 45\nPOINT | 4 | Event classes encapsulate state change information and extend java.util.EventObject.\nPOINT | 4 | GUI event classes reside in java.awt.event and represent specific actions like ActionEvent, MouseEvent, or KeyEvent.\nSPEC | 4 | EventObject methods: getSource() returns the initiating object and getID() returns the event nature.\nSTEP | 4 | Pressing the deposit button generates an ActionEvent carrying details to the handler.\nSECTION | 5 | Event Listener: | 65\nPOINT | 5 | Event listeners are interfaces defining callback methods that process specific event objects.\nPOINT | 5 | An event source maintains a list of registered listeners and invokes their callback methods when an event occurs.\nPOINT | 5 | MouseListener interface defines five abstract methods to handle mouse click, enter, exit, press, and release events.\nSPEC | 5 | MouseListener methods: mouseClicked(), mouseEntered(), mouseExited(), mousePressed(), and mouseReleased().\nSTEP | 5 | Implement actionPerformed() in the listener to parse the deposit amount from JTextField and update the balance.\nSECTION | 6 | Adapter Classes: | 55\nPOINT | 6 | Adapter classes provide default empty implementations for listener interfaces containing multiple methods.\nPOINT | 6 | Extending an adapter class allows developers to override only the needed handler methods, saving code.\nSPEC | 6 | Printed adapter classes include WindowAdapter, KeyAdapter, MouseAdapter, MouseMotionAdapter, and FocusAdapter.\nSTEP | 6 | Rewrite the BankAccount button click handler as an anonymous adapter class.\nSECTION | 7 | Swing | 65\nPOINT | 7 | Java Swing is part of Java Foundation Classes built on top of AWT for window-based applications.\nPOINT | 7 | Swing visual components inherit from javax.swing.JComponent, which extends java.awt.Container.\nPOINT | 7 | Swing provides lightweight, platform-independent components written entirely in Java.\nSPEC | 7 | javax.swing classes include JButton, JTextField, JTextArea, JRadioButton, JCheckBox, and JColorChooser.\nSTEP | 7 | Construct the BankAccount deposit form using Swing components JFrame, JLabel, JTextField, and JButton.\nSECTION | 8 | Difference between Swing and AWT | 55\nPOINT | 8 | AWT components rely on native operating system peers, making them heavyweight and platform-dependent.\nPOINT | 8 | Swing components are written in pure Java without native OS peers, making them lightweight and platform-independent.\nPOINT | 8 | Swing supports pluggable look and feel and Model-View-Controller architecture, whereas AWT supports neither.\nSPEC | 8 | Comparison table parameters: platform dependency, weight, look and feel, component set size, and MVC support.\nSTEP | 8 | Ensure identical visual rendering of the BankAccount form across platforms by selecting Swing components over AWT.\nSECTION | 9 | JFrame | 55\nPOINT | 9 | JFrame is a heavyweight top-level Swing container extending java.awt.Frame that serves as the main application window.\nPOINT | 9 | It provides a title bar, border, minimize, maximize, and close window controls.\nPOINT | 9 | Child components are added to the content pane accessed via getContentPane().\nSPEC | 9 | Key JFrame methods: getContentPane(), setContentPane(), setDefaultCloseOperation(int), and setJMenuBar().\nSTEP | 9 | Instantiate the BankAccount window as a JFrame titled \"BankAccount Deposit Form\" with EXIT_ON_CLOSE configuration.\nSECTION | 10 | JPannel | 45\nPOINT | 10 | JPanel is a lightweight concrete Swing container extending JComponent used to group visual components.\nPOINT | 10 | It lacks title bars or window decorations and defaults to FlowLayout.\nSPEC | 10 | JPanel constructors: JPanel(), JPanel(boolean isDoubleBuffered), and JPanel(LayoutManager layout).\nSTEP | 10 | Place a JPanel into the BankAccount JFrame to hold the input field, label, and deposit button.\nSECTION | 11 | Applet | 50\nPOINT | 11 | An Applet is a special Java program embedded within an HTML page that executes inside a client web browser or appletviewer.\nPOINT | 11 | Applets extend java.applet.Applet or javax.swing.JApplet and run client-side in a restricted environment.\nPOINT | 11 | Applications execute independently with a main() method, whereas applets run inside a browser container without main().\nSPEC | 11 | Class inheritance requirement: public class MyApplet extends java.applet.Applet or javax.swing.JApplet.\nSTEP | 11 | NONE\nSECTION | 12 | Applet Lifecycle | 55\nPOINT | 12 | An applet undergoes five operational lifecycle states governed by browser JVM method calls.\nPOINT | 12 | The browser calls init() on loading, start() when visited, stop() when leaving the page, and destroy() before unloading.\nPOINT | 12 | Drawing operations occur when the browser calls paint(Graphics g) inherited from java.awt.Component.\nSPEC | 12 | Lifecycle methods: public void init(), public void start(), public void stop(), public void destroy(), and public void paint(Graphics g).\nSTEP | 12 | NONE\nSECTION | 13 | Passing Parameters to Applet | 45\nPOINT | 13 | HTML <param name=\"...\" value=\"...\"> tags placed inside the <applet> tag supply runtime parameter values to an applet.\nPOINT | 13 | Applets retrieve parameter values by name using the getParameter(String name) method of Applet.\nSPEC | 13 | Method signature: public String getParameter(String parameterName).\nSTEP | 13 | NONE\nGAP | JDialog\nGAP | applet security issues",
@@ -349,15 +926,107 @@
         45
       ],
       "source_added": true,
-      "state": "generating",
+      "state": "postprocessed",
       "style": "classic",
       "subject": "cse404-java",
       "target_minutes": 12,
+      "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u4/thumb.jpg",
       "unit": "u4",
-      "updated_at": "2026-08-03T04:51:22Z"
+      "updated_at": "2026-08-03T05:39:00Z",
+      "watermark": {
+        "bottom_right_segments": [
+          {
+            "end": 24.0,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 0.0
+          },
+          {
+            "end": 59.7,
+            "light_logo": true,
+            "plate": "0xFCA8FC",
+            "start": 24.0
+          },
+          {
+            "end": 143.2,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 59.7
+          },
+          {
+            "end": 181.7,
+            "light_logo": true,
+            "plate": "0xFCA8FC",
+            "start": 143.2
+          },
+          {
+            "end": 258.8,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 181.7
+          },
+          {
+            "end": 288.8,
+            "light_logo": true,
+            "plate": "0xFCA8FC",
+            "start": 258.8
+          },
+          {
+            "end": 371.0,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 288.8
+          },
+          {
+            "end": 397.6,
+            "light_logo": true,
+            "plate": "0xFCA8FC",
+            "start": 371.0
+          },
+          {
+            "end": 499.5,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 397.6
+          },
+          {
+            "end": 527.1,
+            "light_logo": true,
+            "plate": "0xFCA8FC",
+            "start": 499.5
+          },
+          {
+            "end": 601.5,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 527.1
+          },
+          {
+            "end": 618.8,
+            "light_logo": true,
+            "plate": "0xFCA8FC",
+            "start": 601.5
+          },
+          {
+            "end": 755.8,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 618.8
+          },
+          {
+            "end": 757.9,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 755.8
+          }
+        ],
+        "centre_top_window": null,
+        "outro_cut_at": 755.75
+      }
     },
     "cse404-java/u5": {
       "artifact_id": "8af37244-997c-4613-a408-dfdfe34bf230",
+      "captions": "/home/runner/work/video-worker/video-worker/build/cse404-java-u5/captions.vtt",
       "chapter_anchors": [
         "streams",
         "inputstream",
@@ -390,6 +1059,70 @@
         "JDBC-ODBC bridge driver",
         "Thin driver"
       ],
+      "chapters": [
+        {
+          "label": "Overview",
+          "t": 0
+        },
+        {
+          "label": "Byte Streams:",
+          "t": 189
+        },
+        {
+          "label": "InputStream:",
+          "t": 385
+        },
+        {
+          "label": "OutputStream:",
+          "t": 421
+        },
+        {
+          "label": "Character Streams:",
+          "t": 733
+        },
+        {
+          "label": "Standard Streams:",
+          "t": 734
+        },
+        {
+          "label": "InputStreamReader:",
+          "t": 735
+        },
+        {
+          "label": "BufferedReader:",
+          "t": 736
+        },
+        {
+          "label": "Files-streams",
+          "t": 737
+        },
+        {
+          "label": "FileInputstream:",
+          "t": 738
+        },
+        {
+          "label": "FileOutputStream:-",
+          "t": 739
+        },
+        {
+          "label": "JDBC ARCHITECTURE",
+          "t": 740
+        },
+        {
+          "label": "Types of Drivers:",
+          "t": 741
+        },
+        {
+          "label": "JDBC-ODBC bridge driver",
+          "t": 742
+        },
+        {
+          "label": "Thin driver",
+          "t": 743
+        }
+      ],
+      "duration_sec": 758,
+      "final_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u5/final.mp4",
       "gaps_filled": [
         "random access file operations",
         "Collection framework in Java: introduction to Java collections",
@@ -410,6 +1143,16 @@
       "notebook_title": "Object Oriented Programming through Java - Unit 5: JDBC, Files and the Collections Framework",
       "profile": "default",
       "prompt_chars": 16867,
+      "raw_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u5/raw.mp4",
+      "raw_size_mb": 35.03,
+      "readability": {
+        "flesch_reading_ease": 45.3,
+        "grade_level": 9.5,
+        "long_word_pct": 6.4,
+        "sentences": 188,
+        "words": 1957,
+        "words_per_sentence": 10.4
+      },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Byte Streams:\nSECTION | 2 | InputStream:\nSECTION | 3 | OutputStream:\nSECTION | 4 | Character Streams:\nSECTION | 5 | Standard Streams:\nSECTION | 6 | InputStreamReader:\nSECTION | 7 | BufferedReader:\nSECTION | 8 | Files-streams\nSECTION | 9 | FileInputstream:\nSECTION | 10 | FileOutputStream:-\nSECTION | 11 | JDBC ARCHITECTURE\nSECTION | 12 | Types of Drivers:\nSECTION | 13 | JDBC-ODBC bridge driver\nSECTION | 14 | Thin driver\nTERM | Stream\nTERM | Byte Streams\nTERM | InputStream\nTERM | OutputStream\nTERM | Character Streams\nTERM | Reader\nTERM | Writer\nTERM | Standard Streams\nTERM | InputStreamReader\nTERM | BufferedReader\nTERM | File\nTERM | FileInputStream\nTERM | FileOutputStream\nTERM | JDBC\nTERM | JDBC-ODBC bridge driver\nTERM | Native-API driver\nTERM | Network Protocol driver\nTERM | Thin driver\nTERM | DriverManager\nTERM | Statement\nTERM | PreparedStatement\nTERM | CallableStatement\nTERM | ResultSet\nMISSING | random access file operations\nMISSING | Collection framework in Java: introduction to Java collections\nMISSING | overview of the collection framework\nMISSING | generics\nMISSING | commonly used collection classes ArrayList\nMISSING | Vector\nMISSING | Hashtable\nMISSING | Stack\nMISSING | Enumeration\nMISSING | Iterator\nMISSING | StringTokenizer\nMISSING | Random\nMISSING | Scanner\nMISSING | Calendar and Properties",
       "round2": "DEF | 1 | Java byte streams are used to perform input and output of 8-bit bytes.\nMECH | 1 | They read and write data 8 bits at a time between Java applications and external input sources or output destinations.\nSPEC | 1 | FileInputStream and FileOutputStream are the most frequently used byte stream classes.\nSTEP | 1 | Write raw byte data representing BankAccount transactions to an underlying file.\nTHIN | 1 | no\nDEF | 2 | The InputStream class is an abstract class used for reading data such as a byte and array of bytes from an input source.\nMECH | 2 | It defines a standard programming interface for input streams and is automatically opened when created.\nSPEC | 2 | Includes methods read(), read(byte[] r), available(), and close().\nSTEP | 2 | Read raw BankAccount transaction bytes using an InputStream source.\nTHIN | 2 | no\nDEF | 3 | The OutputStream class is used for writing a byte and array of bytes to an output destination.\nMECH | 3 | It opens automatically upon creation and writes bytes to a destination before being closed explicitly or by garbage collection.\nSPEC | 3 | Subclasses include FileOutputStream, ByteArrayOutputStream, FilterOutputStream, and ObjectOutputStream.\nSTEP | 3 | Output BankAccount transaction bytes to a destination stream using OutputStream.\nTHIN | 3 | no\nDEF | 4 | Java Character streams are used to perform input and output for 16-bit Unicode.\nMECH | 4 | They read or write two bytes at a time using Reader and Writer classes to handle character encoding.\nSPEC | 4 | FileReader reads two bytes at a time and FileWriter writes two bytes at a time.\nSTEP | 4 | Write BankAccount transactions to a text file using character streams like FileWriter.\nTHIN | 4 | no\nDEF | 5 | Standard Streams provide standard input and output support where a program takes keyboard input and produces computer screen output.\nMECH | 5 | Java automatically creates three standard stream objects without requiring explicit opening.\nSPEC | 5 | System.in for Standard Input, System.out for Standard Output, and System.err for Standard Error.\nSTEP | 5 | Read BankAccount transaction commands from System.in and display results on System.out.\nTHIN | 5 | no\nDEF | 6 | An InputStreamReader is a bridge from byte streams to character streams that reads bytes and decodes them into Unicode characters according to a particular platform.\nMECH | 6 | It wraps a byte input stream such as System.in and translates incoming bytes into character data.\nSPEC | 6 | Syntax InputStreamReader cin = new InputStreamReader(System.in);.\nSTEP | 6 | Wrap System.in in an InputStreamReader to convert typed BankAccount input into characters.\nTHIN | 6 | no\nDEF | 7 | The BufferedReader class is a subclass of Reader that reads character-input stream data from a memory area known as a buffer.\nMECH | 7 | It converts an unbuffered stream into a buffered stream by maintaining an internal buffer to improve efficiency.\nSPEC | 7 | Method readLine() reads a line of text terminated by a newline or carriage return.\nSTEP | 7 | Read BankAccount text transactions line by line using BufferedReader readLine().\nTHIN | 7 | no\nDEF | 8 | The File class is Java's representation of a file or directory path name in a machine-independent manner.\nMECH | 8 | It represents an abstract pathname without verifying whether the physical file or directory exists on the file system when instantiated.\nSPEC | 8 | Methods include exists(), isFile(), isDirectory(), getName(), length(), and createNewFile().\nSTEP | 8 | Create a File object representing the transaction file to check if the BankAccount text file physically exists.\nTHIN | 8 | no\nDEF | 9 | FileInputStream is a subclass of InputStream class that reads bytes from a specified file name.\nMECH | 9 | Its read method reads byte data sequentially from a file and returns -1 when the end of file is reached.\nSPEC | 9 | Constructor FileInputStream(File filename) throws FileNotFoundException.\nSTEP | 9 | Read BankAccount transaction bytes back from the file using FileInputStream.\nTHIN | 9 | no\nDEF | 10 | FileOutputStream is a subclass of OutputStream that writes data to a specified file name.\nMECH | 10 | It creates a file if it does not exist before opening it and writes byte arrays or single bytes to the file.\nSPEC | 10 | Syntax FileOutputStream fop = new FileOutputStream(f); and method fop.write(str.getBytes()).\nSTEP | 10 | Write transaction byte data for BankAccount to disk using FileOutputStream.\nTHIN | 10 | no\nDEF | 11 | JDBC ARCHITECTURE is a software layer and standard Java API used for executing SQL statements to connect Java applications with databases.\nMECH | 11 | It uses two layers\u2014the JDBC API and the JDBC Driver API\u2014to manage connections, submit queries, and retrieve results.\nSPEC | 11 | Package java.sql contains Connection, Statement, PreparedStatement, ResultSet, and DriverManager.\nSTEP | 11 | Initialize the JDBC ARCHITECTURE layer to prepare database operations for BankAccount.\nTHIN | 11 | no\nDEF | 12 | Types of Drivers are software components categorized into four types that enable Java applications to interact with database servers.\nMECH | 12 | They convert JDBC method calls into database server commands across four distinct architectural implementations.\nSPEC | 12 | Numbered categories: Type 1 JDBC-ODBC bridge driver, Type 2 Native-API driver, Type 3 Network Protocol driver, and Type 4 Thin driver.\nSTEP | 12 | Select a driver from Types of Drivers to facilitate database connectivity for BankAccount transactions.\nTHIN | 12 | no\nDEF | 13 | The JDBC-ODBC bridge driver is a driver that uses an ODBC driver to connect to a database by converting JDBC method calls into ODBC function calls.\nMECH | 13 | It translates JDBC calls into ODBC calls on the client system where an ODBC driver and DSN must be installed.\nSPEC | 13 | Uses driver class sun.jdbc.odbc.JdbcOdbcDriver.\nSTEP | 13 | Test database communication for BankAccount using the JDBC-ODBC bridge driver.\nTHIN | 13 | no\nDEF | 14 | The Thin driver is a pure Java-based driver that converts JDBC calls directly into vendor-specific database protocols.\nMECH | 14 | It connects directly to the database server via sockets without needing intermediate client or server libraries.\nSPEC | 14 | MySQL driver class com.mysql.jdbc.Driver and connection string jdbc:mysql://localhost:3306/sonoo.\nSTEP | 14 | Insert and query BankAccount rows over JDBC using a PreparedStatement and ResultSet via the Thin driver.\nTHIN | 14 | no",
       "round3": "TOTAL | 720\nSECTION | 1 | Byte Streams: | 35\nPOINT | 1 | Java byte streams perform input and output of raw 8-bit bytes.\nPOINT | 1 | They transfer binary data sequentially between Java applications and external sources or destinations.\nPOINT | 1 | Byte stream processing is fundamental for handling non-text binary resources like raw files and streams.\nSPEC | 1 | FileInputStream and FileOutputStream are the most frequently used byte stream classes.\nSTEP | 1 | Write raw byte data representing BankAccount transactions to an underlying file.\nSECTION | 2 | InputStream: | 35\nPOINT | 2 | InputStream is the abstract superclass defining byte-oriented input operations.\nPOINT | 2 | It reads single bytes or byte arrays from a source and returns -1 upon reaching end of file.\nPOINT | 2 | Input streams open automatically upon instantiation and must be closed to free system resources.\nSPEC | 2 | Includes methods read(), read(byte[] r), available(), and close().\nSTEP | 2 | Read raw BankAccount transaction bytes using an InputStream source.\nSECTION | 3 | OutputStream: | 35\nPOINT | 3 | OutputStream is the abstract superclass defining byte-oriented output operations.\nPOINT | 3 | It writes single bytes or byte arrays directly to a target destination stream.\nPOINT | 3 | Output operations can be flushed to force pending buffered bytes out to the underlying destination.\nSPEC | 3 | Subclasses include FileOutputStream, ByteArrayOutputStream, FilterOutputStream, and ObjectOutputStream.\nSTEP | 3 | Output BankAccount transaction bytes to a destination stream using OutputStream.\nSECTION | 4 | Character Streams: | 40\nPOINT | 4 | Character streams handle 16-bit Unicode character input and output in Java.\nPOINT | 4 | They use the abstract Reader and Writer classes to automatically manage character encodings.\nPOINT | 4 | Character stream processing reads and writes two bytes at a time for internationalized text handling.\nSPEC | 4 | FileReader reads two bytes at a time and FileWriter writes two bytes at a time.\nSTEP | 4 | Write BankAccount transactions to a text file using character streams like FileWriter.\nSECTION | 5 | Standard Streams: | 45\nPOINT | 5 | Java automatically provides three predefined standard stream objects attached to the console environment.\nPOINT | 5 | System.in handles standard keyboard input, while System.out and System.err handle standard output and error display.\nPOINT | 5 | System.in operates as a raw byte stream that requires wrapping for character-level reading.\nSPEC | 5 | System.in for Standard Input, System.out for Standard Output, and System.err for Standard Error.\nSTEP | 5 | Read BankAccount transaction commands from System.in and display results on System.out.\nSECTION | 6 | InputStreamReader: | 45\nPOINT | 6 | InputStreamReader acts as a bridge class converting byte streams into character streams.\nPOINT | 6 | It reads bytes from an underlying byte input stream and decodes them into Unicode characters.\nPOINT | 6 | Wrapping System.in inside an InputStreamReader enables reading typed keyboard input as character data.\nSPEC | 6 | Syntax InputStreamReader cin = new InputStreamReader(System.in);.\nSTEP | 6 | Wrap System.in in an InputStreamReader to convert typed BankAccount input into characters.\nSECTION | 7 | BufferedReader: | 50\nPOINT | 7 | BufferedReader buffers character input streams in memory to improve reading efficiency.\nPOINT | 7 | It provides the readLine method to read complete text lines terminated by newline or carriage return characters.\nPOINT | 7 | Wrapping an unbuffered Reader in BufferedReader reduces direct I/O overhead on disk or console sources.\nSPEC | 7 | Method readLine() reads a line of text terminated by a newline or carriage return.\nSTEP | 7 | Read BankAccount text transactions line by line using BufferedReader readLine().\nSECTION | 8 | Files-streams | 50\nPOINT | 8 | The File class provides a machine-independent representation of file and directory pathnames.\nPOINT | 8 | Creating a File object creates an abstract pathname without checking physical existence on disk.\nPOINT | 8 | File objects allow applications to query attributes like size, permissions, and directory structure.\nSPEC | 8 | Methods include exists(), isFile(), isDirectory(), getName(), length(), and createNewFile().\nSTEP | 8 | Create a File object representing the transaction file to check if the BankAccount text file physically exists.\nSECTION | 9 | FileInputstream: | 45\nPOINT | 9 | FileInputStream is a concrete byte stream subclass used to read raw bytes from a named file.\nPOINT | 9 | Its constructors accept either a string filename or a File object and throw FileNotFoundException.\nPOINT | 9 | Reading continues byte by byte until the stream returns -1 at the end of the file.\nSPEC | 9 | Constructor FileInputStream(File filename) throws FileNotFoundException.\nSTEP | 9 | Read BankAccount transaction bytes back from the file using FileInputStream.\nSECTION | 10 | FileOutputStream:- | 45\nPOINT | 10 | FileOutputStream is a concrete byte stream subclass used to write raw bytes to a file.\nPOINT | 10 | If the targeted output file does not exist, the stream creates it before opening for writing.\nPOINT | 10 | Byte arrays are converted and flushed through the output stream using its write method.\nSPEC | 10 | Syntax FileOutputStream fop = new FileOutputStream(f); and method fop.write(str.getBytes()).\nSTEP | 10 | Write transaction byte data for BankAccount to disk using FileOutputStream.\nSECTION | 11 | JDBC ARCHITECTURE | 85\nPOINT | 11 | JDBC ARCHITECTURE provides a standard Java API layer for executing SQL statements against relational databases.\nPOINT | 11 | It consists of the JDBC API for application calls and the JDBC Driver API for database driver interaction.\nPOINT | 11 | Key components in java.sql include Connection, Statement, PreparedStatement, ResultSet, and DriverManager.\nSPEC | 11 | Package java.sql contains Connection, Statement, PreparedStatement, ResultSet, and DriverManager.\nSTEP | 11 | Initialize the JDBC ARCHITECTURE layer to prepare database operations for BankAccount.\nSECTION | 12 | Types of Drivers: | 70\nPOINT | 12 | Database drivers are categorized into four distinct architectural types based on platform independence and performance.\nPOINT | 12 | The four categories span Type 1 bridge drivers through Type 4 pure Java network protocol drivers.\nPOINT | 12 | Vendor choice determines whether native client libraries, middleware application servers, or pure sockets are used.\nSPEC | 12 | Numbered categories: Type 1 JDBC-ODBC bridge driver, Type 2 Native-API driver, Type 3 Network Protocol driver, and Type 4 Thin driver.\nSTEP | 12 | Select a driver from Types of Drivers to facilitate database connectivity for BankAccount transactions.\nSECTION | 13 | JDBC-ODBC bridge driver | 60\nPOINT | 13 | The Type 1 JDBC-ODBC bridge driver translates JDBC calls into ODBC function calls.\nPOINT | 13 | It requires installing vendor-specific ODBC drivers and configuring a Data Source Name on every client machine.\nPOINT | 13 | Additional translation layers between JDBC, ODBC, and native calls degrade execution speed.\nSPEC | 13 | Uses driver class sun.jdbc.odbc.JdbcOdbcDriver.\nSTEP | 13 | Test database communication for BankAccount using the JDBC-ODBC bridge driver.\nSECTION | 14 | Thin driver | 80\nPOINT | 14 | The Type 4 Thin driver is a 100 percent pure Java driver that communicates directly via database sockets.\nPOINT | 14 | It converts JDBC API calls straight into vendor-specific network database protocols without client libraries.\nPOINT | 14 | Direct socket connections yield the highest performance and eliminate client-side software configuration.\nSPEC | 14 | MySQL driver class com.mysql.jdbc.Driver and connection string jdbc:mysql://localhost:3306/sonoo.\nSTEP | 14 | Insert and query BankAccount rows over JDBC using a PreparedStatement and ResultSet via the Thin driver.\nGAP | random access file operations\nGAP | Collection framework in Java: introduction to Java collections\nGAP | overview of the collection framework\nGAP | generics\nGAP | commonly used collection classes ArrayList\nGAP | Vector\nGAP | Hashtable\nGAP | Stack\nGAP | Enumeration\nGAP | Iterator\nGAP | StringTokenizer\nGAP | Random\nGAP | Scanner\nGAP | Calendar and Properties",
@@ -430,12 +1173,43 @@
         80
       ],
       "source_added": true,
-      "state": "generating",
+      "state": "postprocessed",
       "style": "classic",
       "subject": "cse404-java",
       "target_minutes": 12,
+      "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u5/thumb.jpg",
       "unit": "u5",
-      "updated_at": "2026-08-03T04:56:17Z"
+      "updated_at": "2026-08-03T05:42:56Z",
+      "watermark": {
+        "bottom_right_segments": [
+          {
+            "end": 758.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 0.0
+          },
+          {
+            "end": 760.8,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 758.7
+          }
+        ],
+        "centre_top_segments": [
+          {
+            "end": 4.04,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 0.0
+          }
+        ],
+        "centre_top_window": [
+          0.0,
+          4.041666666666666
+        ],
+        "clamped_to_slide_cut": 4.083,
+        "outro_cut_at": 758.75
+      }
     }
   },
   "version": 1
