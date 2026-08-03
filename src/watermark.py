@@ -40,7 +40,13 @@ from typing import Iterable
 SAMPLE_FPS = 24.0
 GRID_W, GRID_H = 16, 8    # pixels kept per sampled frame
 QUANTISE = 6              # colour bucket size; below this a change is invisible
-MIN_SEGMENT = 0.2         # seconds; shorter runs are absorbed by their neighbour
+# Two frames at 24fps. At 0.2s a colour run shorter than that was absorbed into
+# its neighbour, so when the next slide's yellow began animating in 0.05s before
+# the cut, the plate stayed white and showed as a white box on yellow.
+MIN_SEGMENT = 0.08
+# Each segment becomes a drawbox filter, so a pathological video could build an
+# unusable command line. Past this, the minimum is relaxed until it fits.
+MAX_SEGMENTS = 240
 DROP_DARKEST = 0.25       # fraction discarded before taking the mode
 
 
@@ -853,12 +859,20 @@ def segments(series: list[tuple[float, tuple[int, int, int]]],
         else:
             runs.append({"start": t, "end": t, "plate": plate, "light_logo": light})
 
-    merged: list[dict] = []
-    for r in runs:
-        if merged and (r["end"] - r["start"]) < MIN_SEGMENT:
-            merged[-1]["end"] = r["end"]
-        else:
-            merged.append(r)
+    def _merge(min_len: float) -> list[dict]:
+        out: list[dict] = []
+        for r in runs:
+            if out and (r["end"] - r["start"]) < min_len:
+                out[-1]["end"] = r["end"]
+            else:
+                out.append(dict(r))
+        return out
+
+    min_len = MIN_SEGMENT
+    merged = _merge(min_len)
+    while len(merged) > MAX_SEGMENTS and min_len < 2.0:
+        min_len *= 1.6
+        merged = _merge(min_len)
     # No padding. Padding bled each segment into its neighbour, which is exactly
     # how an orange plate ended up on a white slide. Boundaries butt against
     # each other so every frame is covered exactly once.

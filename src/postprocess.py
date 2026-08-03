@@ -561,6 +561,7 @@ def main() -> None:
         wm_report = swap_logo(raw, final, Path(a.logo), cfg, meta,
                               workdir=outdir)
         segs = wm_report.get("bottom_right_segments", [])
+        log(f"  {len(segs)} background segment(s) tracked")
         lights = sum(1 for s in segs if s.get("light_logo"))
         log(f"watermark: bottom-right covered in {len(segs)} background segment(s)"
             f"{f', {lights} using the white logo (saturated background)' if lights else ''}")
