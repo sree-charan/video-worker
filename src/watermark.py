@@ -416,6 +416,285 @@ def mark_presence(ff: str, mp4: str, box: dict, fps: float = 4.0,
     return out
 
 
+def _ocr_boxes(img, min_conf: int = 40) -> list[dict]:
+    """OCR a PIL image and return boxes for words that read as 'NotebookLM'.
+
+    Tesseract splits and mangles the wordmark in several ways depending on the
+    frame - "NotebookLM", "Notebook LM", "NotebooklM" - so matching is done on a
+    letters-only lowercase form and accepts any word containing "notebook", plus
+    a bare "lm" immediately to its right.
+    """
+    import re
+
+    import pytesseract
+    from pytesseract import Output
+
+    data = pytesseract.image_to_data(img, output_type=Output.DICT,
+                                     config="--psm 11")
+    words = []
+    for i, raw in enumerate(data["text"]):
+        txt = re.sub(r"[^a-z]", "", (raw or "").lower())
+        if not txt:
+            continue
+        try:
+            conf = int(float(data["conf"][i]))
+        except (TypeError, ValueError):
+            conf = -1
+        if conf < min_conf:
+            continue
+        words.append({"text": txt, "conf": conf,
+                      "x": data["left"][i], "y": data["top"][i],
+                      "w": data["width"][i], "h": data["height"][i]})
+
+    hits = []
+    for i, wd in enumerate(words):
+        if "notebook" not in wd["text"]:
+            continue
+        box = dict(wd)
+        # Absorb a trailing "lm" that tesseract split off.
+        for other in words[i + 1:i + 3]:
+            if other["text"] in ("lm", "im", "l", "m") and \
+               abs(other["y"] - wd["y"]) < wd["h"] and \
+               0 <= other["x"] - (wd["x"] + wd["w"]) < wd["h"] * 2:
+                right = max(box["x"] + box["w"], other["x"] + other["w"])
+                box["w"] = right - box["x"]
+        hits.append(box)
+    return hits
+
+
+def locate_mark_ocr(ff: str, mp4: str, W: int, H: int,
+                    region: tuple[float, float, float, float],
+                    limit: float = 20.0, fps: float = 2.0, upscale: int = 3,
+                    icon_ratio: float = 1.5, pad: float = 0.30) -> dict | None:
+    """Find the wordmark by reading it, rather than guessing from its shape.
+
+    Shape filtering was not safe: on a two-line title card the top edge of the
+    second line measured 243x32 with aspect 7.6, which fits the wordmark's shape
+    signature, won the vote, and put our logo across the word "Unit 4" while the
+    real mark stayed visible above.
+
+    Text is unambiguous - the title never reads "NotebookLM". The region is
+    upscaled before OCR because the mark is only ~19px tall at 720p, and the box
+    is widened to the left to take in the icon that precedes the text.
+    """
+    from collections import Counter
+
+    import numpy as np
+    from PIL import Image
+
+    y0f, y1f, x0f, x1f = region
+    ry0, rx0 = int(H * y0f), int(W * x0f)
+    rh, rw = int(H * y1f) - ry0, int(W * x1f) - rx0
+
+    frames = _frames_gray(ff, mp4, W, H, limit, fps)
+    votes: Counter = Counter()
+    for _t, fr in frames:
+        crop = fr[ry0:ry0 + rh, rx0:rx0 + rw]
+        img = Image.fromarray(crop.astype(np.uint8)).resize(
+            (rw * upscale, rh * upscale), Image.LANCZOS)
+        for hit in _ocr_boxes(img):
+            x = rx0 + hit["x"] / upscale
+            y = ry0 + hit["y"] / upscale
+            w = hit["w"] / upscale
+            h = hit["h"] / upscale
+            # The icon sits to the left of the text, about 1.5x the text height.
+            x -= h * icon_ratio
+            w += h * icon_ratio
+            votes[(int(x) // 4, int(y) // 4, int(w) // 4, int(h) // 4)] += 1
+
+    if not votes:
+        return None
+    (qx, qy, qw, qh), seen = votes.most_common(1)[0]
+    x, y, w, h = qx * 4, qy * 4, qw * 4, qh * 4
+    px, py = w * 0.04, h * pad
+    return {
+        "x": max((x - px) / W, 0.0),
+        "y": max((y - py) / H, 0.0),
+        "w": min((w + 2 * px) / W, 1.0),
+        "h": min((h + 2 * py) / H, 1.0),
+        "frames_agreeing": seen,
+        "frames_sampled": len(frames),
+        "method": "ocr",
+    }
+
+
+def presence_ocr(ff: str, mp4: str, box: dict, W: int, H: int,
+                 fps: float = 1.0, limit: float | None = None,
+                 upscale: int = 3, slack: float = 0.6) -> list[tuple[float, bool]]:
+    """Read the box over time and report when it actually says 'NotebookLM'.
+
+    Decides where to draw. A brightness test put a logo into the title card's
+    empty bottom-right corner because a decoration bar 111px tall passes through
+    that box; reading the text cannot make that mistake.
+    """
+    import numpy as np
+    from PIL import Image
+
+    x, y = box["x"], box["y"]
+    w, h = box["w"], box["h"]
+    pad = int(h * slack)
+    cx, cy = max(x - pad, 0), max(y - pad, 0)
+    cw, ch = min(w + 2 * pad, W - cx), min(h + 2 * pad, H - cy)
+
+    frames = _frames_gray(ff, mp4, W, H, limit, fps)
+    out = []
+    for t, fr in frames:
+        crop = fr[cy:cy + ch, cx:cx + cw]
+        img = Image.fromarray(crop.astype(np.uint8)).resize(
+            (cw * upscale, ch * upscale), Image.LANCZOS)
+        out.append((t, bool(_ocr_boxes(img))))
+    return out
+
+
+def ocr_available() -> bool:
+    import shutil
+    try:
+        import pytesseract  # noqa: F401
+    except ImportError:
+        return False
+    return shutil.which("tesseract") is not None
+
+
+def locate_mark_any(ff: str, mp4: str, W: int, H: int, region, template_path,
+                    limit: float = 20.0) -> dict | None:
+    """Locate the mark, preferring OCR and falling back to template matching.
+
+    OCR is preferred because it is the only unambiguous signal. Greyscale
+    template correlation cannot tell NotebookLM's mark from our own replacement
+    logo - measured 0.64 for the real mark against 0.65 for ours, since both are
+    an icon beside a wide wordmark. It is kept as a fallback for when tesseract
+    is unavailable.
+    """
+    if ocr_available():
+        found = locate_mark_ocr(ff, mp4, W, H, region, limit=limit)
+        if found:
+            return found
+    return locate_mark_template(ff, mp4, W, H, region, template_path, limit=limit)
+
+
+def presence_any(ff: str, mp4: str, box: dict, W: int, H: int, template_path,
+                 fps: float = 1.0, limit: float | None = None
+                 ) -> list[tuple[float, bool]]:
+    if ocr_available():
+        return presence_ocr(ff, mp4, box, W, H, fps=fps, limit=limit)
+    return presence_template(ff, mp4, box, W, H, template_path,
+                             fps=max(fps, 2.0), limit=limit)
+
+
+def _ncc(window, template, t_mean: float, t_std: float) -> float:
+    """Normalised cross-correlation of one window against the template."""
+    import numpy as np
+
+    w_mean = window.mean()
+    w_std = window.std()
+    if w_std < 1e-6 or t_std < 1e-6:
+        return 0.0
+    return float(np.mean((window - w_mean) * (template - t_mean)) / (w_std * t_std))
+
+
+def _load_template(path: "Path | str"):
+    import numpy as np
+    from PIL import Image
+
+    img = Image.open(str(path)).convert("L")
+    return np.asarray(img).astype(float)
+
+
+def locate_mark_template(ff: str, mp4: str, W: int, H: int,
+                         region: tuple[float, float, float, float],
+                         template_path, limit: float = 20.0, fps: float = 1.0,
+                         scales=(0.75, 0.875, 1.0, 1.125, 1.25, 1.5),
+                         step: int = 2, min_score: float = 0.55,
+                         pad: float = 0.25) -> dict | None:
+    """Find the wordmark by matching its actual pixels.
+
+    Shape filtering was not safe: on a two-line title card the top edge of the
+    second line measured 243x32 with aspect 7.6, fitting the wordmark's shape
+    signature well enough to win the vote. Our logo landed across the word
+    "Unit 4" while the real mark stayed visible above it.
+
+    The mark is a fixed raster, so correlating against a reference crop of it is
+    exact and cannot confuse itself with text. Several scales are tried because
+    render resolution varies, and correlation is normalised so it holds on white,
+    grey or orange backgrounds.
+    """
+    import numpy as np
+    from PIL import Image
+
+    base = _load_template(template_path)
+    y0f, y1f, x0f, x1f = region
+    ry0, rx0 = int(H * y0f), int(W * x0f)
+    ry1, rx1 = int(H * y1f), int(W * x1f)
+
+    frames = _frames_gray(ff, mp4, W, H, limit, fps)
+    best = None
+    for _t, fr in frames:
+        crop = fr[ry0:ry1, rx0:rx1].astype(float)
+        ch, cw = crop.shape
+        for sc in scales:
+            th, tw = max(int(base.shape[0] * sc), 6), max(int(base.shape[1] * sc), 20)
+            if th >= ch or tw >= cw:
+                continue
+            tpl = np.asarray(Image.fromarray(base.astype(np.uint8))
+                             .resize((tw, th), Image.LANCZOS)).astype(float)
+            t_mean, t_std = tpl.mean(), tpl.std()
+            for yy in range(0, ch - th + 1, step):
+                for xx in range(0, cw - tw + 1, step):
+                    s = _ncc(crop[yy:yy + th, xx:xx + tw], tpl, t_mean, t_std)
+                    if best is None or s > best["score"]:
+                        best = {"score": s, "x": rx0 + xx, "y": ry0 + yy,
+                                "w": tw, "h": th, "scale": sc}
+    if not best or best["score"] < min_score:
+        return None
+
+    px, py = best["w"] * 0.03, best["h"] * pad
+    return {
+        "x": max((best["x"] - px) / W, 0.0),
+        "y": max((best["y"] - py) / H, 0.0),
+        "w": min((best["w"] + 2 * px) / W, 1.0),
+        "h": min((best["h"] + 2 * py) / H, 1.0),
+        "score": round(best["score"], 3),
+        "scale": best["scale"],
+        "method": "template",
+    }
+
+
+def presence_template(ff: str, mp4: str, box: dict, W: int, H: int,
+                      template_path, fps: float = 2.0,
+                      limit: float | None = None, jitter: int = 3,
+                      min_score: float = 0.45) -> list[tuple[float, bool]]:
+    """Whether the mark is in the box at each sampled time, by correlation.
+
+    Only a small neighbourhood of the located box is searched, so this is cheap
+    enough to run across a whole lecture. A brightness test previously reported
+    the mark present wherever any dark artwork crossed the box, which is how a
+    logo ended up in the title card's empty corner.
+    """
+    import numpy as np
+    from PIL import Image
+
+    base = _load_template(template_path)
+    x, y, w, h = box["x"], box["y"], box["w"], box["h"]
+    tpl = np.asarray(Image.fromarray(base.astype(np.uint8))
+                     .resize((max(w, 20), max(h, 6)), Image.LANCZOS)).astype(float)
+    t_mean, t_std = tpl.mean(), tpl.std()
+
+    frames = _frames_gray(ff, mp4, W, H, limit, fps)
+    out = []
+    for t, fr in frames:
+        best = 0.0
+        for dy in range(-jitter, jitter + 1, jitter or 1):
+            for dx in range(-jitter, jitter + 1, jitter or 1):
+                yy, xx = y + dy, x + dx
+                if yy < 0 or xx < 0 or yy + tpl.shape[0] > H or xx + tpl.shape[1] > W:
+                    continue
+                s = _ncc(fr[yy:yy + tpl.shape[0], xx:xx + tpl.shape[1]].astype(float),
+                         tpl, t_mean, t_std)
+                best = max(best, s)
+        out.append((t, best >= min_score))
+    return out
+
+
 # ------------------------------------------------------------- segmenting
 
 def _q(c: tuple[int, int, int]) -> tuple[int, int, int]:

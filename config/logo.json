@@ -21,10 +21,10 @@
   "centre_top": {
     "_comment": "Sits above the title, so its height varies with the number of title lines. Region spans y 3-32% to cover both observed positions.",
     "search_region": [
-      0.03,
-      0.32,
-      0.28,
-      0.72
+      0.02,
+      0.34,
+      0.25,
+      0.78
     ],
     "search_seconds": 25,
     "align": "centre",

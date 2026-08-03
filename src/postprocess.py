@@ -26,6 +26,7 @@ import watermark  # noqa: E402
 from common import BUILD, ROOT, get_record, load_syllabus, log, record, unit_by_id  # noqa: E402
 
 LOGO_CFG = ROOT / "config" / "logo.json"
+MARK_TEMPLATE = ROOT / "assets" / "notebooklm-mark.png"
 
 # Words too common in any lecture to localise a chapter.
 STOPWORDS_NORM = {
@@ -182,20 +183,20 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
 
     # Locate rather than trust config. Config supplies only the search region.
     br_cfg = cfg["bottom_right"]
-    found_br = watermark.locate_mark(
-        ff, str(src), W, H, tuple(br_cfg["search_region"]),
+    found_br = watermark.locate_mark_any(
+        ff, str(src), W, H, tuple(br_cfg["search_region"]), MARK_TEMPLATE,
         limit=float(br_cfg.get("search_seconds", 60)))
     if found_br:
-        log(f"  bottom-right mark located at y={found_br['y']:.4f} "
-            f"x={found_br['x']:.4f} ({found_br['frames_agreeing']}"
-            f"/{found_br['frames_sampled']} frames agree)")
+        log(f"  bottom-right mark located by {found_br.get('method')} at "
+            f"y={found_br['y']:.4f} x={found_br['x']:.4f}")
         br = resolve_box(found_br, W, H)
     else:
         log("  bottom-right mark not located; using the configured fallback box")
         br = resolve_box(br_cfg["fallback"], W, H)
     report["bottom_right_box"] = br
 
-    br_present = watermark.mark_presence(ff, str(src), br, fps=4.0)
+    br_present = watermark.presence_any(ff, str(src), br, W, H, MARK_TEMPLATE,
+                                        fps=1.0)
     br_segs = watermark.segments(watermark.region_series(ff, str(src), br, W, H),
                                  presence=br_present)
     if not br_segs:
@@ -217,16 +218,16 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
     tc_cfg = cfg.get("centre_top")
     if tc_cfg:
         search = float(tc_cfg.get("search_seconds", 25))
-        found_tc = watermark.locate_mark(
-            ff, str(src), W, H, tuple(tc_cfg["search_region"]), limit=search)
+        found_tc = watermark.locate_mark_any(
+            ff, str(src), W, H, tuple(tc_cfg["search_region"]), MARK_TEMPLATE,
+            limit=search)
         report["centre_top_box"] = found_tc
         if not found_tc:
             log("  centre-top mark not present in this video")
             tc_cfg = None
     if tc_cfg:
-        log(f"  centre-top mark located at y={found_tc['y']:.4f} "
-            f"x={found_tc['x']:.4f} ({found_tc['frames_agreeing']}"
-            f"/{found_tc['frames_sampled']} frames agree)")
+        log(f"  centre-top mark located by {found_tc.get('method')} at "
+            f"y={found_tc['y']:.4f} x={found_tc['x']:.4f}")
         tc = resolve_box(found_tc, W, H)
         fps = watermark.SAMPLE_FPS
         tc_bg = watermark.region_series(ff, str(src), tc, W, H, limit=search, fps=fps)
@@ -243,8 +244,9 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
                 report["clamped_to_slide_cut"] = round(cuts[0], 3)
         report["centre_top_window"] = window
         if window:
-            tc_present = watermark.mark_presence(ff, str(src), tc, fps=4.0,
-                                                 limit=search)
+            tc_present = watermark.presence_any(ff, str(src), tc, W, H,
+                                                MARK_TEMPLATE, fps=2.0,
+                                                limit=search)
             tc_segs = watermark.segments(tc_bg, window=window, presence=tc_present)
             report["centre_top_segments"] = [
                 {**s, "start": round(s["start"], 2), "end": round(s["end"], 2)}

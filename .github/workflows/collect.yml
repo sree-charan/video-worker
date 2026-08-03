@@ -70,8 +70,13 @@ jobs:
           python-version: "3.12"
           cache: pip
 
-      - name: Install ffmpeg
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      # tesseract reads the word "NotebookLM" off the frame. That is the only
+      # unambiguous way to find the mark: greyscale template correlation scored
+      # our own replacement logo (0.65) above the real mark (0.64).
+      - name: Install ffmpeg and tesseract
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg tesseract-ocr
 
       - name: Install dependencies
         run: pip install -r requirements.txt

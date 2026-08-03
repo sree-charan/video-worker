@@ -8,3 +8,5 @@ faster-whisper>=1.0,<2
 pillow>=10,<12
 # numpy is used to locate the watermark by shape in full-res frames.
 numpy>=1.26,<3
+# Reads 'NotebookLM' off the frame to locate the watermark.
+pytesseract>=0.3.10,<0.4
