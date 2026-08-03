@@ -14,11 +14,11 @@
   },
 
   "centre_top": {
-    "_comment": "Second wordmark on the opening title card only. Measured on the real 1280x720 render: x=543..722 y=99..118, present t=0-7s. The window is re-measured per video at 8fps rather than hardcoded: at 2fps the window overshot and left our logo lingering ~0.7s onto the following slide.",
+    "_comment": "Second wordmark on the opening title card only. Measured on the real 1280x720 render: x=543..722 y=99..118, present t=0-7s. Height covers to y=121 at 720p: at h=0.0320 the plate stopped at y=117 and left a single row of the mark's descender visible at y=118. The window is re-measured per video at frame rate and clamped to the following slide cut.",
     "x": 0.4220,
     "y": 0.1340,
     "w": 0.1440,
-    "h": 0.0320,
+    "h": 0.0361,
     "align": "centre",
     "logo_height_ratio": 1.4,
     "search_seconds": 25

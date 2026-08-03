@@ -331,9 +331,10 @@ Do not re-explain anything. Connect only.
 
 ## INFORMATION DENSITY - highest priority
 
-Every sentence must do one of: introduce a concept, explain a mechanism,
-connect two concepts, state why something exists, or give one concrete example.
-A sentence that does none of these must be cut.
+Every sentence must do one of: introduce an idea, explain how something works,
+connect two ideas, say why something exists, or give one concrete example.
+A sentence that does none of these must be cut. This rule and the LANGUAGE rules
+below apply together: short plain sentences that each still teach something.
 
 Never say, in any wording: "let's understand", "now that we know", "before
 moving ahead", "as we discussed", "as we saw earlier", "let us now move on to",
@@ -347,14 +348,46 @@ term already defined.
 
 {math_rule}
 
+## LANGUAGE - treat this as important as the content
+
+Your listener is a second-year engineering student who has never written a line
+of {lang_hint}, and whose first language is usually not English. Every sentence
+must be understood the first time it is heard, without pausing or rewinding.
+
+- Keep sentences short. Aim for about 12 words. Never go past 20.
+- One idea per sentence. If a sentence has two ideas, split it.
+- Always choose the plainest word that is still correct: "uses" not "utilises",
+  "part" not "component", "keeps" not "maintains", "change" not "mutate",
+  "make" not "instantiate", "hidden" not "encapsulated".
+- A technical term may only appear after you have said what it means in plain
+  words, in the same breath. Like this: "a constructor, the block of code that
+  runs when an object is made, sets the starting values." Never introduce two
+  new terms in one sentence.
+- Never use these words: paradigm, artifact, mechanism, entity, architecture,
+  conceptualise, systematically, inherent, robust, leverage, facilitate,
+  cohesive, singular, vulnerabilities, fundamentally, uniformly, precise,
+  reusable software artifact, execution space.
+- Do not stack adjectives in front of a noun. "a highly specific logical object
+  encapsulating its exact balance" is wrong. "an object that holds one account's
+  balance" is right.
+- Use the active voice and the present tense. "The compiler checks the type",
+  not "the type is checked by the compiler".
+- Use a real number or a real line of code instead of an abstract description
+  wherever you can.
+
+Simple words are NOT the same as filler. Every sentence must still teach
+something. Say the same substance in words a beginner already knows.
+
+Before you say any sentence, ask: would a nineteen-year-old hearing this once
+understand it? If not, say it shorter and plainer.
+
 ## STYLE
 
-An experienced engineering educator who respects the student's intelligence and
-is short on time. Declarative sentences. Define each term precisely on first
-use, then use it freely. One high-quality real example per major concept, not
-three. Prefer a concrete mechanism over an analogy; if an analogy is used, one
-sentence, then drop it. Clarity over entertainment. The result should feel like
-a precise technical documentary, not a classroom lecture, podcast or motivational talk.
+A good teacher explaining something to one student, out loud, at a whiteboard.
+Warm but efficient. Clear over clever. One real example per idea, not three. If
+you use a comparison to everyday life, keep it to one sentence and then drop it.
+The result should feel like the clearest explanation the student has ever heard
+of this topic - not like a textbook read aloud.
 """
 
 CODE_RULE = "Show real, correct {lang} code on screen for it.\n"
@@ -443,6 +476,7 @@ def video_prompt(syl: dict, unit: dict, spec: dict, minutes: int) -> str:
         code_rule=CODE_RULE.format(lang=ped["code_language"]) if ped.get("code_language") else "",
         exam_focus="\n".join(f"  - {i}" for i in unit.get("exam_focus", [])) or "  - (none)",
         math_rule=MATH_WORKED if ped.get("math") == "worked" else MATH_NONE,
+        lang_hint=ped.get("code_language") or subj["title"],
     )
 
 

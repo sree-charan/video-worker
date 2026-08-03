@@ -198,11 +198,19 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
     if tc_cfg:
         tc = resolve_box(tc_cfg, W, H)
         search = float(tc_cfg.get("search_seconds", 25))
-        fps = 8.0
+        fps = watermark.SAMPLE_FPS
         tc_bg = watermark.region_series(ff, str(src), tc, W, H, limit=search, fps=fps)
         window = watermark.detect_presence(
             watermark.darkness_series(ff, str(src), tc, limit=search, fps=fps),
             tc_bg, limit=search, step=1.0 / fps)
+        if window:
+            # Clamp to the slide cut. Presence detection alone left the logo on
+            # screen for a frame of the next slide, which reads as a glitch.
+            cuts = [c for c in watermark.slide_changes(ff, str(src), search)
+                    if c > window[0] + 0.5]
+            if cuts:
+                window = (window[0], min(window[1], cuts[0] - 1.0 / fps))
+                report["clamped_to_slide_cut"] = round(cuts[0], 3)
         report["centre_top_window"] = window
         if window:
             tc_segs = watermark.segments(tc_bg, window=window)
@@ -259,6 +267,45 @@ def transcribe(mp4: Path, outdir: Path, model: str = "small") -> list[dict]:
     segs = [{"start": s.start, "end": s.end, "text": s.text.strip()} for s in segments]
     (outdir / "transcript.json").write_text(json.dumps(segs, indent=2), encoding="utf-8")
     return segs
+
+
+def readability(segs: list[dict]) -> dict:
+    """Flesch reading ease and grade level of the narration.
+
+    Measured because "too complex" is otherwise a matter of opinion. The first
+    pilot scored -1.7 ease / grade 18 - postgraduate prose - which is why the
+    prompt now carries explicit language rules. Target is roughly 60+ ease and
+    grade 8-10 for a second-year undergraduate audience.
+    """
+    text = " ".join(s["text"] for s in segs)
+    words = re.findall(r"[A-Za-z']+", text)
+    sentences = [x for x in re.split(r"[.!?]+", text) if x.strip()]
+    if not words or not sentences:
+        return {}
+
+    def syllables(w: str) -> int:
+        w = w.lower()
+        n, prev = 0, False
+        for ch in w:
+            vowel = ch in "aeiouy"
+            if vowel and not prev:
+                n += 1
+            prev = vowel
+        if w.endswith("e") and n > 1:
+            n -= 1
+        return max(n, 1)
+
+    W, S = len(words), len(sentences)
+    SY = sum(syllables(w) for w in words)
+    return {
+        "words": W,
+        "sentences": S,
+        "words_per_sentence": round(W / S, 1),
+        "flesch_reading_ease": round(206.835 - 1.015 * (W / S) - 84.6 * (SY / W), 1),
+        "grade_level": round(0.39 * (W / S) + 11.8 * (SY / W) - 15.59, 1),
+        "long_word_pct": round(
+            100 * sum(1 for w in words if syllables(w) >= 4) / W, 1),
+    }
 
 
 def write_vtt(segs: list[dict], dst: Path) -> None:
@@ -464,6 +511,15 @@ def main() -> None:
     segs = transcribe(final, outdir, a.whisper_model)
     write_vtt(segs, outdir / "captions.vtt")
 
+    read = readability(segs)
+    if read:
+        verdict = ("plain" if read["flesch_reading_ease"] >= 55
+                   else "hard" if read["flesch_reading_ease"] >= 30 else "TOO COMPLEX")
+        log(f"readability: ease={read['flesch_reading_ease']} "
+            f"grade={read['grade_level']} "
+            f"{read['words_per_sentence']} words/sentence "
+            f"{read['long_word_pct']}% long words -> {verdict}")
+
     # Chapter labels are the course file's verbatim headings, captured in fire.py.
     # Anchors are the distinctive word from each heading, so alignment searches
     # for the same wording the student sees in their own notes.
@@ -483,6 +539,7 @@ def main() -> None:
     (outdir / "catalog-entry.json").write_text(json.dumps(entry, indent=2), encoding="utf-8")
 
     record(subject_id, unit["id"], watermark=wm_report or None,
+           readability=read or None,
            state="postprocessed",
            final_mp4=str(final), duration_sec=meta["duration_sec"],
            chapters=chapters, thumb=str(outdir / "thumb.jpg"),

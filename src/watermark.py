@@ -34,10 +34,13 @@ import subprocess
 from collections import Counter
 from typing import Iterable
 
-SAMPLE_FPS = 2.0          # 0.5s resolution
+# Frame-accurate. At 2fps the plate colour changed up to half a second before
+# the background did, so an orange plate showed on a white slide - clearly
+# visible. Sampling a tiny crop is cheap enough to do at video frame rate.
+SAMPLE_FPS = 24.0
 GRID_W, GRID_H = 16, 8    # pixels kept per sampled frame
 QUANTISE = 6              # colour bucket size; below this a change is invisible
-MIN_SEGMENT = 0.5         # seconds; shorter runs are absorbed by their neighbour
+MIN_SEGMENT = 0.2         # seconds; shorter runs are absorbed by their neighbour
 DROP_DARKEST = 0.25       # fraction discarded before taking the mode
 
 
@@ -147,6 +150,30 @@ def detect_presence(box_series: list[tuple[float, float]],
     return (max(hits[0] - step, 0.0), end + step)
 
 
+def slide_changes(ff: str, mp4: str, limit: float, threshold: float = 6.0,
+                  fps: float = 24.0) -> list[float]:
+    """Times at which the whole frame changes, i.e. slide cuts.
+
+    Used to clamp the title-card window: presence detection alone left the
+    replacement logo on screen for one frame of the following slide.
+    """
+    cmd = [ff, "-v", "error", "-t", f"{limit:.2f}", "-i", mp4,
+           "-vf", f"fps={fps},scale=64:36", "-pix_fmt", "gray",
+           "-f", "rawvideo", "-"]
+    raw = subprocess.run(cmd, capture_output=True, check=True).stdout
+    per = 64 * 36
+    n = len(raw) // per
+    out, prev = [], None
+    for i in range(n):
+        cur = raw[i * per:(i + 1) * per]
+        if prev is not None:
+            d = sum(abs(a - b) for a, b in zip(cur, prev)) / per
+            if d > threshold:
+                out.append(i / fps)
+        prev = cur
+    return out
+
+
 # ------------------------------------------------------------- outro card
 
 def detect_outro(ff: str, mp4: str, duration: float, tail: float = 20.0,
@@ -243,8 +270,11 @@ def segments(series: list[tuple[float, tuple[int, int, int]]],
             merged[-1]["end"] = r["end"]
         else:
             merged.append(r)
+    # No padding. Padding bled each segment into its neighbour, which is exactly
+    # how an orange plate ended up on a white slide. Boundaries butt against
+    # each other so every frame is covered exactly once.
     for i, r in enumerate(merged):
-        r["start"] = (window[0] if window else 0.0) if i == 0 else max(
-            r["start"] - 0.25, merged[i - 1]["end"])
-        r["end"] = r["end"] + 0.25
+        r["start"] = (window[0] if window else 0.0) if i == 0 else merged[i - 1]["end"]
+        if i == len(merged) - 1:
+            r["end"] = r["end"] + 1.0 / SAMPLE_FPS
     return merged
