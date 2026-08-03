@@ -47,9 +47,12 @@ pedagogy:
   # adjectives) are universal and live in plan.py; only the wordlists and the
   # illustrations belong to a subject. A syllabus may omit this whole block.
   language:
+    # A swap must never contradict the TERMINOLOGY LOCK. "encapsulation" is a
+    # term the course file prints and the exam uses, so it cannot be swapped for
+    # "hidden" - the lock wins, and the narration is right to say it. Only swap
+    # words that are the narrator's own register, not the subject's vocabulary.
     plain_words:
       instantiate: make
-      encapsulated: hidden
       mutate: change
       component: part
       maintains: keeps
