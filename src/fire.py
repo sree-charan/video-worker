@@ -326,12 +326,27 @@ def anchor_for(heading: str) -> str:
 
 
 def fire(syl: dict, unit: dict, profile: str | None, minutes: int, style: str,
-         research: str, dry_run: bool, keep_research: bool = False) -> None:
+         research: str, dry_run: bool, keep_research: bool = False,
+         force: bool = False) -> None:
     sid = syl["subject"]["id"]
     rec = get_record(sid, unit["id"])
-    if rec.get("artifact_id") and rec.get("state") != "failed":
-        log(f"unit {unit['id']} already fired (artifact {rec['artifact_id']}); skipping")
+    if rec.get("artifact_id") and rec.get("state") != "failed" and not force:
+        log(f"unit {unit['id']} already fired (artifact {rec['artifact_id']}); skipping"
+            " - pass --force to regenerate")
         return
+    if force and rec.get("artifact_id"):
+        # Re-planning from scratch, so the cached rounds must go too: otherwise a
+        # regeneration reuses the beat sheet that a prompt fix was meant to
+        # change. Clearing state here rather than by hand-editing the manifest,
+        # because the bot commits that file too and an edit loses a rebase race.
+        log(f"forcing regeneration of {unit['id']} (was {rec['artifact_id']})")
+        clear(sid, unit["id"], "artifact_id", "round1", "round2", "round3",
+              "round1_retried", "chapter_labels", "chapter_anchors",
+              "section_seconds", "prompt_chars", "section_warning", "gaps_filled",
+              "pruned_sources", "final_mp4", "raw_mp4", "chapters", "thumb",
+              "captions", "duration_sec", "watermark", "raw_size_mb", "error",
+              "readability", "heading_drift")
+        record(sid, unit["id"], state="sourced")
 
     outdir = BUILD / unit_key(syl, unit)
     outdir.mkdir(parents=True, exist_ok=True)
@@ -422,6 +437,9 @@ def main() -> None:
                          "imagery has leaked into a generated video")
     ap.add_argument("--keep-research", action="store_true",
                     help="do not prune web sources imported by Deep Research")
+    ap.add_argument("--force", action="store_true",
+                    help="regenerate a unit that has already been fired, clearing "
+                         "its cached planning rounds")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 
@@ -433,7 +451,7 @@ def main() -> None:
         log(f"=== unit {u['n']} ({u['id']}): {u['title']}")
         try:
             fire(syl, u, a.profile, a.minutes, a.style, a.research, a.dry_run,
-                 a.keep_research)
+                 a.keep_research, a.force)
         except (CliError, SystemExit) as e:
             failures += 1
             log(f"FAILED unit {u['id']}: {e}")
