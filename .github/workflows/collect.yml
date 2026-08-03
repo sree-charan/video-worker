@@ -1,0 +1,142 @@
+name: Collect and postprocess
+
+# Cheap poll on a cron. A poll is seconds; the generation it waits on is 20-30
+# minutes. Anything finished gets downloaded, logo-swapped, transcribed for
+# captions and real chapter timestamps, thumbnailed, and uploaded as an artifact.
+#
+# MP4s are intentionally NOT committed: ~350 lectures would blow past GitHub's
+# repo size limits. They leave as build artifacts and are uploaded to Drive/R2
+# by the publish stage.
+
+on:
+  schedule:
+    - cron: "*/20 * * * *"
+  workflow_dispatch:
+    inputs:
+      syllabus:
+        description: "Syllabus file"
+        required: true
+        default: "syllabus/oop-java.yml"
+      units:
+        description: "Unit ids, space separated (blank = all pending)"
+        required: false
+        default: ""
+      profile:
+        required: false
+        default: "default"
+      whisper_model:
+        description: "faster-whisper model size"
+        required: false
+        default: "small"
+        type: choice
+        options: ["tiny", "base", "small", "medium"]
+      retry_failed:
+        description: "Retry upstream generation failures in place"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: video-worker-state
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore NotebookLM auth
+        env:
+          NOTEBOOKLM_MASTER_TOKEN: ${{ secrets.NOTEBOOKLM_MASTER_TOKEN }}
+          NOTEBOOKLM_AUTH_JSON: ${{ secrets.NOTEBOOKLM_AUTH_JSON }}
+        run: |
+          MASTER="$NOTEBOOKLM_MASTER_TOKEN"
+          SNAPSHOT="$NOTEBOOKLM_AUTH_JSON"
+          unset NOTEBOOKLM_MASTER_TOKEN NOTEBOOKLM_AUTH_JSON
+          PROFILE="${{ inputs.profile || 'default' }}"
+          DIR="$HOME/.notebooklm/profiles/$PROFILE"
+          mkdir -p "$DIR"
+          if [ -n "$MASTER" ]; then
+            printf '%s' "$MASTER" > "$DIR/master_token.json"
+            chmod 600 "$DIR/master_token.json"
+            notebooklm -p "$PROFILE" login --master-token-refresh
+          elif [ -n "$SNAPSHOT" ]; then
+            printf '%s' "$SNAPSHOT" > "$DIR/storage_state.json"
+            chmod 600 "$DIR/storage_state.json"
+          else
+            echo "No NotebookLM auth configured." >&2; exit 1
+          fi
+
+      - name: Collect finished videos
+        run: |
+          SYL="${{ inputs.syllabus || 'syllabus/oop-java.yml' }}"
+          ARGS=""
+          for u in ${{ inputs.units }}; do ARGS="$ARGS --unit $u"; done
+          python src/collect.py --syllabus "$SYL" $ARGS \
+            ${{ inputs.retry_failed == true && '--retry-failed' || '' }}
+
+      - name: Postprocess anything downloaded
+        run: |
+          SYL="${{ inputs.syllabus || 'syllabus/oop-java.yml' }}"
+          python - "$SYL" <<'PY' > units.txt
+          import json, sys, pathlib
+          p = pathlib.Path("state/manifest.json")
+          m = json.loads(p.read_text()) if p.exists() else {"units": {}}
+          print(" ".join(r["unit"] for r in m["units"].values()
+                         if r.get("state") == "downloaded"))
+          PY
+          UNITS=$(cat units.txt)
+          if [ -z "$UNITS" ]; then echo "Nothing to postprocess."; exit 0; fi
+          for u in $UNITS; do
+            echo "::group::postprocess $u"
+            python src/postprocess.py --syllabus "$SYL" --unit "$u" \
+              --whisper-model "${{ inputs.whisper_model || 'small' }}"
+            echo "::endgroup::"
+          done
+
+      - name: Upload finished lectures
+        uses: actions/upload-artifact@v4
+        with:
+          name: lectures
+          path: |
+            build/**/final.mp4
+            build/**/captions.vtt
+            build/**/thumb.jpg
+            build/**/catalog-entry.json
+            build/**/transcript.json
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: Commit manifest
+        run: |
+          git config user.name "video-worker-bot"
+          git config user.email "video-worker-bot@users.noreply.github.com"
+          git add state/ || true
+          if git diff --cached --quiet; then echo "No state change."; exit 0; fi
+          git commit -m "collect: advance pipeline ($(date -u +%FT%TZ))"
+          for attempt in 1 2 3 4 5; do
+            git push origin HEAD:"${GITHUB_REF_NAME}" && exit 0
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase "origin/${GITHUB_REF_NAME}" || {
+              git checkout --theirs -- state/manifest.json 2>/dev/null || true
+              git add state/
+              GIT_EDITOR=true git rebase --continue || git rebase --abort
+            }
+            sleep $((RANDOM % 4 + 2))
+          done
+          echo "Failed to push manifest." >&2; exit 1

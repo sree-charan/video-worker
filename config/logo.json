@@ -1,0 +1,8 @@
+{
+  "_comment": "Bounding box of the NotebookLM watermark, in pixels, for a 1920x1080 explainer. Measure it once from build/<unit>/frames/*.png (python src/postprocess.py --sample-frames) and fill these in. 'plate' paints an opaque rectangle before overlaying, needed only if our logo has transparency or the mark sits on moving background; set to null to overlay directly.",
+  "w": 0,
+  "h": 0,
+  "x": 0,
+  "y": 0,
+  "plate": null
+}

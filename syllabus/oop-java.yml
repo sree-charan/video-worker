@@ -1,0 +1,191 @@
+# =============================================================================
+# OBJECT ORIENTED PROGRAMMING THROUGH JAVA  -  GCET 16CS2103
+# =============================================================================
+# The single source of truth for this subject. Everything downstream (notebook
+# titles, steering prompts, chapter labels, catalog JSON) is derived from here.
+#
+# `topics` is copied verbatim from the course file's Syllabus section so the
+# video's scope matches what students are actually examined on.
+#
+# `example` is the ONE worked example the video must carry end to end. This is
+# the highest-leverage field in this file: a concrete, unit-appropriate example
+# is the difference between a lecture and a definition list. Tune it by hand.
+#
+# `anchors` are phrases used to locate chapter boundaries in the transcript.
+# One per intended chapter, in the order they should appear.
+# =============================================================================
+
+subject:
+  id: cse404-java
+  title: Object Oriented Programming through Java
+  code: 16CS2103
+  branch: CSE
+  year: II
+  semester: I
+  college: Geethanjali College of Engineering and Technology
+  # Drive file id of the course file PDF (publicly link-shared, added by reference).
+  source_drive_id: 1af3_h3SL1Wt1zUm_nD6lnuLAblGesUhB
+  source_title: OOP through Java - Course File
+  # Sections of the course file that must never leak into a video.
+  exclude_sections:
+    - Vision and Mission of the Department
+    - PEOs, POs and PSOs, course mapping tables
+    - Class and individual time tables
+    - University question papers, question bank, assignment questions, quiz questions
+
+units:
+  - n: 1
+    id: u1
+    title: "OOP Concepts and Java Fundamentals"
+    topics: >-
+      Data abstraction, encapsulation, inheritance, benefits of inheritance,
+      polymorphism, classes and objects, procedural vs object oriented paradigms.
+      History of Java, comments, datatypes, variables, constants, scope and
+      lifetime of variables, operators, operator hierarchy, expressions, type
+      conversion and casting, enumerated types, control flow, block scope,
+      conditional statements, loops, break and continue. Simple Java program,
+      arrays, console input and output, formatting output, constructors, methods,
+      parameter passing, static fields and methods, access control, this keyword,
+      overloading methods and constructors, recursion, garbage collection,
+      building strings, exploring the String class.
+    example: >-
+      A single `BankAccount` class built up across the unit: start with fields and
+      a constructor, add an overloaded constructor, add a static accountCount,
+      use `this` to disambiguate, then a deposit/withdraw method pair showing
+      parameter passing and access control.
+    anchors:
+      - "procedural"
+      - "encapsulation"
+      - "datatypes"
+      - "control flow"
+      - "constructor"
+      - "static"
+      - "String class"
+    exam_focus:
+      - "abstraction vs encapsulation"
+      - "overloading resolution rules"
+      - "why String is immutable"
+
+  - n: 2
+    id: u2
+    title: "Inheritance, Polymorphism, Interfaces and Packages"
+    topics: >-
+      Inheritance: definition, hierarchies, super and subclasses, member access
+      rules, super keyword, preventing inheritance with final classes and
+      methods, the Object class and its methods. Polymorphism: dynamic binding,
+      method overriding, abstract classes and methods. Interfaces: interfaces vs
+      abstract classes, defining an interface, implementing interfaces, accessing
+      implementations through interface references, extending an interface.
+      Inner classes: uses, local inner classes, anonymous inner classes, static
+      inner classes. Packages: definition, creating and accessing a package,
+      understanding CLASSPATH, importing packages.
+    example: >-
+      Extend the Unit 1 `BankAccount` into `SavingsAccount` and `CurrentAccount`,
+      override a single `calculateInterest()` method to demonstrate dynamic
+      binding, then hoist it to an `Interest` interface and show the same call
+      site working through an interface reference.
+    anchors:
+      - "subclass"
+      - "super keyword"
+      - "overriding"
+      - "abstract class"
+      - "interface"
+      - "inner class"
+      - "package"
+    exam_focus:
+      - "overriding vs overloading"
+      - "abstract class vs interface"
+      - "CLASSPATH resolution order"
+
+  - n: 3
+    id: u3
+    title: "Exception Handling and Multi-Threading"
+    topics: >-
+      Exception handling: dealing with errors, benefits of exception handling,
+      classification of exceptions, exception hierarchy, checked and unchecked
+      exceptions, usage of try, catch, throw, throws and finally, rethrowing
+      exceptions, exception specification, built-in exceptions, creating own
+      exception subclasses. Multi-threading: differences between multiple
+      processes and multiple threads, thread states, creating threads,
+      interrupting threads, thread priorities, synchronizing threads, inter
+      thread communication, producer consumer pattern.
+    example: >-
+      A withdrawal on the `BankAccount` that throws a custom
+      `InsufficientFundsException`, then two threads withdrawing from the same
+      account to expose a race condition, fixed with `synchronized`, then
+      wait/notify for the producer-consumer form.
+    anchors:
+      - "exception hierarchy"
+      - "checked"
+      - "finally"
+      - "custom exception"
+      - "thread states"
+      - "synchronized"
+      - "producer consumer"
+    exam_focus:
+      - "checked vs unchecked"
+      - "finally with return"
+      - "sleep vs wait"
+
+  - n: 4
+    id: u4
+    title: "GUI Programming, Event Handling and Applets"
+    topics: >-
+      GUI programming with Java: the AWT class hierarchy, introduction to Swing,
+      Swing vs AWT, hierarchy for Swing components, containers JFrame, JApplet,
+      JDialog, JPanel. Overview of Swing components JButton, JLabel, JTextField,
+      JTextArea, simple Swing applications. Layout management: layout manager
+      types border, grid and flow. Event handling: events, event sources, event
+      classes, event listeners, relationship between event sources and
+      listeners, delegation event model, handling a button click, handling mouse
+      events, adapter classes. Applets: inheritance hierarchy for applets,
+      differences between applets and applications, life cycle of an applet,
+      passing parameters, applet security issues.
+    example: >-
+      One `JFrame` deposit form for the `BankAccount`: a JLabel, JTextField and
+      JButton laid out with FlowLayout, then the same form re-laid with
+      BorderLayout, then an ActionListener on the button that updates the
+      balance, then the same handler written as an anonymous adapter.
+    anchors:
+      - "AWT"
+      - "Swing"
+      - "JFrame"
+      - "layout"
+      - "delegation event model"
+      - "listener"
+      - "applet life cycle"
+    exam_focus:
+      - "AWT vs Swing"
+      - "delegation event model flow"
+      - "applet life cycle order"
+
+  - n: 5
+    id: u5
+    title: "JDBC, Files and the Collections Framework"
+    topics: >-
+      Connecting to a database: JDBC type 1 to 4 drivers, connecting to a
+      database, querying a database and processing the results, updating data
+      with JDBC. Files: streams, byte streams, character streams, text input and
+      output, binary input and output, random access file operations, file
+      management using the File class. Collection framework in Java:
+      introduction to Java collections, overview of the collection framework,
+      generics, commonly used collection classes ArrayList, Vector, Hashtable,
+      Stack, Enumeration, Iterator, StringTokenizer, Random, Scanner, Calendar
+      and Properties.
+    example: >-
+      Persist the `BankAccount` three ways: write transactions to a text file
+      with character streams, hold them in an `ArrayList<Transaction>` and
+      iterate, then insert and query the same rows over JDBC with a
+      PreparedStatement and ResultSet.
+    anchors:
+      - "JDBC driver"
+      - "Connection"
+      - "ResultSet"
+      - "byte stream"
+      - "File class"
+      - "ArrayList"
+      - "Iterator"
+    exam_focus:
+      - "type 1 to 4 driver tradeoffs"
+      - "byte vs character streams"
+      - "ArrayList vs Vector"

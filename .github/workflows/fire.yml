@@ -1,0 +1,124 @@
+name: Fire video generation
+
+# Starts generation and exits. Does NOT wait: an explainer takes 20-30+ minutes,
+# so blocking here would burn ~30 runner-minutes per video for no reason.
+# collect.yml picks the finished artifacts up.
+
+on:
+  workflow_dispatch:
+    inputs:
+      syllabus:
+        description: "Syllabus file"
+        required: true
+        default: "syllabus/oop-java.yml"
+      units:
+        description: "Unit ids, space separated (blank = all)"
+        required: false
+        default: "u1"
+      profile:
+        description: "notebooklm profile / which Google account's quota to spend"
+        required: false
+        default: "default"
+      minutes:
+        description: "Target video length in minutes"
+        required: false
+        default: "10"
+      style:
+        description: "Visual style"
+        required: false
+        default: "classic"
+        type: choice
+        options: ["classic", "whiteboard", "watercolor", "retro-print", "heritage", "paper-craft", "auto"]
+      dry_run:
+        description: "Build and print the prompt without spending quota"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: video-worker-state
+  cancel-in-progress: false
+
+jobs:
+  fire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore NotebookLM auth
+        if: ${{ inputs.dry_run == false }}
+        env:
+          NOTEBOOKLM_MASTER_TOKEN: ${{ secrets.NOTEBOOKLM_MASTER_TOKEN }}
+          NOTEBOOKLM_AUTH_JSON: ${{ secrets.NOTEBOOKLM_AUTH_JSON }}
+        run: |
+          # Capture then unset: the CLI refuses to run `login` while
+          # NOTEBOOKLM_AUTH_JSON is set, and that env fast-path would also
+          # shadow the file cookies the master token mints.
+          MASTER="$NOTEBOOKLM_MASTER_TOKEN"
+          SNAPSHOT="$NOTEBOOKLM_AUTH_JSON"
+          unset NOTEBOOKLM_MASTER_TOKEN NOTEBOOKLM_AUTH_JSON
+          DIR="$HOME/.notebooklm/profiles/${{ inputs.profile }}"
+          mkdir -p "$DIR"
+          if [ -n "$MASTER" ]; then
+            printf '%s' "$MASTER" > "$DIR/master_token.json"
+            chmod 600 "$DIR/master_token.json"
+            notebooklm -p "${{ inputs.profile }}" login --master-token-refresh
+            echo "Master-token auth active (self-healing)."
+          elif [ -n "$SNAPSHOT" ]; then
+            printf '%s' "$SNAPSHOT" > "$DIR/storage_state.json"
+            chmod 600 "$DIR/storage_state.json"
+            echo "Cookie-snapshot auth active (may expire)."
+          else
+            echo "No NotebookLM auth configured." >&2
+            exit 1
+          fi
+
+      - name: Fire
+        run: |
+          ARGS=""
+          for u in ${{ inputs.units }}; do ARGS="$ARGS --unit $u"; done
+          python src/fire.py \
+            --syllabus "${{ inputs.syllabus }}" \
+            --profile "${{ inputs.profile }}" \
+            --minutes "${{ inputs.minutes }}" \
+            --style "${{ inputs.style }}" \
+            $ARGS \
+            ${{ inputs.dry_run == true && '--dry-run' || '' }}
+
+      - name: Upload prompts for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: prompts
+          path: build/**/video-prompt.txt
+          if-no-files-found: warn
+
+      - name: Commit manifest
+        if: ${{ inputs.dry_run == false }}
+        run: |
+          git config user.name "video-worker-bot"
+          git config user.email "video-worker-bot@users.noreply.github.com"
+          git add state/ || true
+          if git diff --cached --quiet; then echo "No state change."; exit 0; fi
+          git commit -m "fire: start generation ($(date -u +%FT%TZ))"
+          for attempt in 1 2 3 4 5; do
+            git push origin HEAD:"${GITHUB_REF_NAME}" && exit 0
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase "origin/${GITHUB_REF_NAME}" || {
+              git checkout --theirs -- state/manifest.json 2>/dev/null || true
+              git add state/
+              GIT_EDITOR=true git rebase --continue || git rebase --abort
+            }
+            sleep $((RANDOM % 4 + 2))
+          done
+          echo "Failed to push manifest." >&2; exit 1

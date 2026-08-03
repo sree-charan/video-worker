@@ -1,0 +1,6 @@
+# Pinned to the same verified commit infographic-worker uses, for the Gemini
+# Notebook rebrand fixes and master-token headless auth.
+# [headless] pulls gpsoauth so CI can mint cookies without a browser.
+notebooklm-py[headless] @ git+https://github.com/teng-lin/notebooklm-py@2ba6c313
+PyYAML>=6,<7
+faster-whisper>=1.0,<2

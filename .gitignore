@@ -1,0 +1,20 @@
+# Build output: videos, transcripts, frames. Never committed - a few hundred
+# lectures would blow past GitHub's repo size limits. These leave the pipeline
+# as workflow artifacts and get uploaded to Drive/R2 by the publish stage.
+build/
+*.mp4
+*.mkv
+*.webm
+
+# Auth material. Must only ever live in repo secrets.
+master_token.json
+storage_state.json
+.notebooklm/
+
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pdfenv/
+.DS_Store
+units.txt
