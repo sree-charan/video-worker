@@ -217,7 +217,7 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-03T06:03:42Z",
+      "updated_at": "2026-08-03T06:15:59Z",
       "watermark": {
         "bottom_right_box": {
           "h": 26,
@@ -230,7 +230,7 @@
             "end": 22.5,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 0.0
+            "start": 4.2
           },
           {
             "end": 43.4,
@@ -299,7 +299,7 @@
             "start": 628.7
           },
           {
-            "end": 706.1,
+            "end": 706.2,
             "light_logo": false,
             "plate": "0xFCFCFC",
             "start": 635.0
