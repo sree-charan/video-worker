@@ -51,8 +51,12 @@ on:
 permissions:
   contents: write
 
+# Per-unit, so five units can be postprocessed in parallel instead of serially -
+# 'preset slow' on five 12-minute videos is far too long to run one at a time.
+# They all commit the manifest at the end, which is what the rebase-and-retry push
+# loop in that step exists to handle.
 concurrency:
-  group: video-worker-state
+  group: video-worker-collect-${{ inputs.units || 'all' }}
   cancel-in-progress: false
 
 jobs:
