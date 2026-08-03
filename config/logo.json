@@ -1,10 +1,14 @@
 {
-  "_comment": "NotebookLM watermark box, measured from real explainer frames (1600x900 and 1600x916 samples). Stored NORMALISED (fractions of frame width/height) so it holds at any output resolution. The mark is the bottom-right 'NotebookLM' wordmark plus its icon; measured bbox was x=1384 y=830 w=156 h=16 at 1600x900, aspect 9.75:1, sitting on a near-white background (level 254). Values below add a small pad so anti-aliased edges are fully covered.",
-  "x": 0.8605,
-  "y": 0.9160,
-  "w": 0.1075,
-  "h": 0.0300,
-  "plate": "white",
+  "_comment": "NotebookLM watermark box, measured from the two supplied explainer frames. Stored NORMALISED (fractions of frame size) so it survives a change in render resolution. Vertical extent comes from nblm2, where the mark is isolated on white (bbox x=1384..1539 y=830..845 at 1600x900). Horizontal is a generous union with nblm1, whose mark reaches 0.9725 - the two frames are at slightly different scales (916 vs 900 tall). Left edge is held at 0.8625: in nblm1 the word 'goals' ends at 0.8606 and the mark starts at 0.8650, so this is the only safe gap. The box extends ~2.6% below the mark into empty background, because the GCTC logo is 5:1 against the mark's 9.75:1 and would otherwise render at half legible size.",
+
+  "x": 0.8625,
+  "y": 0.9162,
+  "w": 0.1135,
+  "h": 0.0487,
+
+  "_plate_comment": "Opaque fill drawn before the logo, needed because the GCTC logo has a transparent background and the mark would otherwise show through. Backgrounds measured 254 (nblm2, white) and 247 (nblm1, faint grid), so 0xFBFBFB blends with both. On the grid background this does erase the grid inside the box - see README.",
+  "plate": "0xFBFBFB",
+
   "fit": "contain",
   "align": "right"
 }
