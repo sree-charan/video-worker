@@ -645,8 +645,14 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u3/thumb.jpg",
       "unit": "u3",
-      "updated_at": "2026-08-03T05:35:02Z",
+      "updated_at": "2026-08-03T06:03:28Z",
       "watermark": {
+        "bottom_right_box": {
+          "h": 26,
+          "w": 138,
+          "x": 1100,
+          "y": 657
+        },
         "bottom_right_segments": [
           {
             "end": 16.8,
@@ -655,7 +661,7 @@
             "start": 0.0
           },
           {
-            "end": 43.7,
+            "end": 43.8,
             "light_logo": true,
             "plate": "0x0060FC",
             "start": 16.8
@@ -664,7 +670,7 @@
             "end": 65.5,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 43.7
+            "start": 43.8
           },
           {
             "end": 100.4,
@@ -691,31 +697,31 @@
             "start": 164.5
           },
           {
-            "end": 222.1,
+            "end": 222.2,
             "light_logo": true,
             "plate": "0x0060FC",
             "start": 196.5
           },
           {
-            "end": 245.6,
+            "end": 245.7,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 222.1
+            "start": 222.2
           },
           {
-            "end": 272.1,
+            "end": 272.2,
             "light_logo": true,
             "plate": "0x0060FC",
-            "start": 245.6
+            "start": 245.7
           },
           {
             "end": 308.5,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 272.1
+            "start": 272.2
           },
           {
-            "end": 332.0,
+            "end": 332.1,
             "light_logo": true,
             "plate": "0x0060FC",
             "start": 308.5
@@ -724,7 +730,7 @@
             "end": 356.9,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 332.0
+            "start": 332.1
           },
           {
             "end": 379.3,
@@ -733,7 +739,7 @@
             "start": 356.9
           },
           {
-            "end": 404.3,
+            "end": 404.4,
             "light_logo": false,
             "plate": "0xFCFCFC",
             "start": 379.3
@@ -742,7 +748,7 @@
             "end": 424.7,
             "light_logo": true,
             "plate": "0x0060FC",
-            "start": 404.3
+            "start": 404.4
           },
           {
             "end": 449.4,
@@ -751,7 +757,7 @@
             "start": 424.7
           },
           {
-            "end": 560.9,
+            "end": 561.0,
             "light_logo": true,
             "plate": "0x0060FC",
             "start": 449.4
@@ -760,10 +766,10 @@
             "end": 587.3,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 560.9
+            "start": 561.0
           },
           {
-            "end": 617.0,
+            "end": 617.1,
             "light_logo": true,
             "plate": "0x0060FC",
             "start": 587.3
@@ -772,10 +778,10 @@
             "end": 654.0,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 617.0
+            "start": 617.1
           },
           {
-            "end": 690.2,
+            "end": 690.3,
             "light_logo": true,
             "plate": "0x0060FC",
             "start": 654.0
@@ -784,15 +790,17 @@
             "end": 746.3,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 690.2
-          },
-          {
-            "end": 748.3,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 746.3
+            "start": 690.3
           }
         ],
+        "centre_top_box": {
+          "frames_agreeing": 23,
+          "frames_sampled": 50,
+          "h": 0.04777777777777778,
+          "w": 0.152625,
+          "x": 0.415875,
+          "y": 0.056666666666666664
+        },
         "centre_top_segments": [
           {
             "end": 16.79,
@@ -806,6 +814,11 @@
           16.75
         ],
         "clamped_to_slide_cut": 16.792,
+        "encode": {
+          "crf": "16",
+          "preset": "slow",
+          "tune": "stillimage"
+        },
         "outro_cut_at": 746.25
       }
     },
