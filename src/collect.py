@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -83,30 +84,56 @@ def collect_unit(syl: dict, unit: dict, rec: dict, retry_failed: bool) -> str:
     return f"downloaded ({size_mb:.1f} MB)"
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser(description="Poll and download finished video overviews.")
-    ap.add_argument("--syllabus", required=True)
-    ap.add_argument("--unit", action="append", default=[])
-    ap.add_argument("--retry-failed", action="store_true",
-                    help="issue an in-place retry for upstream failures")
-    a = ap.parse_args()
-
-    syl = load_syllabus(a.syllabus)
+def collect_once(syl: dict, units: list[dict], retry_failed: bool) -> int:
+    """One pass. Returns how many units are still generating."""
     subject_id = syl["subject"]["id"]
     manifest = read_manifest()
-
-    units = [unit_by_id(syl, u) for u in a.unit] if a.unit else syl["units"]
     pending = 0
     for u in units:
         rec = manifest["units"].get(f"{subject_id}/{u['id']}", {})
         if rec.get("state") in ("postprocessed", "published"):
             continue
-        result = collect_unit(syl, u, rec, a.retry_failed)
+        result = collect_unit(syl, u, rec, retry_failed)
         log(f"unit {u['n']} ({u['id']}): {result}")
         if result.startswith("still") or result == "retried":
             pending += 1
+    return pending
 
-    log(f"{pending} unit(s) still generating")
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description="Poll and download finished video overviews.")
+    ap.add_argument("--syllabus", required=True)
+    ap.add_argument("--unit", action="append", default=[])
+    ap.add_argument("--retry-failed", action="store_true",
+                    help="issue an in-place retry for upstream generation failures")
+    ap.add_argument("--watch-minutes", type=int, default=0,
+                    help="keep polling for up to this long instead of exiting "
+                         "after one pass (0 = single pass)")
+    ap.add_argument("--interval", type=int, default=180,
+                    help="seconds between passes in watch mode")
+    a = ap.parse_args()
+
+    syl = load_syllabus(a.syllabus)
+    units = [unit_by_id(syl, u) for u in a.unit] if a.unit else syl["units"]
+
+    pending = collect_once(syl, units, a.retry_failed)
+    if not a.watch_minutes or not pending:
+        log(f"{pending} unit(s) still generating")
+        return
+
+    # Watch mode exists because GitHub's cron is best-effort: a */20 schedule on
+    # a fresh repository produced no runs at all in the first hour. Polling
+    # inside one job removes that dependency. A poll costs seconds, so the job is
+    # almost entirely sleeping, and standard-runner minutes are free on a public
+    # repository.
+    deadline = time.monotonic() + a.watch_minutes * 60
+    while pending and time.monotonic() < deadline:
+        remaining = int(deadline - time.monotonic())
+        log(f"{pending} pending; sleeping {a.interval}s ({remaining}s of watch left)")
+        time.sleep(min(a.interval, max(remaining, 1)))
+        pending = collect_once(syl, units, a.retry_failed)
+
+    log(f"watch finished with {pending} unit(s) still generating")
 
 
 if __name__ == "__main__":

@@ -9,6 +9,9 @@ name: Collect and postprocess
 # by the publish stage.
 
 on:
+  # Best-effort safety net only. GitHub's scheduler is not dependable: a */20
+  # schedule on this repository produced zero runs in its first hour. The job
+  # itself polls (see watch_minutes), so a missed tick delays nothing.
   schedule:
     - cron: "*/20 * * * *"
   workflow_dispatch:
@@ -35,6 +38,10 @@ on:
         required: false
         default: false
         type: boolean
+      watch_minutes:
+        description: "Keep polling in-job for up to this many minutes (0 = single pass)"
+        required: false
+        default: "45"
 
 permissions:
   contents: write
@@ -88,6 +95,7 @@ jobs:
           ARGS=""
           for u in ${{ inputs.units }}; do ARGS="$ARGS --unit $u"; done
           python src/collect.py --syllabus "$SYL" $ARGS \
+            --watch-minutes "${{ inputs.watch_minutes || 45 }}" --interval 180 \
             ${{ inputs.retry_failed == true && '--retry-failed' || '' }}
 
       - name: Postprocess anything downloaded
