@@ -179,7 +179,7 @@ def fill_gaps(syl: dict, unit: dict, nb: str, profile: str | None,
 
 
 def build_spec(syl: dict, unit: dict, nb: str, profile: str | None,
-               minutes: int, deep_research: bool, outdir: Path) -> dict:
+               minutes: int, research: str, outdir: Path) -> dict:
     """Rounds 1-3. Each round's raw text is cached in the manifest."""
     sid = syl["subject"]["id"]
     rec = get_record(sid, unit["id"])
@@ -209,6 +209,9 @@ def build_spec(syl: dict, unit: dict, nb: str, profile: str | None,
             log("  corrective re-ask did not improve; keeping the first answer")
         record(sid, unit["id"], round1_retried=True)
 
+    if not r1["notes_present"] and research == "none":
+        log("  WARNING the course file has no real notes for this unit and research "
+            "is off; the video will lean on the model's own knowledge")
     log(f"  {len(r1['sections'])} sections, {len(r1['terms'])} locked terms, "
         f"notes_present={r1['notes_present']}, {len(r1['missing'])} gap(s)")
     for h in r1["sections"]:
@@ -222,11 +225,16 @@ def build_spec(syl: dict, unit: dict, nb: str, profile: str | None,
     record(sid, unit["id"], section_warning=bool(residual))
 
     # ---- optional: repair a thin course file ------------------------------
-    needs_research = (not r1["notes_present"]) or len(r1["missing"]) >= 2
+    # Research is opt-in. It imports third-party documents into the notebook, and
+    # one of those (another college's course material) had its artwork appear in a
+    # generated video. When it is off, gaps are still handled - the video prompt
+    # carries a REQUIRED ADDITIONAL COVERAGE block for them.
+    needs_research = (research != "none"
+                      and ((not r1["notes_present"]) or len(r1["missing"]) >= 2))
     if needs_research and not rec.get("gaps_filled"):
         targets = r1["missing"] or [unit["title"]]
         try:
-            fill_gaps(syl, unit, nb, profile, targets, deep_research)
+            fill_gaps(syl, unit, nb, profile, targets, research == "deep")
             # Structure may improve once real sources exist, so re-ask round 1.
             r1_raw = ask(P.round1_prompt(syl, unit), nb, profile,
                          "1/3 structure (post-research)", outdir, "1-postresearch")
@@ -318,7 +326,7 @@ def anchor_for(heading: str) -> str:
 
 
 def fire(syl: dict, unit: dict, profile: str | None, minutes: int, style: str,
-         deep_research: bool, dry_run: bool, keep_research: bool = False) -> None:
+         research: str, dry_run: bool, keep_research: bool = False) -> None:
     sid = syl["subject"]["id"]
     rec = get_record(sid, unit["id"])
     if rec.get("artifact_id") and rec.get("state") != "failed":
@@ -352,7 +360,13 @@ def fire(syl: dict, unit: dict, profile: str | None, minutes: int, style: str,
     nb = ensure_notebook(syl, unit, profile)
     ensure_source(syl, unit, nb, profile)
     prune_sources(syl, unit, nb, profile, keep_research)
-    spec = build_spec(syl, unit, nb, profile, minutes, deep_research, outdir)
+    spec = build_spec(syl, unit, nb, profile, minutes, research, outdir)
+
+    # Prune again. Research runs during planning, so anything it imported is
+    # still attached at this point. Its findings already live in the spec text
+    # below, which is what the video is steered by - the documents themselves
+    # only add a risk of borrowed imagery.
+    prune_sources(syl, unit, nb, profile, keep_research)
 
     prior = prior_coverage(syl, unit)
     if unit["n"] > 1:
@@ -402,8 +416,10 @@ def main() -> None:
     ap.add_argument("--profile", default=None)
     ap.add_argument("--minutes", type=int, default=12)
     ap.add_argument("--style", default="classic")
-    ap.add_argument("--deep-research", action="store_true",
-                    help="use deep (not fast) research when filling course-file gaps")
+    ap.add_argument("--research", choices=("none", "fast", "deep"), default="none",
+                    help="import web sources to fill syllabus gaps. Off by default: "
+                         "imported documents belong to third parties and their "
+                         "imagery has leaked into a generated video")
     ap.add_argument("--keep-research", action="store_true",
                     help="do not prune web sources imported by Deep Research")
     ap.add_argument("--dry-run", action="store_true")
@@ -416,7 +432,7 @@ def main() -> None:
     for u in units:
         log(f"=== unit {u['n']} ({u['id']}): {u['title']}")
         try:
-            fire(syl, u, a.profile, a.minutes, a.style, a.deep_research, a.dry_run,
+            fire(syl, u, a.profile, a.minutes, a.style, a.research, a.dry_run,
                  a.keep_research)
         except (CliError, SystemExit) as e:
             failures += 1
