@@ -177,10 +177,14 @@ def round2_prompt(unit: dict, sections: list[str], example: str) -> str:
 # =========================================================================
 
 ROUND3 = """\
-Audit the lecture plan for UNIT-{n} below before it is turned into a {minutes}
-minute video. Be strict. Your job is to catch weakness, not to be agreeable.
+Audit the UNIT-{n} lecture plan you produced in this conversation, before it is
+turned into a {minutes} minute video. Be strict. Your job is to catch weakness,
+not to be agreeable.
 
-{plan}
+The plan's sections, which you must keep referring to by these exact headings:
+{headings}
+
+Use the DEF, MECH, SPEC and STEP lines you already gave for each of them.
 
 Syllabus scope this plan must fully cover:
 {topics}
@@ -200,7 +204,7 @@ CHECK 4 - Weight. Sections that later sections depend on deserve more time.
 Then answer using ONLY these line formats:
 
 TOTAL | {seconds}
-SECTION | <k> | <heading, copied EXACTLY from the plan above, unchanged> | <seconds>
+SECTION | <k> | <heading, copied EXACTLY from the list above, unchanged> | <seconds>
 POINT | <k> | <one sentence that must be said in this section>
   Two to four POINT lines per section. Each must carry new information.
 SPEC | <k> | <the concrete specific from the book to state on screen, or NONE>
@@ -211,15 +215,29 @@ You may renumber sections after merging, but you may NOT reword any heading.
 No preamble, no commentary, no closing summary.
 """
 
+# The chat endpoint rejects over-long questions ("status 3"). Round 1 at ~2.7k
+# characters is accepted; round 3 embedding rounds 1-2 verbatim at ~9.9k is not.
+# Rounds therefore lean on conversation continuity instead of re-sending the
+# plan, and this cap is enforced before spending the call.
+MAX_PROMPT_CHARS = 6000
 
-def round3_prompt(unit: dict, plan_text: str, minutes: int) -> str:
-    return ROUND3.format(
-        n=unit["n"],
-        minutes=minutes,
-        seconds=minutes * 60,
-        plan=plan_text.strip(),
-        topics=bullets(unit["topics"]),
+
+def round3_prompt(unit: dict, headings: list[str], minutes: int) -> str:
+    topics = bullets(unit["topics"])
+    listing = "\n".join(f"  {i + 1}. {h}" for i, h in enumerate(headings))
+    prompt = ROUND3.format(
+        n=unit["n"], minutes=minutes, seconds=minutes * 60,
+        headings=listing, topics=topics,
     )
+    if len(prompt) > MAX_PROMPT_CHARS:
+        # Topic list is the only expendable part; the headings and the protocol
+        # are both load-bearing.
+        keep = MAX_PROMPT_CHARS - (len(prompt) - len(topics))
+        prompt = ROUND3.format(
+            n=unit["n"], minutes=minutes, seconds=minutes * 60,
+            headings=listing, topics=topics[:max(keep, 200)].rstrip() + "\n  - ...",
+        )
+    return prompt
 
 
 # =========================================================================

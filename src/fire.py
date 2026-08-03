@@ -100,6 +100,9 @@ def ask(prompt: str, nb: str, profile: str | None, label: str,
     pf = outdir / f"prompt-{slot}.txt"
     pf.write_text(prompt, encoding="utf-8")
     log(f"chat round: {label} ({len(prompt)} chars -> {pf.name})")
+    if len(prompt) > P.MAX_PROMPT_CHARS:
+        log(f"  WARNING prompt exceeds {P.MAX_PROMPT_CHARS} chars; the chat "
+            "endpoint rejects over-long questions")
     out = nlm_retry("ask", "--prompt-file", str(pf), "-n", nb, "--json",
                     profile=profile, timeout=900)
     text = dig(out, "answer", "response", "text", "content") or ""
@@ -196,7 +199,9 @@ def build_spec(syl: dict, unit: dict, nb: str, profile: str | None,
     # ---- round 3: audit + time budget ------------------------------------
     r3_raw = rec.get("round3")
     if not r3_raw:
-        r3_raw = ask(P.round3_prompt(unit, P.plan_text(r1["sections"], r2_raw), minutes),
+        # Round 3 relies on this conversation already containing rounds 1-2:
+        # re-sending them pushed the question past the server's size limit.
+        r3_raw = ask(P.round3_prompt(unit, r1["sections"], minutes),
                      nb, profile, "3/3 scrutiny and time budget", outdir, "3-scrutiny")
         record(sid, unit["id"], round3=r3_raw)
 
