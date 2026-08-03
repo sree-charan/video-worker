@@ -88,12 +88,24 @@ def ensure_source(syl: dict, unit: dict, nb: str, profile: str | None) -> None:
     record(sid, unit["id"], source_added=True, state="sourced")
 
 
-def ask(prompt: str, nb: str, profile: str | None, label: str) -> str:
-    log(f"chat round: {label}")
-    out = nlm_retry("ask", prompt, "-n", nb, "--json", profile=profile, timeout=900)
+def ask(prompt: str, nb: str, profile: str | None, label: str,
+        outdir: Path, slot: str) -> str:
+    """One chat round, with the prompt passed as a file.
+
+    Round 3 embeds rounds 1 and 2, so the prompt runs to several thousand
+    characters. Passing that as an argv element is fragile and makes any failure
+    unreadable in CI logs; --prompt-file avoids both. The prompt is also kept on
+    disk so a failed round can be inspected in the workflow artifact.
+    """
+    pf = outdir / f"prompt-{slot}.txt"
+    pf.write_text(prompt, encoding="utf-8")
+    log(f"chat round: {label} ({len(prompt)} chars -> {pf.name})")
+    out = nlm_retry("ask", "--prompt-file", str(pf), "-n", nb, "--json",
+                    profile=profile, timeout=900)
     text = dig(out, "answer", "response", "text", "content") or ""
     if not text.strip():
         raise SystemExit(f"round '{label}' returned an empty answer")
+    (outdir / f"answer-{slot}.txt").write_text(text, encoding="utf-8")
     return text
 
 
@@ -115,7 +127,7 @@ def fill_gaps(syl: dict, unit: dict, nb: str, profile: str | None,
 
 
 def build_spec(syl: dict, unit: dict, nb: str, profile: str | None,
-               minutes: int, deep_research: bool) -> dict:
+               minutes: int, deep_research: bool, outdir: Path) -> dict:
     """Rounds 1-3. Each round's raw text is cached in the manifest."""
     sid = syl["subject"]["id"]
     rec = get_record(sid, unit["id"])
@@ -123,7 +135,8 @@ def build_spec(syl: dict, unit: dict, nb: str, profile: str | None,
     # ---- round 1: verbatim structure -------------------------------------
     r1_raw = rec.get("round1")
     if not r1_raw:
-        r1_raw = ask(P.round1_prompt(syl, unit), nb, profile, "1/3 structure")
+        r1_raw = ask(P.round1_prompt(syl, unit), nb, profile, "1/3 structure",
+                     outdir, "1-structure")
         record(sid, unit["id"], round1=r1_raw)
     r1 = P.parse_round1(r1_raw)
 
@@ -134,7 +147,7 @@ def build_spec(syl: dict, unit: dict, nb: str, profile: str | None,
     if problem and not rec.get("round1_retried"):
         log(f"  round 1 rejected: {problem.splitlines()[0]}")
         retry_raw = ask(P.round1_retry_prompt(unit, problem), nb, profile,
-                        "1/3 structure (corrective re-ask)")
+                        "1/3 structure (corrective re-ask)", outdir, "1-retry")
         retry = P.parse_round1(retry_raw)
         # Only accept the retry if it is actually better.
         if len(retry["sections"]) > len(r1["sections"]) or not P.audit_round1(retry):
@@ -163,7 +176,8 @@ def build_spec(syl: dict, unit: dict, nb: str, profile: str | None,
         try:
             fill_gaps(syl, unit, nb, profile, targets, deep_research)
             # Structure may improve once real sources exist, so re-ask round 1.
-            r1_raw = ask(P.round1_prompt(syl, unit), nb, profile, "1/3 structure (post-research)")
+            r1_raw = ask(P.round1_prompt(syl, unit), nb, profile,
+                         "1/3 structure (post-research)", outdir, "1-postresearch")
             record(sid, unit["id"], round1=r1_raw)
             r1 = P.parse_round1(r1_raw)
             log(f"  after research: {len(r1['sections'])} sections, "
@@ -176,14 +190,14 @@ def build_spec(syl: dict, unit: dict, nb: str, profile: str | None,
     r2_raw = rec.get("round2")
     if not r2_raw:
         r2_raw = ask(P.round2_prompt(unit, r1["sections"], unit["example"]),
-                     nb, profile, "2/3 substance")
+                     nb, profile, "2/3 substance", outdir, "2-substance")
         record(sid, unit["id"], round2=r2_raw)
 
     # ---- round 3: audit + time budget ------------------------------------
     r3_raw = rec.get("round3")
     if not r3_raw:
         r3_raw = ask(P.round3_prompt(unit, P.plan_text(r1["sections"], r2_raw), minutes),
-                     nb, profile, "3/3 scrutiny and time budget")
+                     nb, profile, "3/3 scrutiny and time budget", outdir, "3-scrutiny")
         record(sid, unit["id"], round3=r3_raw)
 
     spec = P.parse_round3(r3_raw, r1["sections"], minutes * 60)
@@ -258,7 +272,7 @@ def fire(syl: dict, unit: dict, profile: str | None, minutes: int, style: str,
 
     nb = ensure_notebook(syl, unit, profile)
     ensure_source(syl, unit, nb, profile)
-    spec = build_spec(syl, unit, nb, profile, minutes, deep_research)
+    spec = build_spec(syl, unit, nb, profile, minutes, deep_research, outdir)
 
     prompt = P.video_prompt(syl, unit, spec, minutes)
     pf = outdir / "video-prompt.txt"

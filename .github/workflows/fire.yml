@@ -102,15 +102,23 @@ jobs:
             ${{ inputs.deep_research == true && '--deep-research' || '' }} \
             ${{ inputs.dry_run == true && '--dry-run' || '' }}
 
-      - name: Upload prompts for review
+      # always(): a failed round must still leave its prompt and answer behind,
+      # otherwise the only record of what the model actually returned is gone.
+      - name: Upload prompts and round answers
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: prompts
-          path: build/**/video-prompt.txt
+          path: |
+            build/**/*.txt
+            build/**/spec.json
           if-no-files-found: warn
 
+      # always(): rounds 1-3 are cached in the manifest, so skipping this on
+      # failure would throw away completed chat rounds and re-spend that quota
+      # on the next attempt.
       - name: Commit manifest
-        if: ${{ inputs.dry_run == false }}
+        if: ${{ always() && inputs.dry_run == false }}
         run: |
           git config user.name "video-worker-bot"
           git config user.email "video-worker-bot@users.noreply.github.com"

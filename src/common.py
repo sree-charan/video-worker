@@ -74,7 +74,12 @@ def get_record(subject_id: str, unit_id: str) -> dict:
 class CliError(RuntimeError):
     def __init__(self, argv: list[str], code: int, out: str, err: str):
         self.argv, self.code, self.out, self.err = argv, code, out, err
-        super().__init__(f"notebooklm {' '.join(argv)} -> exit {code}\n{err.strip()[:800]}")
+        # Arguments can contain a multi-thousand-character prompt. Showing them
+        # in full buries the actual error, which is what happened while
+        # diagnosing round 3, so long arguments are elided here.
+        shown = " ".join(a if len(a) <= 60 else f"<{len(a)} chars>" for a in argv)
+        detail = (err.strip() or out.strip() or "(no output)")[:1200]
+        super().__init__(f"notebooklm {shown} -> exit {code}\n{detail}")
 
     @property
     def rate_limited(self) -> bool:
