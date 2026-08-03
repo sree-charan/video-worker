@@ -99,6 +99,15 @@ jobs:
             ${{ inputs.retry_failed == true && '--retry-failed' || '' }}
 
       - name: Postprocess anything downloaded
+        env:
+          # Cosmetic only: silences the HF Hub rate-limit notice on model
+          # download. ORT_LOGGING_LEVEL trims onnxruntime's device-discovery
+          # warning from the silero VAD; it is emitted by native code so a line
+          # may still slip through, and it is harmless either way.
+          HF_HUB_DISABLE_TELEMETRY: "1"
+          HF_HUB_DISABLE_PROGRESS_BARS: "1"
+          ORT_LOGGING_LEVEL: "3"
+          OMP_NUM_THREADS: "2"
         run: |
           SYL="${{ inputs.syllabus || 'syllabus/oop-java.yml' }}"
           python - "$SYL" <<'PY' > units.txt

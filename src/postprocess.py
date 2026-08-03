@@ -71,38 +71,97 @@ def resolve_box(cfg: dict, width: int, height: int) -> dict:
     return {"x": x, "y": y, "w": w, "h": h}
 
 
-def _cover_chain(tag_in: str, tag_out: str, logo_tag: str, box: dict,
-                 segs: list[dict], align: str, window=None) -> list[str]:
-    """Per-segment plate matching the background, then the logo inside the box.
+def light_variant(logo: Path, dst: Path) -> Path:
+    """A white version of the logo, alpha preserved.
 
-    A saturated segment gets the matching plate plus a small inset white card,
-    so the seam still vanishes while the logo stays legible.
+    Needed for saturated slides: the brand cyan-and-green is unreadable on
+    orange, and a white plate behind it looks like a sticker. Recolouring the
+    glyphs instead keeps the plate matching the background exactly.
+    """
+    from PIL import Image
+
+    im = Image.open(logo).convert("RGBA")
+    r, g, b, a = im.split()
+    white = Image.new("L", im.size, 255)
+    Image.merge("RGBA", (white, white, white, a)).save(dst)
+    return dst
+
+
+def _enable(segs: list[dict], key: str, want: bool) -> str | None:
+    """ffmpeg enable expression covering every segment matching `key == want`.
+
+    between() returns 1 or 0, so summing them ORs the ranges together.
+    """
+    picked = [s for s in segs if bool(s.get(key)) is want]
+    if not picked:
+        return None
+    return "+".join(f"between(t,{s['start']:.2f},{s['end']:.2f})" for s in picked)
+
+
+def _variant_scales(segs: list[dict], box: dict, prefix: str,
+                    ratio: float) -> tuple[list[str], dict]:
+    """Scale filters for only the logo variants this box actually needs.
+
+    Declaring both and using one leaves an unconnected filter output, which
+    ffmpeg rejects outright ("Filter scale:default has an unconnected output").
+
+    Height is a multiple of the plate height so the logo can overhang onto
+    untouched background: the plate stays at the original mark's footprint,
+    which is what keeps it from cutting through artwork behind it.
+    """
+    lh = max(int(box["h"] * ratio) // 2 * 2, 8)
+    steps, tags = [], {}
+    for want, src_idx, suffix in ((False, 1, "d"), (True, 2, "w")):
+        if _enable(segs, "light_logo", want) is None:
+            continue
+        tag = f"{prefix}{suffix}"
+        steps.append(f"[{src_idx}:v]scale=-2:{lh}[{tag}]")
+        tags[want] = tag
+    return steps, tags
+
+
+def _cover_chain(tag_in: str, tag_out: str, tags: dict,
+                 box: dict, segs: list[dict], align: str,
+                 window=None) -> list[str]:
+    """Per-segment plate matching the background, then the right logo variant.
+
+    Two overlays with complementary time gates: the brand-coloured logo over
+    light segments, the white one over saturated segments. No card, no inset -
+    the plate already matches, so only the glyphs need to change.
     """
     x, y, w, h = box["x"], box["y"], box["w"], box["h"]
-    inset = max(int(h * 0.12), 2)
     steps: list[str] = []
     cur = tag_in
     for i, s in enumerate(segs):
-        gate = f"enable='between(t,{s['start']:.2f},{s['end']:.2f})'"
         nxt = f"{tag_out}b{i}"
         steps.append(f"[{cur}]drawbox=x={x}:y={y}:w={w}:h={h}:"
-                     f"color={s['plate']}@1:t=fill:{gate}[{nxt}]")
+                     f"color={s['plate']}@1:t=fill:"
+                     f"enable='between(t,{s['start']:.2f},{s['end']:.2f})'[{nxt}]")
         cur = nxt
-        if s.get("card"):
-            nxt = f"{tag_out}c{i}"
-            steps.append(f"[{cur}]drawbox=x={x + inset}:y={y + inset}:"
-                         f"w={w - 2 * inset}:h={h - 2 * inset}:"
-                         f"color=white@1:t=fill:{gate}[{nxt}]")
-            cur = nxt
-    ox = f"{x}+{w}-overlay_w-{inset}" if align == "right" else f"{x}+({w}-overlay_w)/2"
+
+    # Centred on the plate. Right-aligned boxes keep the right edge flush with
+    # the plate, matching where the original mark sat.
+    ox = f"{x}+{w}-overlay_w" if align == "right" else f"{x}+({w}-overlay_w)/2"
     oy = f"{y}+({h}-overlay_h)/2"
-    enable = (f":enable='between(t,{window[0]:.2f},{window[1]:.2f})'" if window else "")
-    steps.append(f"[{cur}][{logo_tag}]overlay={ox}:{oy}:format=auto{enable}[{tag_out}]")
+
+    for idx, want in enumerate((False, True)):
+        tag = tags.get(want)
+        expr = _enable(segs, "light_logo", want)
+        if not tag or not expr:
+            continue
+        if window:
+            expr = f"({expr})*between(t,{window[0]:.2f},{window[1]:.2f})"
+        nxt = f"{tag_out}o{idx}"
+        steps.append(f"[{cur}][{tag}]overlay={ox}:{oy}:format=auto:"
+                     f"enable='{expr}'[{nxt}]")
+        cur = nxt
+    steps.append(f"[{cur}]null[{tag_out}]")
     return steps
 
 
 def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
-              ff: str = "ffmpeg", trim_outro: bool = True) -> dict:
+              ff: str = "ffmpeg", trim_outro: bool = True,
+              workdir: Path | None = None) -> dict:
     """Replace both NotebookLM marks and cut the trailing end card.
 
     `delogo` is deliberately not used: it blurs a smeared patch rather than
@@ -119,45 +178,48 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
            if trim_outro else None)
     report["outro_cut_at"] = round(cut, 2) if cut else None
 
+    light = light_variant(logo, (workdir or dst.parent) / "logo-light.png")
+
     br = resolve_box(cfg["bottom_right"], W, H)
     br_segs = watermark.segments(watermark.region_series(ff, str(src), br, W, H))
     report["bottom_right_segments"] = [
         {**s, "start": round(s["start"], 1), "end": round(s["end"], 1)} for s in br_segs]
 
-    # Logo inset slightly so it sits inside the card when one is drawn.
-    lw = max(br["w"] - 2 * max(int(br["h"] * 0.12), 2), 8)
-    lh = max(br["h"] - 2 * max(int(br["h"] * 0.12), 2), 6)
-    filters = [f"[1:v]scale={lw}:{lh}:force_original_aspect_ratio=decrease[lgbr]"]
-    filters += _cover_chain("0:v", "v1", "lgbr", br, br_segs,
+    filters, br_tags = _variant_scales(
+        br_segs, br, "lgbr", float(cfg["bottom_right"].get("logo_height_ratio", 1.5)))
+    filters += _cover_chain("0:v", "v1", br_tags, br, br_segs,
                             cfg["bottom_right"].get("align", "right"))
     last = "v1"
 
     # Title-card mark: present only for the opening seconds, and how many is not
-    # fixed, so the window is measured rather than assumed.
+    # fixed, so the window is measured rather than assumed. Sampled at 8fps
+    # because a coarse window overshoots onto the next slide.
     tc_cfg = cfg.get("centre_top")
     if tc_cfg:
         tc = resolve_box(tc_cfg, W, H)
         search = float(tc_cfg.get("search_seconds", 25))
-        tc_bg = watermark.region_series(ff, str(src), tc, W, H, limit=search)
+        fps = 8.0
+        tc_bg = watermark.region_series(ff, str(src), tc, W, H, limit=search, fps=fps)
         window = watermark.detect_presence(
-            watermark.darkness_series(ff, str(src), tc, limit=search),
-            tc_bg, limit=search)
+            watermark.darkness_series(ff, str(src), tc, limit=search, fps=fps),
+            tc_bg, limit=search, step=1.0 / fps)
         report["centre_top_window"] = window
         if window:
             tc_segs = watermark.segments(tc_bg, window=window)
             report["centre_top_segments"] = [
-                {**s, "start": round(s["start"], 1), "end": round(s["end"], 1)}
+                {**s, "start": round(s["start"], 2), "end": round(s["end"], 2)}
                 for s in tc_segs]
-            filters.append(
-                f"[1:v]scale={tc['w']}:{tc['h']}:force_original_aspect_ratio=decrease[lgtc]")
-            filters += _cover_chain(last, "v2", "lgtc", tc, tc_segs,
+            tc_steps, tc_tags = _variant_scales(
+                tc_segs, tc, "lgtc", float(tc_cfg.get("logo_height_ratio", 1.4)))
+            filters += tc_steps
+            filters += _cover_chain(last, "v2", tc_tags, tc, tc_segs,
                                     tc_cfg.get("align", "centre"), window=window)
             last = "v2"
 
     cmd = [ff, "-y"]
     if cut:
         cmd += ["-t", f"{cut:.2f}"]        # applies to both video and audio
-    cmd += ["-i", str(src), "-i", str(logo),
+    cmd += ["-i", str(src), "-i", str(logo), "-i", str(light),
             "-filter_complex", ";".join(filters), "-map", f"[{last}]", "-map", "0:a?",
             "-c:v", "libx264", "-crf", "20", "-preset", "veryfast",
             "-pix_fmt", "yuv420p", "-movflags", "+faststart",
@@ -378,14 +440,15 @@ def main() -> None:
         shutil.copy2(raw, final)
         wm_report = {}
     else:
-        wm_report = swap_logo(raw, final, Path(a.logo), cfg, meta)
+        wm_report = swap_logo(raw, final, Path(a.logo), cfg, meta,
+                              workdir=outdir)
         segs = wm_report.get("bottom_right_segments", [])
-        cards = sum(1 for s in segs if s.get("card"))
+        lights = sum(1 for s in segs if s.get("light_logo"))
         log(f"watermark: bottom-right covered in {len(segs)} background segment(s)"
-            f"{f', {cards} needing a white card (saturated background)' if cards else ''}")
+            f"{f', {lights} using the white logo (saturated background)' if lights else ''}")
         for s in segs:
             log(f"    {s['start']:>6.1f}-{s['end']:<6.1f}s plate={s['plate']}"
-                f"{' (card)' if s.get('card') else ''}")
+                f"{' white-logo' if s.get('light_logo') else ''}")
         win = wm_report.get("centre_top_window")
         log(f"    centre-top mark: {'covered %.1f-%.1fs' % win if win else 'not detected'}")
         cut = wm_report.get("outro_cut_at")

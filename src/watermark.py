@@ -87,7 +87,8 @@ def dominant(pixels: list[tuple[int, int, int]]) -> tuple[int, int, int]:
 
 
 def region_series(ff: str, mp4: str, box: dict, W: int, H: int,
-                  pad_ratio: float = 0.6, limit: float | None = None
+                  pad_ratio: float = 0.6, limit: float | None = None,
+                  fps: float = SAMPLE_FPS
                   ) -> list[tuple[float, tuple[int, int, int]]]:
     """Dominant background colour around a mark, over time.
 
@@ -101,14 +102,15 @@ def region_series(ff: str, mp4: str, box: dict, W: int, H: int,
     cx, cy = max(x - px, 0), max(y - py, 0)
     cw, ch = min(w + 2 * px, W - cx), min(h + 2 * py, H - cy)
     return [(t, dominant(px_list))
-            for t, px_list in _sample_grid(ff, mp4, _crop(cw, ch, cx, cy), limit=limit)]
+            for t, px_list in _sample_grid(ff, mp4, _crop(cw, ch, cx, cy),
+                                           fps=fps, limit=limit)]
 
 
-def darkness_series(ff: str, mp4: str, box: dict,
-                    limit: float | None = None) -> list[tuple[float, float]]:
+def darkness_series(ff: str, mp4: str, box: dict, limit: float | None = None,
+                    fps: float = SAMPLE_FPS) -> list[tuple[float, float]]:
     """Mean luminance inside a box, for detecting whether the mark is present."""
     grid = _sample_grid(ff, mp4, _crop(box["w"], box["h"], box["x"], box["y"]),
-                        limit=limit)
+                        fps=fps, limit=limit)
     return [(t, sum(_lum(p) for p in px) / len(px)) for t, px in grid]
 
 
@@ -121,11 +123,17 @@ def _lum(c: Iterable[int]) -> float:
 
 def detect_presence(box_series: list[tuple[float, float]],
                     bg_series: list[tuple[float, tuple[int, int, int]]],
-                    limit: float, margin: float = 6.0) -> tuple[float, float] | None:
+                    limit: float, margin: float = 6.0,
+                    step: float = 0.125) -> tuple[float, float] | None:
     """Time window in which the box is measurably darker than its background.
 
     Used for the title-card mark, whose duration is not fixed: measuring it per
     video is more robust than hardcoding "the first 8 seconds".
+
+    The end is padded by only one sample step. Padding by a full second left the
+    replacement logo lingering about 0.7s onto the following slide, which is
+    visible. Better to leave a fraction of a frame of the original mark than to
+    stamp our logo over unrelated content.
     """
     hits = [t for (t, boxlum), (_, bgc) in zip(box_series, bg_series)
             if t <= limit and _lum(bgc) - boxlum > margin]
@@ -136,7 +144,7 @@ def detect_presence(box_series: list[tuple[float, float]],
         if t - end > 1.5:      # a lone later hit is unrelated content
             break
         end = t
-    return (max(hits[0] - 0.5, 0.0), end + 1.0)
+    return (max(hits[0] - step, 0.0), end + step)
 
 
 # ------------------------------------------------------------- outro card
@@ -200,15 +208,20 @@ def _saturation(c: tuple[int, int, int]) -> int:
 
 
 def plate_for(colour: tuple[int, int, int]) -> tuple[str, bool]:
-    """Plate colour for a background, and whether the logo needs a card.
+    """Plate colour for a background, and which logo variant to sit on it.
 
-    The plate always matches the background so the seam disappears. A saturated
-    background additionally needs a card, because the cyan-and-green logo is
-    unreadable directly on it.
+    The plate is ALWAYS the dominant colour of that part of the frame, so the
+    seam disappears on every kind of slide - light grey, white or full-bleed
+    orange alike. There is no white card: pasting one onto an orange slide reads
+    as a sticker.
+
+    What changes instead is the logo. On a light background the brand colours
+    are legible as-is; on a dark or saturated one they are not, so a white
+    version of the same logo is used. That is how a broadcast bug behaves.
     """
     hexc = "0x%02X%02X%02X" % colour
-    needs_card = _lum(colour) < 200 or _saturation(colour) > 24
-    return hexc, needs_card
+    light_logo = _lum(colour) < 200 or _saturation(colour) > 24
+    return hexc, light_logo
 
 
 def segments(series: list[tuple[float, tuple[int, int, int]]],
@@ -218,11 +231,11 @@ def segments(series: list[tuple[float, tuple[int, int, int]]],
     for t, colour in series:
         if window and not (window[0] <= t <= window[1]):
             continue
-        plate, card = plate_for(colour)
+        plate, light = plate_for(colour)
         if runs and runs[-1]["plate"] == plate:
             runs[-1]["end"] = t
         else:
-            runs.append({"start": t, "end": t, "plate": plate, "card": card})
+            runs.append({"start": t, "end": t, "plate": plate, "light_logo": light})
 
     merged: list[dict] = []
     for r in runs:
