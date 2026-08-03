@@ -18,8 +18,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import plan as P  # noqa: E402
 from common import (  # noqa: E402
-    BUILD, CliError, dig, get_record, load_syllabus, log, nlm_retry, record,
-    unit_by_id, unit_key,
+    BUILD, CliError, clear, dig, get_record, load_syllabus, log, nlm_retry,
+    record, unit_by_id, unit_key,
 )
 
 STOPWORDS = {
@@ -301,6 +301,9 @@ def fire(syl: dict, unit: dict, profile: str | None, minutes: int, style: str,
         raise SystemExit(f"generate video returned no task id: {out}")
 
     log(f"generation started: task {task}")
+    # Clear the failure fields from earlier attempts, otherwise a unit that
+    # eventually succeeded still reads as failed in the manifest.
+    clear(sid, unit["id"], "error", "section_warning", "heading_drift")
     record(sid, unit["id"], artifact_id=task, state="generating", style=style,
            chapter_labels=labels,
            chapter_anchors=[anchor_for(h) for h in labels],

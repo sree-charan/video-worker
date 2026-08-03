@@ -65,6 +65,17 @@ def record(subject_id: str, unit_id: str, **fields: Any) -> dict:
     return rec
 
 
+def clear(subject_id: str, unit_id: str, *fields: str) -> None:
+    """Drop fields from a unit's record, e.g. a stale error after a later success."""
+    m = read_manifest()
+    rec = m["units"].get(f"{subject_id}/{unit_id}")
+    if not rec:
+        return
+    for f in fields:
+        rec.pop(f, None)
+    write_manifest(m)
+
+
 def get_record(subject_id: str, unit_id: str) -> dict:
     return read_manifest()["units"].get(f"{subject_id}/{unit_id}", {})
 

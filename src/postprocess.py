@@ -26,6 +26,12 @@ from common import BUILD, ROOT, get_record, load_syllabus, log, record, unit_by_
 
 LOGO_CFG = ROOT / "config" / "logo.json"
 
+# Words too common in any lecture to localise a chapter.
+STOPWORDS_NORM = {
+    "the", "a", "an", "and", "or", "of", "to", "in", "for", "with", "its", "it",
+    "is", "are", "this", "that", "on", "as", "by", "be", "we", "you",
+}
+
 
 # ------------------------------------------------------------------ ffmpeg
 
@@ -147,31 +153,84 @@ def write_vtt(segs: list[dict], dst: Path) -> None:
 
 # ---------------------------------------------------------------- chapters
 
+def _norm(text: str) -> str:
+    """Lowercase, punctuation to spaces, whitespace collapsed.
+
+    Needed on both sides of the match: a heading reads "Object-Oriented
+    Programming :" while the narration says "object oriented programming", so a
+    literal search finds nothing and the chapter silently falls back to an even
+    split.
+    """
+    return " ".join(re.sub(r"[^0-9a-z]+", " ", text.lower()).split())
+
+
 def build_chapters(segs: list[dict], labels: list[str], anchors: list[str],
                    duration: int) -> list[dict]:
-    """Align each intended chapter to the first time its anchor is spoken.
+    """Align each chapter to the first moment its heading is actually spoken.
 
-    Falls back to an even split only for chapters whose anchor never appears,
-    and always keeps timestamps strictly increasing so the app's marker strip
-    renders sanely.
+    Strategy per heading, most specific first:
+      1. the whole normalised heading
+      2. progressively shorter leading phrases from it
+      3. its rarest content word
+
+    Rarity beats "longest word": for "String handling" the longest word is
+    "handling", which recurs throughout a Java lecture, while "string" localises
+    it. Only if nothing matches does a chapter fall back to an even split.
     """
-    joined = [(s["start"], s["text"].lower()) for s in segs]
+    timeline = [(s["start"], _norm(s["text"])) for s in segs]
+    corpus = " ".join(t for _, t in timeline)
+
+    def first_hit(needle: str, after: float) -> float | None:
+        if not needle:
+            return None
+        for t, txt in timeline:
+            if t >= after and needle in txt:
+                return t
+        for t, txt in timeline:          # allow going back if nothing ahead
+            if needle in txt:
+                return t
+        return None
+
+    def candidates(heading: str, anchor: str) -> list[str]:
+        toks = [w for w in _norm(heading).split() if w not in STOPWORDS_NORM]
+        out: list[str] = []
+        if len(toks) > 1:
+            out.append(" ".join(toks))                    # full phrase
+            for cut in range(len(toks) - 1, 1, -1):       # shorter phrases
+                out.append(" ".join(toks[:cut]))
+        if toks:
+            # rarest token in the transcript, ignoring absent ones
+            counted = [(corpus.count(t), t) for t in toks]
+            present = [(c, t) for c, t in counted if c > 0]
+            if present:
+                out.append(min(present)[1])
+            out.append(max(toks, key=len))
+        if anchor:
+            out.append(_norm(anchor))
+        seen, uniq = set(), []
+        for c in out:
+            if c and c not in seen:
+                seen.add(c)
+                uniq.append(c)
+        return uniq
+
     pairs = list(zip(labels, anchors)) if len(labels) == len(anchors) else [
-        (l, l) for l in labels
-    ]
+        (l, "") for l in labels]
 
     found: list[dict] = []
     cursor = 0.0
     for label, anchor in pairs:
-        needle = anchor.lower().strip()
-        hit = next((t for t, txt in joined if t >= cursor and needle in txt), None)
-        if hit is None:
-            hit = next((t for t, txt in joined if needle in txt), None)
+        hit = None
+        for cand in candidates(label, anchor):
+            hit = first_hit(cand, cursor)
+            if hit is not None:
+                break
+        found.append({"t": None if hit is None else int(hit), "label": label})
         if hit is not None:
-            found.append({"t": int(hit), "label": label})
             cursor = hit + 1
-        else:
-            found.append({"t": None, "label": label})
+
+    matched = sum(1 for c in found if c["t"] is not None)
+    log(f"chapter alignment: {matched}/{len(found)} located in the transcript")
 
     # Fill gaps and enforce monotonicity.
     out: list[dict] = []

@@ -298,6 +298,7 @@ file by name.
 
 Treat each budget as a target. A section budgeted 120 seconds must not be
 delivered in 30.
+{required}
 
 ## USE THE FULL DURATION
 
@@ -382,6 +383,19 @@ Where this unit builds on an earlier concept, name it in passing and move on.
 """
 
 
+REQUIRED_EXTRA = """
+## REQUIRED ADDITIONAL COVERAGE
+
+These syllabus topics are examinable but the course file does not explain them,
+so no section above owns them:
+{gaps}
+
+Cover each one anyway, folded into whichever section above it belongs to. One or
+two precise sentences each is enough - a correct definition and its mechanism.
+Do not create a separate section for them and do not skip them.
+"""
+
+
 def video_prompt(syl: dict, unit: dict, spec: dict, minutes: int) -> str:
     subj = syl["subject"]
     units = syl["units"]
@@ -410,6 +424,7 @@ def video_prompt(syl: dict, unit: dict, spec: dict, minutes: int) -> str:
             lines.append(f"    - example advances: {s['step']}")
         lines.append("")
 
+    gaps = spec.get("gaps") or []
     return VIDEO.format(
         n=unit["n"],
         total=len(units),
@@ -421,6 +436,8 @@ def video_prompt(syl: dict, unit: dict, spec: dict, minutes: int) -> str:
         headings="\n".join(f'  {s["k"]}. "{s["heading"]}"' for s in spec["sections"]),
         terms=", ".join(spec.get("terms", [])) or "(as printed in the course file)",
         sections="\n".join(lines).strip(),
+        required=(REQUIRED_EXTRA.format(gaps="\n".join(f"  - {g}" for g in gaps))
+                  if gaps else ""),
         continuity=continuity.strip(),
         example=clean(unit["example"]),
         code_rule=CODE_RULE.format(lang=ped["code_language"]) if ped.get("code_language") else "",
@@ -510,12 +527,6 @@ def parse_round3(text: str, fallback_headings: list[str], total_seconds: int) ->
 def _int(v: str, default: int) -> int:
     m = re.search(r"\d+", v or "")
     return int(m.group(0)) if m else default
-
-
-def plan_text(sections: list[str], round2: str) -> str:
-    """Stitch rounds 1 and 2 into the artefact round 3 audits."""
-    listing = "\n".join(f"SECTION | {i + 1} | {s}" for i, s in enumerate(sections))
-    return f"{listing}\n\n{round2.strip()}"
 
 
 def chapter_labels(spec: dict) -> list[str]:
