@@ -1130,7 +1130,7 @@
         },
         {
           "label": "Byte Streams:",
-          "t": 9
+          "t": 189
         },
         {
           "label": "InputStream:",
@@ -1210,12 +1210,12 @@
       "raw_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u5/raw.mp4",
       "raw_size_mb": 35.03,
       "readability": {
-        "flesch_reading_ease": 45.7,
-        "grade_level": 9.6,
+        "flesch_reading_ease": 45.3,
+        "grade_level": 9.5,
         "long_word_pct": 6.4,
-        "sentences": 181,
-        "words": 1967,
-        "words_per_sentence": 10.9
+        "sentences": 188,
+        "words": 1957,
+        "words_per_sentence": 10.4
       },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Byte Streams:\nSECTION | 2 | InputStream:\nSECTION | 3 | OutputStream:\nSECTION | 4 | Character Streams:\nSECTION | 5 | Standard Streams:\nSECTION | 6 | InputStreamReader:\nSECTION | 7 | BufferedReader:\nSECTION | 8 | Files-streams\nSECTION | 9 | FileInputstream:\nSECTION | 10 | FileOutputStream:-\nSECTION | 11 | JDBC ARCHITECTURE\nSECTION | 12 | Types of Drivers:\nSECTION | 13 | JDBC-ODBC bridge driver\nSECTION | 14 | Thin driver\nTERM | Stream\nTERM | Byte Streams\nTERM | InputStream\nTERM | OutputStream\nTERM | Character Streams\nTERM | Reader\nTERM | Writer\nTERM | Standard Streams\nTERM | InputStreamReader\nTERM | BufferedReader\nTERM | File\nTERM | FileInputStream\nTERM | FileOutputStream\nTERM | JDBC\nTERM | JDBC-ODBC bridge driver\nTERM | Native-API driver\nTERM | Network Protocol driver\nTERM | Thin driver\nTERM | DriverManager\nTERM | Statement\nTERM | PreparedStatement\nTERM | CallableStatement\nTERM | ResultSet\nMISSING | random access file operations\nMISSING | Collection framework in Java: introduction to Java collections\nMISSING | overview of the collection framework\nMISSING | generics\nMISSING | commonly used collection classes ArrayList\nMISSING | Vector\nMISSING | Hashtable\nMISSING | Stack\nMISSING | Enumeration\nMISSING | Iterator\nMISSING | StringTokenizer\nMISSING | Random\nMISSING | Scanner\nMISSING | Calendar and Properties",
       "round2": "DEF | 1 | Java byte streams are used to perform input and output of 8-bit bytes.\nMECH | 1 | They read and write data 8 bits at a time between Java applications and external input sources or output destinations.\nSPEC | 1 | FileInputStream and FileOutputStream are the most frequently used byte stream classes.\nSTEP | 1 | Write raw byte data representing BankAccount transactions to an underlying file.\nTHIN | 1 | no\nDEF | 2 | The InputStream class is an abstract class used for reading data such as a byte and array of bytes from an input source.\nMECH | 2 | It defines a standard programming interface for input streams and is automatically opened when created.\nSPEC | 2 | Includes methods read(), read(byte[] r), available(), and close().\nSTEP | 2 | Read raw BankAccount transaction bytes using an InputStream source.\nTHIN | 2 | no\nDEF | 3 | The OutputStream class is used for writing a byte and array of bytes to an output destination.\nMECH | 3 | It opens automatically upon creation and writes bytes to a destination before being closed explicitly or by garbage collection.\nSPEC | 3 | Subclasses include FileOutputStream, ByteArrayOutputStream, FilterOutputStream, and ObjectOutputStream.\nSTEP | 3 | Output BankAccount transaction bytes to a destination stream using OutputStream.\nTHIN | 3 | no\nDEF | 4 | Java Character streams are used to perform input and output for 16-bit Unicode.\nMECH | 4 | They read or write two bytes at a time using Reader and Writer classes to handle character encoding.\nSPEC | 4 | FileReader reads two bytes at a time and FileWriter writes two bytes at a time.\nSTEP | 4 | Write BankAccount transactions to a text file using character streams like FileWriter.\nTHIN | 4 | no\nDEF | 5 | Standard Streams provide standard input and output support where a program takes keyboard input and produces computer screen output.\nMECH | 5 | Java automatically creates three standard stream objects without requiring explicit opening.\nSPEC | 5 | System.in for Standard Input, System.out for Standard Output, and System.err for Standard Error.\nSTEP | 5 | Read BankAccount transaction commands from System.in and display results on System.out.\nTHIN | 5 | no\nDEF | 6 | An InputStreamReader is a bridge from byte streams to character streams that reads bytes and decodes them into Unicode characters according to a particular platform.\nMECH | 6 | It wraps a byte input stream such as System.in and translates incoming bytes into character data.\nSPEC | 6 | Syntax InputStreamReader cin = new InputStreamReader(System.in);.\nSTEP | 6 | Wrap System.in in an InputStreamReader to convert typed BankAccount input into characters.\nTHIN | 6 | no\nDEF | 7 | The BufferedReader class is a subclass of Reader that reads character-input stream data from a memory area known as a buffer.\nMECH | 7 | It converts an unbuffered stream into a buffered stream by maintaining an internal buffer to improve efficiency.\nSPEC | 7 | Method readLine() reads a line of text terminated by a newline or carriage return.\nSTEP | 7 | Read BankAccount text transactions line by line using BufferedReader readLine().\nTHIN | 7 | no\nDEF | 8 | The File class is Java's representation of a file or directory path name in a machine-independent manner.\nMECH | 8 | It represents an abstract pathname without verifying whether the physical file or directory exists on the file system when instantiated.\nSPEC | 8 | Methods include exists(), isFile(), isDirectory(), getName(), length(), and createNewFile().\nSTEP | 8 | Create a File object representing the transaction file to check if the BankAccount text file physically exists.\nTHIN | 8 | no\nDEF | 9 | FileInputStream is a subclass of InputStream class that reads bytes from a specified file name.\nMECH | 9 | Its read method reads byte data sequentially from a file and returns -1 when the end of file is reached.\nSPEC | 9 | Constructor FileInputStream(File filename) throws FileNotFoundException.\nSTEP | 9 | Read BankAccount transaction bytes back from the file using FileInputStream.\nTHIN | 9 | no\nDEF | 10 | FileOutputStream is a subclass of OutputStream that writes data to a specified file name.\nMECH | 10 | It creates a file if it does not exist before opening it and writes byte arrays or single bytes to the file.\nSPEC | 10 | Syntax FileOutputStream fop = new FileOutputStream(f); and method fop.write(str.getBytes()).\nSTEP | 10 | Write transaction byte data for BankAccount to disk using FileOutputStream.\nTHIN | 10 | no\nDEF | 11 | JDBC ARCHITECTURE is a software layer and standard Java API used for executing SQL statements to connect Java applications with databases.\nMECH | 11 | It uses two layers\u2014the JDBC API and the JDBC Driver API\u2014to manage connections, submit queries, and retrieve results.\nSPEC | 11 | Package java.sql contains Connection, Statement, PreparedStatement, ResultSet, and DriverManager.\nSTEP | 11 | Initialize the JDBC ARCHITECTURE layer to prepare database operations for BankAccount.\nTHIN | 11 | no\nDEF | 12 | Types of Drivers are software components categorized into four types that enable Java applications to interact with database servers.\nMECH | 12 | They convert JDBC method calls into database server commands across four distinct architectural implementations.\nSPEC | 12 | Numbered categories: Type 1 JDBC-ODBC bridge driver, Type 2 Native-API driver, Type 3 Network Protocol driver, and Type 4 Thin driver.\nSTEP | 12 | Select a driver from Types of Drivers to facilitate database connectivity for BankAccount transactions.\nTHIN | 12 | no\nDEF | 13 | The JDBC-ODBC bridge driver is a driver that uses an ODBC driver to connect to a database by converting JDBC method calls into ODBC function calls.\nMECH | 13 | It translates JDBC calls into ODBC calls on the client system where an ODBC driver and DSN must be installed.\nSPEC | 13 | Uses driver class sun.jdbc.odbc.JdbcOdbcDriver.\nSTEP | 13 | Test database communication for BankAccount using the JDBC-ODBC bridge driver.\nTHIN | 13 | no\nDEF | 14 | The Thin driver is a pure Java-based driver that converts JDBC calls directly into vendor-specific database protocols.\nMECH | 14 | It connects directly to the database server via sockets without needing intermediate client or server libraries.\nSPEC | 14 | MySQL driver class com.mysql.jdbc.Driver and connection string jdbc:mysql://localhost:3306/sonoo.\nSTEP | 14 | Insert and query BankAccount rows over JDBC using a PreparedStatement and ResultSet via the Thin driver.\nTHIN | 14 | no",
@@ -1243,7 +1243,7 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u5/thumb.jpg",
       "unit": "u5",
-      "updated_at": "2026-08-03T06:02:39Z",
+      "updated_at": "2026-08-03T06:16:17Z",
       "watermark": {
         "bottom_right_box": {
           "h": 18,
@@ -1253,10 +1253,10 @@
         },
         "bottom_right_segments": [
           {
-            "end": 758.8,
+            "end": 758.7,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 0.0
+            "start": 3.9
           }
         ],
         "centre_top_box": {
@@ -1269,7 +1269,7 @@
         },
         "centre_top_segments": [
           {
-            "end": 4.04,
+            "end": 3.92,
             "light_logo": false,
             "plate": "0xFCFCFC",
             "start": 0.0
