@@ -974,12 +974,12 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u4/thumb.jpg",
       "unit": "u4",
-      "updated_at": "2026-08-03T06:30:26Z",
+      "updated_at": "2026-08-03T06:42:09Z",
       "watermark": {
         "bottom_right_box": {
-          "h": 18,
+          "h": 20,
           "w": 130,
-          "x": 1107,
+          "x": 1105,
           "y": 660
         },
         "bottom_right_segments": [
@@ -1065,11 +1065,11 @@
         "centre_top_box": {
           "frames_agreeing": 27,
           "frames_sampled": 50,
-          "h": 0.035555555555555556,
+          "h": 0.041666666666666664,
           "method": "ocr",
-          "w": 0.12825,
-          "x": 0.42337499999999995,
-          "y": 0.060000000000000005
+          "w": 0.14625,
+          "x": 0.42062499999999997,
+          "y": 0.0625
         },
         "centre_top_segments": [
           {
