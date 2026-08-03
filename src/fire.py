@@ -96,10 +96,35 @@ def build_spec(syl: dict, unit: dict, nb: str, profile: str | None,
         r1_raw = ask(P.round1_prompt(syl, unit), nb, profile, "1/3 structure")
         record(sid, unit["id"], round1=r1_raw)
     r1 = P.parse_round1(r1_raw)
+
+    # One corrective re-ask if the model echoed syllabus lines back as headings
+    # or returned too few sections. Costs one chat out of 500/day and prevents a
+    # 12 minute video being spread across three headings.
+    problem = P.audit_round1(r1)
+    if problem and not rec.get("round1_retried"):
+        log(f"  round 1 rejected: {problem.splitlines()[0]}")
+        retry_raw = ask(P.round1_retry_prompt(unit, problem), nb, profile,
+                        "1/3 structure (corrective re-ask)")
+        retry = P.parse_round1(retry_raw)
+        # Only accept the retry if it is actually better.
+        if len(retry["sections"]) > len(r1["sections"]) or not P.audit_round1(retry):
+            r1_raw, r1 = retry_raw, retry
+            record(sid, unit["id"], round1=r1_raw)
+        else:
+            log("  corrective re-ask did not improve; keeping the first answer")
+        record(sid, unit["id"], round1_retried=True)
+
     log(f"  {len(r1['sections'])} sections, {len(r1['terms'])} locked terms, "
         f"notes_present={r1['notes_present']}, {len(r1['missing'])} gap(s)")
+    for h in r1["sections"]:
+        log(f"    - {h}")
     if not r1["sections"]:
         raise SystemExit("round 1 produced no sections; inspect manifest 'round1'")
+    residual = P.audit_round1(r1)
+    if residual:
+        log("  WARNING section granularity still weak after re-ask; "
+            "the video may spend too long on single headings")
+    record(sid, unit["id"], section_warning=bool(residual))
 
     # ---- optional: repair a thin course file ------------------------------
     needs_research = (not r1["notes_present"]) or len(r1["missing"]) >= 2
@@ -181,12 +206,18 @@ def fire(syl: dict, unit: dict, profile: str | None, minutes: int, style: str,
     outdir.mkdir(parents=True, exist_ok=True)
 
     if dry_run:
-        # No quota spent. Round 1 has not run, so headings here are faked from
-        # the syllabus line and will look long; in a real run they are the
-        # book's own short headings ("Member access rules"). This preview is for
-        # reviewing structure and constraints, not final heading text.
-        headings = [s.strip().rstrip(".") for s in
-                    P.clean(unit["topics"]).replace(";", ".").split(".") if s.strip()][:8]
+        # No quota spent. Round 1 has not run, so headings here are approximated
+        # from the syllabus line at roughly the granularity round 1 is asked for.
+        # Real headings come from the book and will be shorter and more specific.
+        raw = P.clean(unit["topics"]).replace(";", ".")
+        headings: list[str] = []
+        for seg in raw.split("."):
+            seg = seg.strip()
+            if not seg:
+                continue
+            headings += ([q.strip() for q in seg.split(",") if q.strip()]
+                         if len(seg.split()) > 12 else [seg])
+        headings = [h for h in headings if h][:P.MAX_SECTIONS]
         per = max(minutes * 60 // max(len(headings), 1), 25)
         spec = {"sections": [{"k": str(i + 1), "heading": h, "points": [],
                               "spec": "", "step": "", "seconds": per}

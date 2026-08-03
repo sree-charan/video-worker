@@ -48,11 +48,19 @@ NOTES_PRESENT | yes or no
   for this unit, not just a topic list.
 
 SECTION | <k> | <heading EXACTLY as printed in the course file>
-  One line per teachable section of this unit, in the order the book presents
-  them. Copy the heading character for character, including its capitalisation
-  and any punctuation. Do not tidy it. Do not translate it. Do not merge two
-  headings. If the book writes "Member access rules", write exactly that.
-  Aim for 6 to 10 sections.
+  One line per teachable section, in the order the book presents them.
+  Return between {lo} and {hi} sections.
+
+  A section is ONE concept, not a list of concepts. The syllabus above is
+  written as long comma-separated lines; those are NOT headings. If a heading
+  you are about to write contains more than two commas, or runs longer than
+  about eight words, you are copying a syllabus line instead of finding the
+  book's own sub-heading. Go into the Detailed notes and use the actual
+  sub-heading printed above that explanation.
+
+  Copy each heading character for character, including capitalisation and
+  punctuation. Do not tidy it, translate it, or merge two headings. If the book
+  writes "Member access rules", write exactly that.
 
 TERM | <technical term EXACTLY as the book spells it>
   One line per term the book introduces in this unit. Use the book's spelling
@@ -64,6 +72,32 @@ MISSING | <syllabus topic that the detailed notes do NOT actually explain>
 Do not output any other line. No preamble, no summary, no commentary.
 """
 
+ROUND1_RETRY = """\
+Your previous answer was rejected.
+
+{problem}
+
+Re-answer using the same line formats. Return between {lo} and {hi} SECTION
+lines, each naming a single concept in eight words or fewer, copied verbatim
+from a sub-heading inside the course file's Detailed notes for UNIT-{n}.
+
+These are examples of the granularity required, for a different unit:
+  SECTION | 1 | Member access rules
+  SECTION | 2 | The Object class and its methods
+  SECTION | 3 | Dynamic binding
+
+These would be rejected, because each is a syllabus line rather than a heading:
+  SECTION | 1 | Inheritance: definition, hierarchies, super and subclasses, member access rules
+  SECTION | 2 | Polymorphism: dynamic binding, method overriding, abstract classes and methods
+"""
+
+# A heading with more commas or words than this is a syllabus line, not a
+# heading the book actually prints above an explanation.
+MAX_HEADING_COMMAS = 2
+MAX_HEADING_WORDS = 10
+MIN_SECTIONS = 6
+MAX_SECTIONS = 14
+
 
 def round1_prompt(syl: dict, unit: dict) -> str:
     return ROUND1.format(
@@ -71,7 +105,38 @@ def round1_prompt(syl: dict, unit: dict) -> str:
         title=unit["title"],
         topics=bullets(unit["topics"]),
         excludes="; ".join(syl["subject"].get("exclude_sections", [])) or "none",
+        lo=MIN_SECTIONS + 2,
+        hi=MAX_SECTIONS,
     )
+
+
+def round1_retry_prompt(unit: dict, problem: str) -> str:
+    return ROUND1_RETRY.format(problem=problem, n=unit["n"],
+                               lo=MIN_SECTIONS + 2, hi=MAX_SECTIONS)
+
+
+def audit_round1(r1: dict) -> str | None:
+    """Return a description of what is wrong with round 1, or None if it passes.
+
+    Guards the specific failure mode where the model echoes the syllabus line
+    back as a heading, which produces two or three enormous sections and hands
+    each of them four minutes of runtime - the exact place padding reappears.
+    """
+    problems = []
+    broad = [h for h in r1["sections"]
+             if h.count(",") > MAX_HEADING_COMMAS or len(h.split()) > MAX_HEADING_WORDS]
+    if len(r1["sections"]) < MIN_SECTIONS:
+        problems.append(
+            f"You returned only {len(r1['sections'])} sections. A 12 minute video "
+            f"needs finer granularity than that."
+        )
+    if broad:
+        problems.append(
+            "These headings are syllabus lines, not headings printed in the book:\n"
+            + "\n".join(f"  - {h}" for h in broad[:4])
+        )
+    return "\n\n".join(problems) if problems else None
+
 
 
 # =========================================================================
@@ -128,7 +193,9 @@ CHECK 3 - Substance. Delete any point that is motivational, definitional
           padding, or a restatement of a point already made.
 CHECK 4 - Weight. Sections that later sections depend on deserve more time.
           Terminal or purely descriptive sections deserve less. The budget must
-          total {seconds} seconds. Give no section less than 25 seconds.
+          total {seconds} seconds. Give no section less than 25 seconds and no
+          section more than 150 seconds - a single heading held for longer than
+          that becomes padding.
 
 Then answer using ONLY these line formats:
 
@@ -445,5 +512,17 @@ def clean(text: str) -> str:
 
 
 def bullets(topics: str) -> str:
+    """Topic list for the prompts, split fine enough to be useful.
+
+    Course-file syllabus lines are long comma-separated runs; splitting only on
+    sentences yields two or three enormous bullets, which invites the model to
+    treat each as one section. Long segments are split again on commas.
+    """
     parts = [p.strip() for p in clean(topics).replace(";", ".").split(".") if p.strip()]
-    return "\n".join(f"  - {p}" for p in parts)
+    fine: list[str] = []
+    for p in parts:
+        if len(p.split()) > 12 and "," in p:
+            fine += [q.strip() for q in p.split(",") if q.strip()]
+        else:
+            fine.append(p)
+    return "\n".join(f"  - {p}" for p in fine)
