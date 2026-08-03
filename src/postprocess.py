@@ -256,12 +256,34 @@ def sample_frames(mp4: Path, outdir: Path, count: int = 4) -> list[Path]:
 
 # ------------------------------------------------------------ transcription
 
-def transcribe(mp4: Path, outdir: Path, model: str = "small") -> list[dict]:
-    """faster-whisper -> word-ish segments. CPU int8 is fine for 10 minutes."""
+def load_whisper(model: str, attempts: int = 5):
+    """Load the model, retrying the download.
+
+    Unauthenticated Hugging Face downloads are rate limited, and a 429 here took
+    down a whole batch after all five videos had already been generated and
+    downloaded. The workflow caches the model between runs so this normally does
+    not touch the network at all; the retry covers a cold cache.
+    """
+    import time as _time
+
     from faster_whisper import WhisperModel
 
+    for i in range(1, attempts + 1):
+        try:
+            return WhisperModel(model, device="cpu", compute_type="int8")
+        except Exception as exc:                       # noqa: BLE001 - hub errors vary
+            if i == attempts:
+                raise
+            delay = 15 * (2 ** (i - 1))
+            log(f"  whisper model load failed ({type(exc).__name__}); "
+                f"retrying in {delay}s ({i}/{attempts - 1})")
+            _time.sleep(delay)
+
+
+def transcribe(mp4: Path, outdir: Path, model: str = "small") -> list[dict]:
+    """faster-whisper -> word-ish segments. CPU int8 is fine for 10 minutes."""
     log(f"transcribing with faster-whisper ({model}, cpu/int8)")
-    wm = WhisperModel(model, device="cpu", compute_type="int8")
+    wm = load_whisper(model)
     segments, _info = wm.transcribe(str(mp4), language="en", vad_filter=True)
 
     segs = [{"start": s.start, "end": s.end, "text": s.text.strip()} for s in segments]

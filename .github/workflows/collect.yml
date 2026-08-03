@@ -67,6 +67,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      # The model is ~500MB and identical every run. Downloading it each time is
+      # what got us rate limited (429) after five videos had already been made.
+      - name: Cache whisper model
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-${{ inputs.whisper_model || 'small' }}-v1
+
       - name: Restore NotebookLM auth
         env:
           NOTEBOOKLM_MASTER_TOKEN: ${{ secrets.NOTEBOOKLM_MASTER_TOKEN }}
@@ -106,6 +114,8 @@ jobs:
           # may still slip through, and it is harmless either way.
           HF_HUB_DISABLE_TELEMETRY: "1"
           HF_HUB_DISABLE_PROGRESS_BARS: "1"
+          # Optional. Raises the Hub rate limit if the cache ever misses.
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
           ORT_LOGGING_LEVEL: "3"
           OMP_NUM_THREADS: "2"
         run: |
@@ -119,12 +129,23 @@ jobs:
           PY
           UNITS=$(cat units.txt)
           if [ -z "$UNITS" ]; then echo "Nothing to postprocess."; exit 0; fi
+          # A failure on one unit must not abandon the rest: they are already
+          # downloaded, and losing them means re-spending download time on the
+          # next pass.
+          FAILED=""
           for u in $UNITS; do
             echo "::group::postprocess $u"
-            python src/postprocess.py --syllabus "$SYL" --unit "$u" \
-              --whisper-model "${{ inputs.whisper_model || 'small' }}"
+            if ! python src/postprocess.py --syllabus "$SYL" --unit "$u" \
+                 --whisper-model "${{ inputs.whisper_model || 'small' }}"; then
+              echo "postprocess failed for $u"
+              FAILED="$FAILED $u"
+            fi
             echo "::endgroup::"
           done
+          if [ -n "$FAILED" ]; then
+            echo "::warning::postprocess failed for:$FAILED"
+            exit 1
+          fi
 
       - name: Upload finished lectures
         uses: actions/upload-artifact@v7
