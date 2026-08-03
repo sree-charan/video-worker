@@ -1,14 +1,22 @@
 {
-  "_comment": "NotebookLM watermark box, measured from the two supplied explainer frames. Stored NORMALISED (fractions of frame size) so it survives a change in render resolution. Vertical extent comes from nblm2, where the mark is isolated on white (bbox x=1384..1539 y=830..845 at 1600x900). Horizontal is a generous union with nblm1, whose mark reaches 0.9725 - the two frames are at slightly different scales (916 vs 900 tall). Left edge is held at 0.8625: in nblm1 the word 'goals' ends at 0.8606 and the mark starts at 0.8650, so this is the only safe gap. The box extends ~2.6% below the mark into empty background, because the GCTC logo is 5:1 against the mark's 9.75:1 and would otherwise render at half legible size.",
+  "_comment": "NotebookLM stamps two marks. Boxes are NORMALISED (fractions of frame size) because render resolution varies: the supplied sample frames were 1600x900 while the real render came back 1280x720. Plate colour is NOT configured here - it is sampled per segment from the frame behind the mark at postprocess time, because the background is (250,250,250) grey for most of the video, pure white on the title and closing cards, and full-bleed orange (253,139,2) on some slides. A fixed white plate is glaringly visible on the orange ones.",
 
-  "x": 0.8625,
-  "y": 0.9162,
-  "w": 0.1135,
-  "h": 0.0487,
+  "bottom_right": {
+    "_comment": "Persistent wordmark, present for the whole video. Measured from two 1600x900 samples: bbox x=1384..1539 y=830..845, aspect 9.75:1. Left edge held at 0.8625 because in one sample the word 'goals' ends at 0.8606 and the mark starts at 0.8650 - the only safe gap. Extends 2.6% below the mark into empty background so the 5:1 GCTC logo renders at legible size instead of half height.",
+    "x": 0.8625,
+    "y": 0.9162,
+    "w": 0.1135,
+    "h": 0.0487,
+    "align": "right"
+  },
 
-  "_plate_comment": "Opaque fill drawn before the logo, needed because the GCTC logo has a transparent background and the mark would otherwise show through. Backgrounds measured 254 (nblm2, white) and 247 (nblm1, faint grid), so 0xFBFBFB blends with both. On the grid background this does erase the grid inside the box - see README.",
-  "plate": "0xFBFBFB",
-
-  "fit": "contain",
-  "align": "right"
+  "centre_top": {
+    "_comment": "Second wordmark on the opening title card only. Measured from the real 1280x720 render: bbox x=543..722 y=99..118, present t=0 to 7s. The window is re-measured per video at postprocess time rather than hardcoded, since intro length is not fixed; search_seconds bounds that search.",
+    "x": 0.4180,
+    "y": 0.1300,
+    "w": 0.1520,
+    "h": 0.0430,
+    "align": "centre",
+    "search_seconds": 25
+  }
 }

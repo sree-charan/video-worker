@@ -22,6 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import watermark  # noqa: E402
 from common import BUILD, ROOT, get_record, load_syllabus, log, record, unit_by_id  # noqa: E402
 
 LOGO_CFG = ROOT / "config" / "logo.json"
@@ -57,53 +58,100 @@ def probe(mp4: Path) -> dict:
 def resolve_box(cfg: dict, width: int, height: int) -> dict:
     """Normalised config -> integer pixel box for this frame size.
 
-    The box is stored as fractions because explainer output is not guaranteed to
-    be one fixed resolution; hardcoded pixels would silently drift if Google
-    changes the render size.
+    The box is stored as fractions because explainer output is not one fixed
+    resolution: the sample frames supplied were 1600x900 while the real render
+    came back 1280x720. Hardcoded pixels would have missed the mark entirely.
     """
     x = int(round(cfg["x"] * width))
     y = int(round(cfg["y"] * height))
     w = int(round(cfg["w"] * width))
     h = int(round(cfg["h"] * height))
-    # Keep the box inside the frame and even-sized, which libx264 prefers.
     w = max(2, min(w - w % 2, width - x))
     h = max(2, min(h - h % 2, height - y))
-    return {"x": x, "y": y, "w": w, "h": h,
-            "plate": cfg.get("plate"), "align": cfg.get("align", "right")}
+    return {"x": x, "y": y, "w": w, "h": h}
 
 
-def swap_logo(src: Path, dst: Path, logo: Path, box: dict) -> None:
-    """Cover the source watermark with our own: same box, no geometry change.
+def _cover_chain(tag_in: str, tag_out: str, logo_tag: str, box: dict,
+                 segs: list[dict], align: str, window=None) -> list[str]:
+    """Per-segment plate matching the background, then the logo inside the box.
 
-    `delogo` is deliberately not used - it blurs a smeared patch rather than
-    replacing the mark. An opaque plate plus an aspect-preserving overlay keeps
-    frame size and aspect identical, which the app's 16:9 thumbnails and the
-    player both assume.
-
-    The GCTC logo is 5:1 while the NotebookLM mark is ~9.75:1, so the logo is
-    fitted inside the box by height rather than stretched to fill it.
+    A saturated segment gets the matching plate plus a small inset white card,
+    so the seam still vanishes while the logo stays legible.
     """
-    w, h, x, y = box["w"], box["h"], box["x"], box["y"]
-    plate = box.get("plate")
-
-    steps = []
-    if plate:
-        steps.append(f"[0:v]drawbox=x={x}:y={y}:w={w}:h={h}:color={plate}@1:t=fill[bg]")
-    else:
-        steps.append("[0:v]null[bg]")
-    # force_original_aspect_ratio=decrease fits inside the box without distortion.
-    steps.append(f"[1:v]scale={w}:{h}:force_original_aspect_ratio=decrease[lg]")
-
-    # Right-align inside the plate, matching where the original mark sat.
-    ox = f"{x}+{w}-overlay_w" if box.get("align") == "right" else f"{x}+({w}-overlay_w)/2"
+    x, y, w, h = box["x"], box["y"], box["w"], box["h"]
+    inset = max(int(h * 0.12), 2)
+    steps: list[str] = []
+    cur = tag_in
+    for i, s in enumerate(segs):
+        gate = f"enable='between(t,{s['start']:.2f},{s['end']:.2f})'"
+        nxt = f"{tag_out}b{i}"
+        steps.append(f"[{cur}]drawbox=x={x}:y={y}:w={w}:h={h}:"
+                     f"color={s['plate']}@1:t=fill:{gate}[{nxt}]")
+        cur = nxt
+        if s.get("card"):
+            nxt = f"{tag_out}c{i}"
+            steps.append(f"[{cur}]drawbox=x={x + inset}:y={y + inset}:"
+                         f"w={w - 2 * inset}:h={h - 2 * inset}:"
+                         f"color=white@1:t=fill:{gate}[{nxt}]")
+            cur = nxt
+    ox = f"{x}+{w}-overlay_w-{inset}" if align == "right" else f"{x}+({w}-overlay_w)/2"
     oy = f"{y}+({h}-overlay_h)/2"
-    steps.append(f"[bg][lg]overlay={ox}:{oy}:format=auto[v]")
+    enable = (f":enable='between(t,{window[0]:.2f},{window[1]:.2f})'" if window else "")
+    steps.append(f"[{cur}][{logo_tag}]overlay={ox}:{oy}:format=auto{enable}[{tag_out}]")
+    return steps
 
-    run(["ffmpeg", "-y", "-i", str(src), "-i", str(logo),
-         "-filter_complex", ";".join(steps), "-map", "[v]", "-map", "0:a?",
+
+def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
+              ff: str = "ffmpeg") -> dict:
+    """Replace both NotebookLM marks, matching the background behind each.
+
+    `delogo` is deliberately not used: it blurs a smeared patch rather than
+    replacing the mark, which looks cheap. Frame geometry is never changed.
+    """
+    W, H = meta["width"], meta["height"]
+    report: dict = {}
+
+    br = resolve_box(cfg["bottom_right"], W, H)
+    br_segs = watermark.segments(watermark.region_series(ff, str(src), br, W, H))
+    report["bottom_right_segments"] = [
+        {**s, "start": round(s["start"], 1), "end": round(s["end"], 1)} for s in br_segs]
+
+    # Logo inset slightly so it sits inside the card when one is drawn.
+    lw = max(br["w"] - 2 * max(int(br["h"] * 0.12), 2), 8)
+    lh = max(br["h"] - 2 * max(int(br["h"] * 0.12), 2), 6)
+    filters = [f"[1:v]scale={lw}:{lh}:force_original_aspect_ratio=decrease[lgbr]"]
+    filters += _cover_chain("0:v", "v1", "lgbr", br, br_segs,
+                            cfg["bottom_right"].get("align", "right"))
+    last = "v1"
+
+    # Title-card mark: present only for the opening seconds, and how many is not
+    # fixed, so the window is measured rather than assumed.
+    tc_cfg = cfg.get("centre_top")
+    if tc_cfg:
+        tc = resolve_box(tc_cfg, W, H)
+        search = float(tc_cfg.get("search_seconds", 25))
+        tc_bg = watermark.region_series(ff, str(src), tc, W, H, limit=search)
+        window = watermark.detect_presence(
+            watermark.darkness_series(ff, str(src), tc, limit=search),
+            tc_bg, limit=search)
+        report["centre_top_window"] = window
+        if window:
+            tc_segs = watermark.segments(tc_bg, window=window)
+            report["centre_top_segments"] = [
+                {**s, "start": round(s["start"], 1), "end": round(s["end"], 1)}
+                for s in tc_segs]
+            filters.append(
+                f"[1:v]scale={tc['w']}:{tc['h']}:force_original_aspect_ratio=decrease[lgtc]")
+            filters += _cover_chain(last, "v2", "lgtc", tc, tc_segs,
+                                    tc_cfg.get("align", "centre"), window=window)
+            last = "v2"
+
+    run([ff, "-y", "-i", str(src), "-i", str(logo),
+         "-filter_complex", ";".join(filters), "-map", f"[{last}]", "-map", "0:a?",
          "-c:v", "libx264", "-crf", "20", "-preset", "veryfast",
          "-pix_fmt", "yuv420p", "-movflags", "+faststart",
          "-c:a", "copy", str(dst)])
+    return report
 
 
 def thumbnail(mp4: Path, dst: Path, at: float) -> None:
@@ -313,14 +361,21 @@ def main() -> None:
 
     final = outdir / "final.mp4"
     cfg = json.loads(LOGO_CFG.read_text(encoding="utf-8")) if LOGO_CFG.exists() else {}
-    if a.skip_logo or not cfg.get("w"):
-        log("watermark box not configured; copying source through unchanged")
+    if a.skip_logo or not cfg.get("bottom_right"):
+        log("watermark boxes not configured; copying source through unchanged")
         shutil.copy2(raw, final)
+        wm_report = {}
     else:
-        box = resolve_box(cfg, meta["width"], meta["height"])
-        log(f"replacing watermark at x={box['x']} y={box['y']} "
-            f"w={box['w']} h={box['h']} (plate={box['plate']})")
-        swap_logo(raw, final, Path(a.logo), box)
+        wm_report = swap_logo(raw, final, Path(a.logo), cfg, meta)
+        segs = wm_report.get("bottom_right_segments", [])
+        cards = sum(1 for s in segs if s.get("card"))
+        log(f"watermark: bottom-right covered in {len(segs)} background segment(s)"
+            f"{f', {cards} needing a white card (saturated background)' if cards else ''}")
+        for s in segs:
+            log(f"    {s['start']:>6.1f}-{s['end']:<6.1f}s plate={s['plate']}"
+                f"{' (card)' if s.get('card') else ''}")
+        win = wm_report.get("centre_top_window")
+        log(f"    centre-top mark: {'covered %.1f-%.1fs' % win if win else 'not detected'}")
 
     segs = transcribe(final, outdir, a.whisper_model)
     write_vtt(segs, outdir / "captions.vtt")
@@ -343,7 +398,8 @@ def main() -> None:
     )
     (outdir / "catalog-entry.json").write_text(json.dumps(entry, indent=2), encoding="utf-8")
 
-    record(subject_id, unit["id"], state="postprocessed",
+    record(subject_id, unit["id"], watermark=wm_report or None,
+           state="postprocessed",
            final_mp4=str(final), duration_sec=meta["duration_sec"],
            chapters=chapters, thumb=str(outdir / "thumb.jpg"),
            captions=str(outdir / "captions.vtt"))
