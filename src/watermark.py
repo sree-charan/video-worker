@@ -341,6 +341,81 @@ def presence_series(ff: str, mp4: str, box: dict, W: int, H: int,
             for (t, bl), (_, bgc) in zip(box_lum, bg)]
 
 
+def _box_masks(ff: str, mp4: str, box: dict, fps: float,
+               limit: float | None, drop: int = 45):
+    """Binary dark-masks of a box over time, each relative to its own background.
+
+    Masking against the frame's own local background makes the mark's footprint
+    identical whether it sits on white, grey or orange, which is what allows one
+    template to match everywhere.
+    """
+    import numpy as np
+
+    w, h = box["w"], box["h"]
+    cmd = [ff, "-v", "error"]
+    if limit:
+        cmd += ["-t", f"{limit:.2f}"]
+    cmd += ["-i", mp4,
+            "-vf", f"fps={fps},{_crop(w, h, box['x'], box['y'])}",
+            "-pix_fmt", "gray", "-f", "rawvideo", "-"]
+    raw = subprocess.run(cmd, capture_output=True, check=True).stdout
+    per = w * h
+    out = []
+    for i in range(len(raw) // per):
+        crop = np.frombuffer(raw[i * per:(i + 1) * per], dtype=np.uint8).reshape(h, w)
+        bg = np.percentile(crop, 85)
+        out.append((i / fps, crop < (bg - drop)))
+    return out
+
+
+def mark_presence(ff: str, mp4: str, box: dict, fps: float = 4.0,
+                  limit: float | None = None,
+                  iou_threshold: float = 0.45) -> list[tuple[float, bool]]:
+    """Whether the wordmark itself is in the box, by matching its shape.
+
+    An earlier version asked only "is this box darker than its surroundings",
+    which any dark artwork satisfies. On the title card a decoration bar 111px
+    tall runs through the bottom-right box, so the mark was reported present and
+    our logo was stamped into a corner NotebookLM leaves empty.
+
+    The wordmark renders identically every time it appears, so a template of its
+    dark footprint is built from the frames that look like it, and each frame is
+    then scored by intersection-over-union against that template. A decoration
+    bar overlaps poorly and is rejected.
+    """
+    import numpy as np
+
+    series = _box_masks(ff, mp4, box, fps, limit)
+    if not series:
+        return []
+
+    h, w = series[0][1].shape
+    # A frame looks like the wordmark if its dark pixels span most of the box
+    # width and a plausible share of its area.
+    candidates = []
+    for _t, m in series:
+        frac = m.mean()
+        if not (0.04 <= frac <= 0.55):
+            continue
+        cols = np.nonzero(m.any(axis=0))[0]
+        if len(cols) and (cols[-1] - cols[0] + 1) >= 0.55 * w:
+            candidates.append(m)
+
+    if not candidates:
+        return [(t, False) for t, _ in series]
+
+    template = (np.mean(np.stack(candidates), axis=0) >= 0.5)
+    if not template.any():
+        return [(t, False) for t, _ in series]
+
+    out = []
+    for t, m in series:
+        inter = np.logical_and(m, template).sum()
+        union = np.logical_or(m, template).sum()
+        out.append((t, bool(union and (inter / union) >= iou_threshold)))
+    return out
+
+
 # ------------------------------------------------------------- segmenting
 
 def _q(c: tuple[int, int, int]) -> tuple[int, int, int]:
@@ -376,12 +451,25 @@ def segments(series: list[tuple[float, tuple[int, int, int]]],
     `presence` restricts the runs to times the mark is actually on screen, so no
     plate is ever drawn over a frame that never had a watermark.
     """
-    present = dict(presence or [])
+    # Presence is sampled coarser than colour (shape matching is heavier), so
+    # each colour sample takes the nearest presence sample rather than requiring
+    # an exact timestamp match.
+    ptimes = [t for t, _ in (presence or [])]
+    pvals = [v for _, v in (presence or [])]
+
+    def _present_at(t: float) -> bool:
+        if not ptimes:
+            return True
+        import bisect
+        i = bisect.bisect_left(ptimes, t)
+        best = min((abs(ptimes[j] - t), j) for j in (i - 1, i, i + 1)
+                   if 0 <= j < len(ptimes))[1]
+        return pvals[best]
     runs: list[dict] = []
     for t, colour in series:
         if window and not (window[0] <= t <= window[1]):
             continue
-        if presence is not None and not present.get(t, False):
+        if presence is not None and not _present_at(t):
             continue
         plate, light = plate_for(colour)
         contiguous = runs and (t - runs[-1]["end"]) <= (1.5 / SAMPLE_FPS)

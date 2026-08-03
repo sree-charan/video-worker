@@ -195,9 +195,11 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
         br = resolve_box(br_cfg["fallback"], W, H)
     report["bottom_right_box"] = br
 
-    br_present = watermark.presence_series(ff, str(src), br, W, H)
+    br_present = watermark.mark_presence(ff, str(src), br, fps=4.0)
     br_segs = watermark.segments(watermark.region_series(ff, str(src), br, W, H),
                                  presence=br_present)
+    if not br_segs:
+        log("  bottom-right mark never matched; nothing will be drawn there")
     covered = sum(1 for _t, p in br_present if p)
     log(f"  bottom-right mark present in {covered}/{len(br_present)} sampled frames")
     report["bottom_right_segments"] = [
@@ -241,8 +243,8 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
                 report["clamped_to_slide_cut"] = round(cuts[0], 3)
         report["centre_top_window"] = window
         if window:
-            tc_present = watermark.presence_series(ff, str(src), tc, W, H,
-                                                   limit=search, fps=fps)
+            tc_present = watermark.mark_presence(ff, str(src), tc, fps=4.0,
+                                                 limit=search)
             tc_segs = watermark.segments(tc_bg, window=window, presence=tc_present)
             report["centre_top_segments"] = [
                 {**s, "start": round(s["start"], 2), "end": round(s["end"], 2)}
