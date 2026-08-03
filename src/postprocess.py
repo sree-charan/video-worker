@@ -194,6 +194,7 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
         log("  bottom-right mark not located; using the configured fallback box")
         br = resolve_box(br_cfg["fallback"], W, H)
     report["bottom_right_box"] = br
+    report["bottom_right_box_norm"] = found_br or br_cfg["fallback"]
 
     br_present = watermark.smooth_presence(
         watermark.presence_any(ff, str(src), br, W, H, MARK_TEMPLATE, fps=1.0),
@@ -268,6 +269,32 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
     preset = str(enc.get("preset", "slow"))
     tune = enc.get("tune") or None
     report["encode"] = {"crf": crf, "preset": preset, "tune": tune}
+
+    # Whole-frame sweep for placements the configured regions do not cover.
+    if cfg.get("discover", True):
+        known = [b for b in (report.get("bottom_right_box_norm"),
+                             report.get("centre_top_box")) if b]
+        extra = watermark.discover_marks(ff, str(src), W, H,
+                                         fps=float(cfg.get("discover_fps", 0.2)),
+                                         known=known)
+        report["discovered"] = extra
+        for b in extra:
+            log(f"  WARNING unhandled NotebookLM mark found at "
+                f"y={b['y']:.4f} x={b['x']:.4f} w={b['w']:.4f} "
+                f"({b['frames_seen']} frames) - covering it")
+        for i, b in enumerate(extra):
+            bx = resolve_box(b, W, H)
+            present = watermark.smooth_presence(
+                watermark.presence_any(ff, str(src), bx, W, H, MARK_TEMPLATE, fps=1.0),
+                max_gap=2.0, extend=1.0)
+            segs = watermark.segments(
+                watermark.region_series(ff, str(src), bx, W, H), presence=present)
+            if not segs:
+                continue
+            steps, tags = _variant_scales(segs, bx, f"lgx{i}", 1.4)
+            filters += steps
+            filters += _cover_chain(last, f"vx{i}", tags, bx, segs, "centre")
+            last = f"vx{i}"
 
     cmd = [ff, "-y"]
     if cut:

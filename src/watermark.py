@@ -574,6 +574,51 @@ def locate_mark_ocr(ff: str, mp4: str, W: int, H: int,
     }
 
 
+def discover_marks(ff: str, mp4: str, W: int, H: int, fps: float = 0.2,
+                   limit: float | None = None, upscale: int = 2,
+                   known: list[dict] | None = None,
+                   overlap_tol: float = 0.04) -> list[dict]:
+    """Sweep the whole frame for the wordmark, anywhere it might appear.
+
+    The two configured regions cover every placement seen so far - bottom right
+    for the whole video, centred above the title on the opening card - but a
+    layout we have not seen would ship NotebookLM branding silently. This sweeps
+    the entire frame at a low rate and reports anything found, so an unknown
+    placement becomes a logged warning and a covered box instead of a surprise in
+    a published lecture.
+
+    Deliberately coarse: a full-frame OCR pass is expensive, and a mark that
+    persists for even a few seconds will be caught at this rate.
+    """
+    from collections import Counter
+
+    import numpy as np
+    from PIL import Image
+
+    frames = _frames_gray(ff, mp4, W, H, limit, fps)
+    votes: Counter = Counter()
+    for _t, fr in frames:
+        img = Image.fromarray(fr.astype(np.uint8)).resize(
+            (W * upscale, H * upscale), Image.LANCZOS)
+        for hit in _ocr_boxes(img, min_conf=45):
+            raw = {"x": hit["x"] / upscale, "y": hit["y"] / upscale,
+                   "w": hit["w"] / upscale, "h": hit["h"] / upscale}
+            ext = refine_extent(fr, raw, W, H)
+            votes[(ext["x"] // 8, ext["y"] // 8, ext["w"] // 8, ext["h"] // 8)] += 1
+
+    out: list[dict] = []
+    for (qx, qy, qw, qh), seen in votes.most_common():
+        x, y, w, h = qx * 8, qy * 8, qw * 8, qh * 8
+        box = {"x": x / W, "y": y / H, "w": w / W, "h": h / H,
+               "frames_seen": seen, "method": "discovery"}
+        # Skip anything already handled by a configured region, and near-duplicates.
+        if any(abs(box["x"] - k["x"]) < overlap_tol and abs(box["y"] - k["y"]) < overlap_tol
+               for k in (known or []) + out):
+            continue
+        out.append(box)
+    return out
+
+
 def presence_ocr(ff: str, mp4: str, box: dict, W: int, H: int,
                  fps: float = 1.0, limit: float | None = None,
                  upscale: int = 3, slack: float = 0.6) -> list[tuple[float, bool]]:

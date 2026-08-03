@@ -35,5 +35,8 @@
     "crf": 16,
     "preset": "slow",
     "tune": "stillimage"
-  }
+  },
+  "discover": true,
+  "discover_fps": 0.2,
+  "_discover_comment": "Whole-frame OCR sweep for placements the two configured regions do not cover. 0.2fps is one frame every five seconds - coarse on purpose, since a full-frame pass is expensive and any mark that persists a few seconds is still caught. Anything found is logged as a warning and covered."
 }
