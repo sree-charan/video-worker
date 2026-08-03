@@ -1,20 +1,39 @@
 {
   "_comment": "NotebookLM stamps a wordmark bottom-right, a second one centred above the title on the opening card, and a full-frame end card. Positions are NOT hardcoded: the title-card mark sits relative to the title block, so it moved from y=100 with a one-line title to y=50 with a two-line one. Across five units a fixed box hit one, missed one entirely, and on a third stamped our logo over the title text while the original stayed visible above it. So only a SEARCH REGION is configured and the mark is measured per video by shape. A mark is also only covered where it is actually present - NotebookLM omits the bottom-right one on the title card when it shows the centred one.",
-
   "bottom_right": {
     "_comment": "search_region is (y0, y1, x0, x1) as fractions. fallback is used only if detection finds nothing, and is the box measured from two 1600x900 samples.",
-    "search_region": [0.86, 1.0, 0.74, 1.0],
+    "search_region": [
+      0.86,
+      1.0,
+      0.74,
+      1.0
+    ],
     "search_seconds": 60,
     "align": "right",
     "logo_height_ratio": 1.5,
-    "fallback": { "x": 0.8625, "y": 0.9178, "w": 0.1025, "h": 0.0244 }
+    "fallback": {
+      "x": 0.8625,
+      "y": 0.9178,
+      "w": 0.1025,
+      "h": 0.0244
+    }
   },
-
   "centre_top": {
     "_comment": "Sits above the title, so its height varies with the number of title lines. Region spans y 3-32% to cover both observed positions.",
-    "search_region": [0.03, 0.32, 0.28, 0.72],
+    "search_region": [
+      0.03,
+      0.32,
+      0.28,
+      0.72
+    ],
     "search_seconds": 25,
     "align": "centre",
     "logo_height_ratio": 1.4
+  },
+  "encode": {
+    "_comment": "Re-encode quality. The overlays force a re-encode, so these settings decide how much of the source survives. crf 20 / veryfast took a 30.8MB source down to 13.6MB - 326kbps to 144kbps - which softens text on slide-heavy content. stillimage is x264's tune for mostly-static frames with sharp edges, which is exactly what these lectures are. Raise crf to trade quality for size, lower the preset to trade encode time for size.",
+    "crf": 16,
+    "preset": "slow",
+    "tune": "stillimage"
   }
 }

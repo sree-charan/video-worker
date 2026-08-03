@@ -254,14 +254,24 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
                                     tc_cfg.get("align", "centre"), window=window)
             last = "v2"
 
+    enc = cfg.get("encode") or {}
+    crf = str(enc.get("crf", 16))
+    preset = str(enc.get("preset", "slow"))
+    tune = enc.get("tune") or None
+    report["encode"] = {"crf": crf, "preset": preset, "tune": tune}
+
     cmd = [ff, "-y"]
     if cut:
         cmd += ["-t", f"{cut:.2f}"]        # applies to both video and audio
     cmd += ["-i", str(src), "-i", str(logo), "-i", str(light),
             "-filter_complex", ";".join(filters), "-map", f"[{last}]", "-map", "0:a?",
-            "-c:v", "libx264", "-crf", "20", "-preset", "veryfast",
-            "-pix_fmt", "yuv420p", "-movflags", "+faststart",
+            "-c:v", "libx264", "-crf", crf, "-preset", preset]
+    if tune:
+        cmd += ["-tune", tune]
+    cmd += ["-pix_fmt", "yuv420p", "-movflags", "+faststart",
             "-c:a", "copy", str(dst)]
+    log(f"  encoding at crf={crf} preset={preset}"
+        + (f" tune={tune}" if tune else ""))
     run(cmd)
     return report
 
@@ -558,7 +568,12 @@ def main() -> None:
     # of metadata downstream (chapters, durationSec, subtitle) must describe the
     # file that actually ships.
     meta = probe(final)
-    log(f"final: {meta['width']}x{meta['height']}, {meta['duration_sec']}s")
+    raw_mb = raw.stat().st_size / 1e6
+    out_mb = final.stat().st_size / 1e6
+    log(f"final: {meta['width']}x{meta['height']}, {meta['duration_sec']}s, "
+        f"{out_mb:.1f} MB from {raw_mb:.1f} MB source "
+        f"({out_mb / raw_mb * 100:.0f}% of source size, "
+        f"{out_mb * 8000 / max(meta['duration_sec'], 1):.0f} kbps)")
 
     segs = transcribe(final, outdir, a.whisper_model)
     write_vtt(segs, outdir / "captions.vtt")
