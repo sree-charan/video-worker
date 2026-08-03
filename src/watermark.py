@@ -139,6 +139,56 @@ def detect_presence(box_series: list[tuple[float, float]],
     return (max(hits[0] - 0.5, 0.0), end + 1.0)
 
 
+# ------------------------------------------------------------- outro card
+
+def detect_outro(ff: str, mp4: str, duration: float, tail: float = 20.0,
+                 fps: float = 2.0, max_outro: float = 8.0) -> float | None:
+    """Start time of the trailing NotebookLM end card, or None.
+
+    The video closes on a full-frame "notebooklm.google.com" card that cannot be
+    patched over - it has to be cut. Its length is not fixed, so it is found by
+    measuring how much each frame in the tail differs from the very last frame:
+    content frames differ a lot and by a constant amount, the animating card
+    differs less, and the settled card differs by nothing. The boundary is the
+    last frame that still looks like content.
+
+    Returns None rather than guessing if the result is implausible, so a video
+    without an end card is never truncated.
+    """
+    start = max(duration - tail, 0.0)
+    cmd = [ff, "-v", "error", "-ss", f"{start:.2f}", "-i", mp4,
+           "-vf", f"fps={fps},scale=160:90", "-pix_fmt", "gray",
+           "-f", "rawvideo", "-"]
+    raw = subprocess.run(cmd, capture_output=True, check=True).stdout
+    per = 160 * 90
+    n = len(raw) // per
+    if n < 4:
+        return None
+
+    frames = [raw[i * per:(i + 1) * per] for i in range(n)]
+    last = frames[-1]
+    diffs = [sum(abs(a - b) for a, b in zip(f, last)) / per for f in frames]
+
+    peak = max(diffs)
+    if peak < 4.0:                      # the whole tail is one static frame
+        return None
+    threshold = max(3.0, peak * 0.25)
+
+    boundary = None
+    for i in range(n - 1, -1, -1):
+        if diffs[i] > threshold:
+            boundary = i
+            break
+    if boundary is None or boundary == n - 1:
+        return None
+
+    cut = start + (boundary + 0.5) / fps
+    outro_len = duration - cut
+    if not (0.3 <= outro_len <= max_outro):
+        return None
+    return cut
+
+
 # ------------------------------------------------------------- segmenting
 
 def _q(c: tuple[int, int, int]) -> tuple[int, int, int]:

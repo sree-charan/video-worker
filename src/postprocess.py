@@ -102,14 +102,22 @@ def _cover_chain(tag_in: str, tag_out: str, logo_tag: str, box: dict,
 
 
 def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
-              ff: str = "ffmpeg") -> dict:
-    """Replace both NotebookLM marks, matching the background behind each.
+              ff: str = "ffmpeg", trim_outro: bool = True) -> dict:
+    """Replace both NotebookLM marks and cut the trailing end card.
 
     `delogo` is deliberately not used: it blurs a smeared patch rather than
     replacing the mark, which looks cheap. Frame geometry is never changed.
+
+    The closing "notebooklm.google.com" card is full-frame branding, so unlike
+    the two wordmarks it cannot be covered - it is trimmed, in this same encode
+    so no extra pass is needed.
     """
     W, H = meta["width"], meta["height"]
     report: dict = {}
+
+    cut = (watermark.detect_outro(ff, str(src), float(meta["duration_sec"]))
+           if trim_outro else None)
+    report["outro_cut_at"] = round(cut, 2) if cut else None
 
     br = resolve_box(cfg["bottom_right"], W, H)
     br_segs = watermark.segments(watermark.region_series(ff, str(src), br, W, H))
@@ -146,11 +154,15 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
                                     tc_cfg.get("align", "centre"), window=window)
             last = "v2"
 
-    run([ff, "-y", "-i", str(src), "-i", str(logo),
-         "-filter_complex", ";".join(filters), "-map", f"[{last}]", "-map", "0:a?",
-         "-c:v", "libx264", "-crf", "20", "-preset", "veryfast",
-         "-pix_fmt", "yuv420p", "-movflags", "+faststart",
-         "-c:a", "copy", str(dst)])
+    cmd = [ff, "-y"]
+    if cut:
+        cmd += ["-t", f"{cut:.2f}"]        # applies to both video and audio
+    cmd += ["-i", str(src), "-i", str(logo),
+            "-filter_complex", ";".join(filters), "-map", f"[{last}]", "-map", "0:a?",
+            "-c:v", "libx264", "-crf", "20", "-preset", "veryfast",
+            "-pix_fmt", "yuv420p", "-movflags", "+faststart",
+            "-c:a", "copy", str(dst)]
+    run(cmd)
     return report
 
 
@@ -376,6 +388,15 @@ def main() -> None:
                 f"{' (card)' if s.get('card') else ''}")
         win = wm_report.get("centre_top_window")
         log(f"    centre-top mark: {'covered %.1f-%.1fs' % win if win else 'not detected'}")
+        cut = wm_report.get("outro_cut_at")
+        log(f"    end card: {'trimmed at %.1fs (cut %.1fs)' % (cut, meta['duration_sec'] - cut)
+                             if cut else 'not detected, nothing trimmed'}")
+
+    # Re-probe after the encode: trimming changed the duration, and every piece
+    # of metadata downstream (chapters, durationSec, subtitle) must describe the
+    # file that actually ships.
+    meta = probe(final)
+    log(f"final: {meta['width']}x{meta['height']}, {meta['duration_sec']}s")
 
     segs = transcribe(final, outdir, a.whisper_model)
     write_vtt(segs, outdir / "captions.vtt")
