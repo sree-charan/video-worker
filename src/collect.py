@@ -14,7 +14,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import (  # noqa: E402
-    BUILD, CliError, load_syllabus, log, nlm, read_manifest, record, unit_by_id,
+    BUILD, CliError, dig, load_syllabus, log, nlm, read_manifest, record,
+    unit_by_id,
 )
 
 TERMINAL_OK = {"completed", "complete", "succeeded", "success", "ready", "done"}
@@ -22,11 +23,10 @@ TERMINAL_BAD = {"failed", "error", "cancelled", "canceled"}
 
 
 def status_of(payload: dict) -> str:
-    for key in ("status", "state", "generation_status"):
-        v = payload.get(key)
-        if isinstance(v, str) and v:
-            return v.lower()
-    if payload.get("done") is True:
+    v = dig(payload, "status", "state", "generation_status")
+    if isinstance(v, str) and v:
+        return v.lower()
+    if dig(payload, "done") is True:
         return "completed"
     return "unknown"
 

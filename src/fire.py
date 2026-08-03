@@ -18,7 +18,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import plan as P  # noqa: E402
 from common import (  # noqa: E402
-    BUILD, CliError, get_record, load_syllabus, log, nlm_retry, record,
+    BUILD, CliError, dig, get_record, load_syllabus, log, nlm_retry, record,
     unit_by_id, unit_key,
 )
 
@@ -30,21 +30,51 @@ STOPWORDS = {
 }
 
 
+def find_notebook_by_title(title: str, profile: str | None) -> str | None:
+    """Look for an existing notebook with this exact title.
+
+    Guards against duplicate notebooks when a run failed after `create` but
+    before the manifest was written - which is precisely what happened on the
+    first real run.
+    """
+    try:
+        payload = nlm_retry("list", "--json", profile=profile)
+    except CliError:
+        return None
+    items = payload if isinstance(payload, list) else (
+        payload.get("notebooks") or payload.get("items") or [])
+    for nb in items:
+        if isinstance(nb, dict) and (nb.get("title") or "").strip() == title.strip():
+            return nb.get("id") or nb.get("notebook_id")
+    return None
+
+
 def ensure_notebook(syl: dict, unit: dict, profile: str | None) -> str:
     sid = syl["subject"]["id"]
     rec = get_record(sid, unit["id"])
     if rec.get("notebook_id"):
         log(f"reusing notebook {rec['notebook_id']}")
         return rec["notebook_id"]
+
     title = f"{syl['subject']['title']} - Unit {unit['n']}: {unit['title']}"
+
+    existing = find_notebook_by_title(title, profile)
+    if existing:
+        log(f"adopting existing notebook {existing} (same title)")
+        record(sid, unit["id"], notebook_id=existing, notebook_title=title,
+               profile=profile, state="notebook")
+        return existing
+
     out = nlm_retry("create", title, "--json", profile=profile)
-    nb = out.get("id") or out.get("notebook_id")
-    if not nb:
-        raise SystemExit(f"create returned no id: {out}")
-    log(f"created notebook {nb}")
-    record(sid, unit["id"], notebook_id=nb, notebook_title=title, profile=profile,
-           state="notebook")
-    return nb
+    nb = dig(out, "id", "notebook_id")
+    # Record before validating: if the id shape is ever unexpected again, the
+    # notebook still exists upstream and must not be orphaned.
+    if nb:
+        record(sid, unit["id"], notebook_id=nb, notebook_title=title,
+               profile=profile, state="notebook")
+        log(f"created notebook {nb}")
+        return nb
+    raise SystemExit(f"create returned no id: {out}")
 
 
 def ensure_source(syl: dict, unit: dict, nb: str, profile: str | None) -> None:
@@ -61,7 +91,7 @@ def ensure_source(syl: dict, unit: dict, nb: str, profile: str | None) -> None:
 def ask(prompt: str, nb: str, profile: str | None, label: str) -> str:
     log(f"chat round: {label}")
     out = nlm_retry("ask", prompt, "-n", nb, "--json", profile=profile, timeout=900)
-    text = out.get("answer") or out.get("response") or out.get("text") or ""
+    text = dig(out, "answer", "response", "text", "content") or ""
     if not text.strip():
         raise SystemExit(f"round '{label}' returned an empty answer")
     return text
@@ -247,7 +277,7 @@ def fire(syl: dict, unit: dict, profile: str | None, minutes: int, style: str,
         "-n", nb, "--no-wait", "--json",
         profile=profile,
     )
-    task = out.get("task_id") or out.get("id") or out.get("artifact_id")
+    task = dig(out, "task_id", "artifact_id", "id")
     if not task:
         raise SystemExit(f"generate video returned no task id: {out}")
 

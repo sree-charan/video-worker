@@ -126,6 +126,28 @@ def nlm_retry(*argv: str, profile: str | None = None, attempts: int = 4,
 
 # ---------------------------------------------------------------- misc
 
+def dig(payload: Any, *keys: str) -> Any:
+    """First value found for any of `keys`, searched breadth-first.
+
+    CLI payload shapes are not flat and not stable across commands: `create`
+    returns {"notebook": {"id": ...}} while `generate` returns a task id at the
+    top level. Searching by key rather than by path means a nested response does
+    not read as a missing field.
+    """
+    queue: list[Any] = [payload]
+    while queue:
+        node = queue.pop(0)
+        if isinstance(node, dict):
+            for k in keys:
+                v = node.get(k)
+                if v not in (None, "", [], {}):
+                    return v
+            queue.extend(node.values())
+        elif isinstance(node, list):
+            queue.extend(node)
+    return None
+
+
 def slug(text: str, limit: int = 60) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")[:limit]
 
