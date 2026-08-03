@@ -1247,33 +1247,34 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u5/thumb.jpg",
       "unit": "u5",
-      "updated_at": "2026-08-03T06:16:17Z",
+      "updated_at": "2026-08-03T06:42:31Z",
       "watermark": {
         "bottom_right_box": {
-          "h": 18,
+          "h": 20,
           "w": 130,
-          "x": 1104,
-          "y": 661
+          "x": 1105,
+          "y": 660
         },
         "bottom_right_segments": [
           {
-            "end": 758.7,
+            "end": 758.5,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 3.9
+            "start": 3.5
           }
         ],
         "centre_top_box": {
           "frames_agreeing": 8,
           "frames_sampled": 50,
-          "h": 0.042222222222222223,
-          "w": 0.152625,
-          "x": 0.415875,
-          "y": 0.056666666666666664
+          "h": 0.041666666666666664,
+          "method": "ocr",
+          "w": 0.14625,
+          "x": 0.42062499999999997,
+          "y": 0.0625
         },
         "centre_top_segments": [
           {
-            "end": 3.92,
+            "end": 3.79,
             "light_logo": false,
             "plate": "0xFCFCFC",
             "start": 0.0
