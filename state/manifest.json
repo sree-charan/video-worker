@@ -2,6 +2,7 @@
   "units": {
     "cse404-java/u1": {
       "artifact_id": "edd58a49-bc78-40dc-bc17-e430961acd74",
+      "captions": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/captions.vtt",
       "chapter_anchors": [
         "object-oriented",
         "history",
@@ -32,7 +33,67 @@
         "Constructors",
         "String handling"
       ],
+      "chapters": [
+        {
+          "label": "Overview",
+          "t": 0
+        },
+        {
+          "label": "Object-Oriented Programming :",
+          "t": 16
+        },
+        {
+          "label": "History of Java",
+          "t": 114
+        },
+        {
+          "label": "Data types:",
+          "t": 170
+        },
+        {
+          "label": "Variables:",
+          "t": 236
+        },
+        {
+          "label": "Constant:",
+          "t": 301
+        },
+        {
+          "label": "Comments:",
+          "t": 342
+        },
+        {
+          "label": "Operators:",
+          "t": 377
+        },
+        {
+          "label": "Type conversions and casting",
+          "t": 442
+        },
+        {
+          "label": "Control Structure:",
+          "t": 496
+        },
+        {
+          "label": "CLASSES",
+          "t": 570
+        },
+        {
+          "label": "Method Overloading",
+          "t": 665
+        },
+        {
+          "label": "Constructors",
+          "t": 730
+        },
+        {
+          "label": "String handling",
+          "t": 799
+        }
+      ],
+      "duration_sec": 902,
       "error": "notebooklm -p default ask --prompt-file <86 chars> -n c1e2d4e5-ab60-479e-b3bf-1deb100a72dd --json -> exit 1\n{\n  \"error\": true,\n  \"code\": \"NOTEBOOKLM_ERROR\",\n  \"message\": \"Error: Chat request was rejected by the server (status 3). This usually means the request was malformed or too large \u2014 most often an over-long question past the server-side size limit; shorten it and try again.\"\n}",
+      "final_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/final.mp4",
       "gaps_filled": [
         "enumerated types",
         "arrays",
@@ -42,6 +103,8 @@
       "notebook_title": "Object Oriented Programming through Java - Unit 1: OOP Concepts and Java Fundamentals",
       "profile": "default",
       "prompt_chars": 12379,
+      "raw_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/raw.mp4",
+      "raw_size_mb": 43.38,
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Object-Oriented Programming :\nSECTION | 2 | History of Java\nSECTION | 3 | Data types:\nSECTION | 4 | Variables:\nSECTION | 5 | Constant:\nSECTION | 6 | Comments:\nSECTION | 7 | Operators:\nSECTION | 8 | Type conversions and casting\nSECTION | 9 | Control Structure:\nSECTION | 10 | CLASSES\nSECTION | 11 | Method Overloading\nSECTION | 12 | Constructors\nSECTION | 13 | String handling\nTERM | Object\nTERM | Classes\nTERM | Data abstraction\nTERM | Data Encapsulation\nTERM | Inheritance\nTERM | Polymorphism\nTERM | Dynamic Binding\nTERM | Data hiding\nTERM | Abstract Data Type\nTERM | Bytecode\nTERM | Java Virtual machine\nTERM | Literals\nTERM | Identifiers\nTERM | Keywords\nTERM | Type casting\nTERM | Instance Variable\nTERM | Method Overloading\nTERM | Default constructor\nTERM | Parameterized constructor\nTERM | Pass by Value\nTERM | Pass by Reference\nTERM | StringBuffer\nTERM | StringBuilder\nMISSING | enumerated types\nMISSING | arrays\nMISSING | recursion",
       "round2": "DEF | 1 | Object-Oriented Programming is a methodology or paradigm to design a program using classes and objects.\nMECH | 1 | Programs are organized into objects combining data and code that communicate with each other through message passing.\nSPEC | 1 | The book lists seven basic concepts: Object, Class, Data abstraction, Data encapsulation, Inheritance, Polymorphism, and Dynamic binding.\nSTEP | 1 | Conceptualize BankAccount as an object combining state like balance and behavior like deposit and withdrawal operations.\nTHIN | 1 | no\nDEF | 2 | History of Java describes the creation and evolution of the language initiated by James Gosling and the Green Team at Sun Microsystems in 1991.\nMECH | 2 | Java source code is compiled into platform-independent bytecode that is dynamically verified and executed by the Java Virtual Machine.\nSPEC | 2 | Java was initially named Oak before being renamed Java in 1995 when incorporated by Netscape.\nSTEP | 2 | Note that the BankAccount class source file compiles into bytecode executable across different operating system JVMs.\nTHIN | 2 | no\nDEF | 3 | Data types represent the different values to be stored in a variable.\nMECH | 3 | Primitive data types directly store raw values in memory, whereas non-primitive data types store references to objects.\nSPEC | 3 | Java defines eight primitive data types: boolean (1 bit), byte (1 byte), char (2 bytes), short (2 bytes), int (4 bytes), long (8 bytes), float (4 bytes), and double (8 bytes).\nSTEP | 3 | Choose double for the balance field and int for the account ID field of BankAccount.\nTHIN | 3 | no\nDEF | 4 | A variable is a name of a memory location used to hold data of a declared type during program execution.\nMECH | 4 | Declaring a variable allocates memory according to its type, assigning default zero or false values to primitives and null to reference objects.\nSPEC | 4 | Java classifies variables into three types: local variable, instance variable, and static variable.\nSTEP | 4 | Declare instance variables balance and accountNumber alongside a static variable accountCount inside BankAccount.\nTHIN | 4 | no\nDEF | 5 | A constant is a variable whose value cannot be changed after declaration during program execution.\nMECH | 5 | Java uses the final keyword to lock variable assignment, causing any attempt to reassign the value to generate a compile-time error.\nSPEC | 5 | The syntax form within a class is modifier static final dataType variableName = value.\nSTEP | 5 | Declare a private static final constant MINIMUM_BALANCE in BankAccount to enforce an unalterable minimum balance floor.\nTHIN | 5 | no\nDEF | 6 | Comments are statements that are not executed by the compiler and interpreter, written to provide information or explanations to human readers.\nMECH | 6 | The compiler ignores single-line and multi-line comments, while the javadoc tool extracts documentation comments to generate HTML API documentation.\nSPEC | 6 | Java provides three comment types: Single Line Comment (//), Multi Line Comment (/* */), and Documentation Comment (/** */).\nSTEP | 6 | Add documentation comments above the BankAccount class definition and its constructors to document their functionality.\nTHIN | 6 | no\nDEF | 7 | Operators are special symbols used in expressions to perform operations on operands.\nMECH | 7 | Binary operators compute values from operands, and compound assignment operators evaluate expressions before storing results directly back into the variable.\nSPEC | 7 | Shorthand assignment operators include +=, -=, *=, /=, and %=.\nSTEP | 7 | Apply the += shorthand operator inside a deposit method to add incoming funds directly to the balance field.\nTHIN | 7 | no\nDEF | 8 | Type conversion and casting convert a value from one compatible or incompatible data type to another.\nMECH | 8 | Widening conversion automatically promotes smaller compatible types to larger destination types, whereas narrowing requires explicit casting syntax for incompatible or larger-to-smaller assignments.\nSPEC | 8 | The automatic widening hierarchy is byte -> short -> int -> long -> float -> double.\nSTEP | 8 | Explicitly cast a floating-point interest calculation to double when adding earned interest to the account balance.\nTHIN | 8 | no\nDEF | 9 | Control structures direct the execution flow of a program through selection decisions and iterative loops.\nMECH | 9 | Conditional statements evaluate boolean expressions to branch execution, while loop statements repeat execution until a controlling condition becomes false.\nSPEC | 9 | The jump statements break and continue exit a loop entirely or skip immediately to its next iteration.\nSTEP | 9 | Implement an if conditional statement in a withdraw method to confirm the balance exceeds the requested withdrawal amount.\nTHIN | 9 | no\nDEF | 10 | A class is a logical template or blueprint from which object instances sharing common properties and behaviors are created.\nMECH | 10 | Memory for a class instance is dynamically allocated using the new operator, and instance members are accessed using the dot operator on object references.\nSPEC | 10 | General class declaration syntax uses the class keyword followed by the class name and a curly-brace delimited class body containing variable and method declarations.\nSTEP | 10 | Define the BankAccount class block, instantiate an object using new BankAccount(), and access its members via the dot operator.\nTHIN | 10 | no\nDEF | 11 | Method overloading is the capability of defining multiple methods within the same class that share the same name but different parameter lists.\nMECH | 11 | The Java compiler resolves overloaded method calls by matching the number, types, and sequence of argument values provided in the call.\nSPEC | 11 | Overloaded methods must differ in their parameter signatures; differing solely by return type is invalid.\nSTEP | 11 | Overload the deposit method to accept either a single double amount or both a double amount and a String description parameter.\nTHIN | 11 | no\nDEF | 12 | A constructor is a special member method used to initialize newly created objects of a class upon instantiation.\nMECH | 12 | A constructor shares the exact class name, has no return type, and executes automatically when an object is instantiated via the new operator.\nSPEC | 12 | Java supports default constructors with no arguments, parameterized constructors, and constructor overloading.\nSTEP | 12 | Provide a default constructor initializing balance to zero and an overloaded parameterized constructor accepting an initial deposit, using this to disambiguate parameters from instance variables.\nTHIN | 12 | no\nDEF | 13 | String handling encompasses creating and manipulating character sequences using String, StringBuffer, and StringBuilder classes.\nMECH | 13 | String instances store immutable character sequences in memory, whereas StringBuffer and StringBuilder objects provide mutable sequences that can be modified dynamically.\nSPEC | 13 | The String class provides methods like charAt(), concat(), equals(), length(), and substring().\nSTEP | 13 | Use StringBuilder within an account summary method to build and return a formatted String representation of the BankAccount state.\nTHIN | 13 | no",
       "round3": "TOTAL | 720\nSECTION | 1 | Object-Oriented Programming : | 70\nPOINT | 1 | Object-Oriented Programming organizes software around objects combining data and behavior rather than procedures acting on global data.\nPOINT | 1 | Encapsulation wraps state and methods into a single unit, hiding private implementation details from external functions.\nPOINT | 1 | Inheritance allows subclasses to reuse and extend superclass code, while polymorphism enables different object types to respond to uniform method calls.\nSPEC | 1 | Object, Class, Data abstraction, Data encapsulation, Inheritance, Polymorphism, Dynamic binding\nSTEP | 1 | Conceptualize BankAccount as an object encapsulating balance and account number state with deposit and withdrawal behaviors.\nSECTION | 2 | History of Java | 35\nPOINT | 2 | Java was initiated by James Gosling and the Green Team at Sun Microsystems in 1991 for digital consumer devices.\nPOINT | 2 | Originally named Oak, it was renamed Java in 1995 and integrated into Netscape Navigator for internet programming.\nPOINT | 2 | Java source code compiles into platform-independent bytecode executed by the Java Virtual Machine.\nSPEC | 2 | JDK 1.0 released January 23, 1996\nSTEP | 2 | Note that the BankAccount class compiles into bytecode executable on any platform JVM.\nSECTION | 3 | Data types: | 50\nPOINT | 3 | Data types specify the size and type of values that can be stored in memory locations.\nPOINT | 3 | Java strictly distinguishes primitive types storing raw values from reference types storing memory addresses of objects.\nPOINT | 3 | Primitive integral types default to signed two's complement representations with fixed byte sizes.\nSPEC | 3 | Eight primitives: boolean (1 bit), byte (1 byte), char (2 bytes), short (2 bytes), int (4 bytes), long (8 bytes), float (4 bytes), double (8 bytes)\nSTEP | 3 | Select double for storing balance and int for storing accountNumber in BankAccount.\nSECTION | 4 | Variables: | 55\nPOINT | 4 | A variable is a named storage location allocated in memory according to its declared data type.\nPOINT | 4 | Instance variables exist as long as their owning object exists, while local variables exist only during method execution.\nPOINT | 4 | Static variables belong to the class itself and are shared among all instances.\nSPEC | 4 | Syntax: type identifier [ = value ];\nSTEP | 4 | Declare instance fields balance and accountNumber alongside a static field accountCount in BankAccount.\nSECTION | 5 | Constant: | 30\nPOINT | 5 | Constants store fixed values that cannot be modified after initial assignment during execution.\nPOINT | 5 | The final modifier prevents variable reassignment and causes compile-time errors upon modification attempts.\nPOINT | 5 | Class-level constants combine static and final modifiers to create single shared immutable values.\nSPEC | 5 | modifier static final dataType variableName = value\nSTEP | 5 | Declare a private static final constant MINIMUM_BALANCE in BankAccount.\nSECTION | 6 | Comments: | 25\nPOINT | 6 | Comments are compiler-ignored annotations that document program functionality for developers.\nPOINT | 6 | Single-line comments start with double slashes, while multi-line comments are bounded by slash-asterisk delimiters.\nPOINT | 6 | Documentation comments are processed by the javadoc utility to generate external HTML API documentation.\nSPEC | 6 | Three types: // single-line, /* multi-line */, /** javadoc */\nSTEP | 6 | Add javadoc comments documenting the BankAccount class and method behaviors.\nSECTION | 7 | Operators: | 60\nPOINT | 7 | Operators perform specific mathematical, relational, logical, or bitwise operations on operands.\nPOINT | 7 | Operator precedence and associativity rules dictate the exact sequence in which unparenthesized expressions evaluate.\nPOINT | 7 | Compound assignment operators evaluate an expression and assign the result directly back to the target variable.\nSPEC | 7 | Shorthand assignment operators: +=, -=, *=, /=, %=\nSTEP | 7 | Use the += compound operator in deposit to update the balance field.\nSECTION | 8 | Type conversions and casting | 45\nPOINT | 8 | Type conversion alters a value from its original data type to another compatible or explicitly requested type.\nPOINT | 8 | Automatic widening conversion occurs when assigning a smaller compatible type to a larger destination type.\nPOINT | 8 | Explicit narrowing casting is mandatory when assigning larger types to smaller types to acknowledge potential precision loss.\nSPEC | 8 | Widening order: byte -> short -> int -> long -> float -> double\nSTEP | 8 | Explicitly cast a floating-point interest calculation to double before updating BankAccount balance.\nSECTION | 9 | Control Structure: | 70\nPOINT | 9 | Control structures govern program execution flow through conditional branching and iterative loops.\nPOINT | 9 | Selection statements evaluate boolean conditions to branch execution along alternative code paths.\nPOINT | 9 | Iteration loops repeat statement blocks until a controlling termination condition evaluates to false.\nPOINT | 9 | Jump statements break and continue immediately exit loops or skip to the next iteration.\nSPEC | 9 | Control constructs: if-else, switch, while, do-while, for, break, continue\nSTEP | 9 | Use an if condition in withdraw to verify sufficient balance before deducting funds.\nSECTION | 10 | CLASSES | 100\nPOINT | 10 | A class defines a user-defined template specifying instance fields and instance methods for object creation.\nPOINT | 10 | Object instantiation allocates memory dynamically on the heap via the new operator and returns a reference.\nPOINT | 10 | Access modifiers control member visibility across class, package, and subclass boundaries.\nPOINT | 10 | The this reference resolves namespace collisions between instance variables and local parameter names.\nSPEC | 10 | Access specifiers: public, private, protected, default (package-private)\nSTEP | 10 | Define class BankAccount with private balance, public methods, and use this to disambiguate field assignments.\nSECTION | 11 | Method Overloading | 50\nPOINT | 11 | Method overloading permits multiple methods within the same class to share an identical name.\nPOINT | 11 | Overloaded methods must possess distinct parameter lists differing in parameter count, types, or order.\nPOINT | 11 | The compiler selects the appropriate overloaded method at compile time based on invocation argument types.\nSPEC | 11 | Method signature rule: parameter list must differ; return type alone cannot differentiate methods.\nSTEP | 11 | Overload deposit to accept either a single double amount or a double amount with a String description.\nSECTION | 12 | Constructors | 75\nPOINT | 12 | Constructors are special class members invoked automatically during object allocation to initialize state.\nPOINT | 12 | A constructor has no return type and must share the exact name of its enclosing class.\nPOINT | 12 | Classes support default zero-argument constructors, parameterized constructors, and constructor overloading.\nSPEC | 12 | Constructor syntax: [access_modifier] ClassName(parameter_list) { body }\nSTEP | 12 | Provide a default constructor setting balance to zero and a parameterized constructor taking an initial deposit.\nSECTION | 13 | String handling | 55\nPOINT | 13 | Strings in Java represent sequences of characters managed via dedicated standard library classes.\nPOINT | 13 | String object instances are immutable, meaning string modifications create new objects rather than altering existing instances.\nPOINT | 13 | StringBuffer and StringBuilder classes provide mutable character sequences for efficient string construction.\nSPEC | 13 | String methods: charAt(), concat(), equals(), length(), substring()\nSTEP | 13 | Use StringBuilder in an accountSummary method to construct a string representation of BankAccount.\nGAP | enumerated types\nGAP | arrays\nGAP | recursion",
@@ -62,12 +125,13 @@
       ],
       "section_warning": false,
       "source_added": true,
-      "state": "generating",
+      "state": "postprocessed",
       "style": "classic",
       "subject": "cse404-java",
       "target_minutes": 12,
+      "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-03T01:47:16Z"
+      "updated_at": "2026-08-03T02:08:32Z"
     }
   },
   "version": 1
