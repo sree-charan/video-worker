@@ -71,7 +71,10 @@ def collect_unit(syl: dict, unit: dict, rec: dict, retry_failed: bool) -> str:
         return "already downloaded"
 
     log(f"downloading unit {unit['id']} -> {mp4}")
-    nlm("download", "video", art, "-n", nb, "-o", str(mp4),
+    # Signature is `download video [OPTIONS] [OUTPUT_PATH]`: the path is
+    # positional, the artifact is selected with -a, and --force is needed so a
+    # partial file from an interrupted run does not block the retry.
+    nlm("download", "video", "-a", art, "-n", nb, "--force", str(mp4),
         profile=profile, parse_json=False, timeout=1800)
 
     if not mp4.exists() or mp4.stat().st_size == 0:
@@ -93,7 +96,14 @@ def collect_once(syl: dict, units: list[dict], retry_failed: bool) -> int:
         rec = manifest["units"].get(f"{subject_id}/{u['id']}", {})
         if rec.get("state") in ("postprocessed", "published"):
             continue
-        result = collect_unit(syl, u, rec, retry_failed)
+        try:
+            result = collect_unit(syl, u, rec, retry_failed)
+        except CliError as e:
+            # One unit's download failing must not abandon the others, and the
+            # unit must stay collectable on the next pass.
+            log(f"unit {u['id']} download error: {e}")
+            record(subject_id, u["id"], error=str(e)[:500])
+            result = "download-error"
         log(f"unit {u['n']} ({u['id']}): {result}")
         if result.startswith("still") or result == "retried":
             pending += 1
