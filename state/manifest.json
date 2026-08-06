@@ -52,12 +52,12 @@
         80
       ],
       "source_added": true,
-      "state": "generating",
+      "state": "failed",
       "style": "whiteboard",
       "subject": "bee-y1",
       "target_minutes": 12,
       "unit": "u1",
-      "updated_at": "2026-08-06T00:49:16Z"
+      "updated_at": "2026-08-06T01:04:21Z"
     },
     "bee-y1/u5": {
       "artifact_id": "ba6b54f3-5c4b-4ccc-ad3f-7774bee3d451",
