@@ -1,0 +1,146 @@
+# =============================================================================
+# BASIC ELECTRICAL ENGINEERING  -  GCET 18EE1201
+# =============================================================================
+# Deliberately a NON-programming subject: it exercises the subject-general path
+# in plan.py that the Java pilot never touched. No `code_language`, so the video
+# prompt drops the "show real code on screen" rule and the audience line reads
+# "meeting Basic Electrical Engineering for the first time" instead of "never
+# written a line of Java".
+#
+# Topics transcribed from the course file's Syllabus section. That PDF's text
+# layer is badly letter-spaced ("B A SIC ELEC T R IC A L"), which is exactly why
+# syllabus derivation at scale should be done by asking the notebook rather than
+# by parsing locally - NotebookLM reads the document natively.
+#
+# Note: this copy lives under CSE/I/SEMESTER - 1 but its own cover says
+# Branch: ECE, Semester II. The per-branch copies are duplicates of one master.
+# =============================================================================
+
+subject:
+  id: bee-y1
+  title: Basic Electrical Engineering
+  code: 18EE1201
+  branch: Common
+  year: I
+  semester: II
+  college: Geethanjali College of Engineering and Technology
+  source_drive_id: 174SG1Q1xcSqCvvVYRtT1f3ZUJAJCtLpu
+  source_title: Basic Electrical Engineering - Course File
+  exclude_sections:
+    - Vision and Mission of the Department
+    - PEOs, POs and PSOs, course mapping tables
+    - Class and individual time tables
+    - University question papers, question bank, assignment topics, tutorial problems
+    - Student lists and quality measurement sheets
+
+pedagogy:
+  # No code_language: this is not a programming subject.
+  math: none
+
+  language:
+    plain_words:
+      electromotive force: voltage push
+      impedance: total opposition to AC
+      commutation: switching
+      excitation: supply
+      attenuation: weakening
+    banned_words:
+      - elementary calculations
+      - significance thereof
+    term_example: >-
+      a capacitor, a part that stores charge on two plates, blocks steady current
+      but lets changing current through.
+    adjective_example:
+      bad: a linear bilateral passive circuit element under sinusoidal excitation
+      good: a part that behaves the same whichever way the current flows
+
+units:
+  - n: 1
+    id: u1
+    title: "DC Circuits"
+    topics: >-
+      Electrical circuit elements R, L and C. Voltage and current sources.
+      Kirchhoff's voltage law and Kirchhoff's current law. Analysis of simple
+      circuits with dc excitation. Superposition theorem. Thevenin's theorem.
+      Norton's theorem. Time-domain analysis of first-order RL and RC circuits.
+    example: >-
+      One two-resistor circuit fed by a 12 V battery, carried through the whole
+      unit: solve it with KVL, then again with Thevenin to show the same answer
+      falls out faster, then add a capacitor to show the current no longer
+      settles instantly.
+    exam_focus:
+      - "KCL versus KVL: which one applies at a node and which around a loop"
+      - "Thevenin versus Norton: voltage source in series or current source in parallel"
+      - "why an RL or RC circuit takes time to settle while a resistive one does not"
+
+  - n: 2
+    id: u2
+    title: "AC Circuits"
+    topics: >-
+      Representation of sinusoidal waveforms. Peak and rms values. Phasor
+      representation. Real power, reactive power, apparent power, power factor.
+      Analysis of single-phase ac circuits with R, L, C, RL, RC and RLC
+      combinations in series and parallel. Resonance in a series RLC circuit.
+      Three-phase balanced circuits. Voltage and current relations in star and
+      delta connections.
+    example: >-
+      The same 12 V circuit from Unit 1, now driven by a 230 V 50 Hz supply:
+      show the current lagging once an inductor is added, name the power factor
+      that causes, then tune the capacitor until the circuit resonates.
+    exam_focus:
+      - "peak versus rms, and why meters read rms"
+      - "real versus reactive versus apparent power"
+      - "star versus delta: which relation carries the root-three"
+
+  - n: 3
+    id: u3
+    title: "Transformers"
+    topics: >-
+      Ideal and practical transformer. Equivalent circuit. Losses in
+      transformers. Regulation and efficiency. Auto-transformer. Three-phase
+      transformer connections.
+    example: >-
+      One 230 V to 12 V single-phase transformer traced end to end: turns ratio
+      first, then where the losses appear as heat, then what the same unit looks
+      like wired as an auto-transformer.
+    exam_focus:
+      - "copper loss versus iron loss, and which varies with load"
+      - "regulation versus efficiency"
+      - "transformer versus auto-transformer"
+
+  - n: 4
+    id: u4
+    title: "Electrical Machines"
+    topics: >-
+      Generation of rotating magnetic fields. Construction and working of a
+      three-phase induction motor. Significance of the torque-slip
+      characteristic. Loss components and efficiency. Starting and speed control
+      of an induction motor. Single-phase induction motor construction and
+      working.
+    example: >-
+      One three-phase induction motor driving a pump: start from the rotating
+      field, follow it to torque, read the torque-slip curve to explain why it
+      cannot run at synchronous speed, then show what changes in a single-phase
+      version.
+    exam_focus:
+      - "slip: why an induction motor never reaches synchronous speed"
+      - "starting torque versus running torque"
+      - "three-phase versus single-phase induction motor"
+
+  - n: 5
+    id: u5
+    title: "Electrical Installations"
+    topics: >-
+      Components of LT switchgear: switch fuse unit SFU, MCB, ELCB, MCCB. Types
+      of wires and cables. Earthing. Types of batteries and their important
+      characteristics. Calculations for energy consumption, power factor
+      improvement and battery backup.
+    example: >-
+      One household distribution board traced from the incoming supply: the SFU,
+      then the MCB, then the ELCB, what each one protects against, how the
+      earthing completes it, and finally what a battery backup for that board
+      must supply.
+    exam_focus:
+      - "MCB versus ELCB versus MCCB: what each one actually detects"
+      - "earthing versus neutral"
+      - "why improving power factor lowers the bill"
