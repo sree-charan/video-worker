@@ -125,7 +125,7 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-07T03:45:22Z",
+      "updated_at": "2026-08-07T03:52:12Z",
       "watermark": {
         "bottom_right_box": {
           "h": 16,
@@ -1422,7 +1422,7 @@
       "subject": "bee-y1",
       "target_minutes": 12,
       "unit": "u4",
-      "updated_at": "2026-08-07T02:19:10Z"
+      "updated_at": "2026-08-07T03:39:37Z"
     },
     "bee-y1/u5": {
       "artifact_id": "cac5535c-8a00-4b45-8034-4b76b332a652",
@@ -1486,7 +1486,7 @@
       "subject": "bee-y1",
       "target_minutes": 12,
       "unit": "u5",
-      "updated_at": "2026-08-07T02:19:11Z"
+      "updated_at": "2026-08-07T03:39:42Z"
     },
     "cse404-java/u1": {
       "artifact_id": "397b88ba-d46c-4672-9ea1-881a29ae386b",
