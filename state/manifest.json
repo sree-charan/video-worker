@@ -1103,6 +1103,7 @@
     },
     "bee-y1/u5": {
       "artifact_id": "cac5535c-8a00-4b45-8034-4b76b332a652",
+      "captions": "/home/runner/work/video-worker/video-worker/build/bee-y1-u5/captions.vtt",
       "chapter_anchors": [
         "miniature",
         "switched",
@@ -1133,12 +1134,80 @@
         "Power Factor Improvement",
         "How can I calculate the consumption of an electrical appliance?"
       ],
+      "chapters": [
+        {
+          "label": "Overview",
+          "t": 0
+        },
+        {
+          "label": "MINIATURE CIRCUIT BREAKER (MCB)",
+          "t": 25
+        },
+        {
+          "label": "S.F.U (Switched Fuse Unit)",
+          "t": 87
+        },
+        {
+          "label": "Earth-leakage circuit breaker (ELCB)",
+          "t": 110
+        },
+        {
+          "label": "Molded Case Circuit Breaker (MCCB)",
+          "t": 140
+        },
+        {
+          "label": "Types of Batteries",
+          "t": 287
+        },
+        {
+          "label": "Characteristics ofa Battery",
+          "t": 508
+        },
+        {
+          "label": "Electrical Wire",
+          "t": 509
+        },
+        {
+          "label": "Understanding Electrical Cable",
+          "t": 510
+        },
+        {
+          "label": "Electrical Earthing",
+          "t": 511
+        },
+        {
+          "label": "Types of Electrical Earthing",
+          "t": 512
+        },
+        {
+          "label": "Power Factor",
+          "t": 513
+        },
+        {
+          "label": "Power Factor Improvement",
+          "t": 514
+        },
+        {
+          "label": "How can I calculate the consumption of an electrical appliance?",
+          "t": 515
+        }
+      ],
+      "duration_sec": 584,
+      "final_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u5/final.mp4",
       "notebook_id": "ef6803ed-8d58-4984-b801-7bbc049fbc59",
       "notebook_title": "Basic Electrical Engineering - Unit 5: Electrical Installations",
       "profile": "default",
       "prompt_chars": 20779,
       "raw_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u5/raw.mp4",
       "raw_size_mb": 39.28,
+      "readability": {
+        "flesch_reading_ease": 43.4,
+        "grade_level": 9.7,
+        "long_word_pct": 6.4,
+        "sentences": 153,
+        "words": 1546,
+        "words_per_sentence": 10.1
+      },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | MINIATURE CIRCUIT BREAKER (MCB)\nSECTION | 2 | S.F.U (Switched Fuse Unit)\nSECTION | 3 | Earth-leakage circuit breaker (ELCB)\nSECTION | 4 | Molded Case Circuit Breaker (MCCB)\nSECTION | 5 | Types of Batteries\nSECTION | 6 | Characteristics ofa Battery\nSECTION | 7 | Electrical Wire\nSECTION | 8 | Understanding Electrical Cable\nSECTION | 9 | Electrical Earthing\nSECTION | 10 | Types of Electrical Earthing\nSECTION | 11 | Power Factor | Calculation and Power Factor Improvement\nSECTION | 12 | Power Factor Improvement\nSECTION | 13 | How can I calculate the consumption of an electrical appliance?\nTERM | Switched Fuse Unit\nTERM | miniature circuit breaker\nTERM | molded case circuit breaker\nTERM | Earth-leakage circuit breaker\nTERM | residual current circuit breakers\nTERM | disposable batteries\nTERM | rechargeable batteries\nTERM | SMF\nTERM | NiCad\nTERM | cold cranking amps\nTERM | CCA\nTERM | gravimetric energy density\nTERM | volumetric energy density\nTERM | gravimetric power density\nTERM | THHN\nTERM | THWN\nTERM | THW\nTERM | XHHN\nTERM | Triplex Wires\nTERM | Romex\nTERM | Twin axialCable\nTERM | Neutral Earthing\nTERM | Equipment Earthing\nTERM | system earthing\nTERM | earth mat\nTERM | earthing system\nTERM | Synchronous Condenser\nTERM | Phase Advancer\nMISSING | calculations for battery backup",
       "round2": "DEF | 1 | A MINIATURE CIRCUIT BREAKER (MCB) automatically switches off an electrical circuit during abnormal network conditions, including overloads and faults.\nMECH | 1 | Continuous overcurrent heats and bends a bimetallic strip to release a mechanical latch that opens the contacts, while short-circuit currents cause electromechanical displacement of a plunger inside a tripping coil to instantly strike the trip lever.\nSPEC | 1 | A bi-metal provides protection against over load current and an electromagnet provides protection against short-circuit current.\nSTEP | 1 | On our household board, each individual branch circuit is protected by a MINIATURE CIRCUIT BREAKER (MCB) against damage from overloads and short circuits.\nTHIN | 1 | no\nDEF | 2 | An S.F.U (Switched Fuse Unit) consists of one switch unit and one fuse unit connected in series.\nMECH | 2 | When the switch unit is manually operated, the contacts close and allow the electrical supply to pass through the series fuse unit to the output.\nSPEC | 2 | It is used to trip the circuit, particularly for high capacity tripping.\nSTEP | 2 | Tracing backwards to the main incoming supply, the power first enters through an S.F.U (Switched Fuse Unit) to provide high-capacity main fuse protection and a manual disconnect.\nTHIN | 2 | yes\nDEF | 3 | An Earth-leakage circuit breaker (ELCB) is a safety device used in electrical installations with high Earth impedance to prevent shock.\nMECH | 3 | It detects small stray voltages on the metal enclosures of electrical equipment and interrupts the circuit if a dangerous voltage is detected.\nSPEC | 3 | Recent installations use residual current circuit breakers instead of ELCBs to detect leakage current directly.\nSTEP | 3 | To protect people against shock, we also install an Earth-leakage circuit breaker (ELCB) on the board that detects small stray leakage voltages on metallic enclosures.\nTHIN | 3 | yes\nDEF | 4 | A Molded Case Circuit Breaker (MCCB) is an electrical protection device suitable for a wide range of voltages and frequencies of both 50 Hz and 60 Hz.\nMECH | 4 | Overload protection is achieved via a thermal bimetallic contact that expands in response to temperature changes to interrupt the circuit, while fault protection utilizes electromagnetic induction where high current in a solenoid coil induces a magnetic field to instantly trip a contact.\nSPEC | 4 | It can have current ratings of up to 2,500 amperes, and its trip settings are normally adjustable.\nSTEP | 4 | If our board required industrial-scale feeder protection up to 2500 amperes, we would install a Molded Case Circuit Breaker (MCCB) instead of a MINIATURE CIRCUIT BREAKER (MCB).\nTHIN | 4 | no\nDEF | 5 | Types of Batteries are categorized into primary batteries designed for single, disposable usage and secondary batteries designed for rechargeable, simultaneous usage.\nMECH | 5 | Secondary batteries are recharged by applying an electric current which reverses the chemical reactions that occur during discharge.\nSPEC | 5 | Secondary batteries are classified into SMF, Lead Acid, Li, and NiCad.\nSTEP | 5 | To maintain power to this board during a utility outage, we must select our backup source from rechargeable Types of Batteries rather than disposable primary ones.\nTHIN | 5 | no\nDEF | 6 | The primary Characteristics ofa Battery that distinguish them are chemistry, voltage, and specific energy or capacity.\nMECH | 6 | Under load, the voltage of a battery drops because of the internal battery resistance and the state of charge, which eventually causes the end of discharge.\nSPEC | 6 | Cold cranking amps (CCA) denotes the amount of amps that a battery is able to provide at -18 degrees Celsius.\nSTEP | 6 | We calculate the required capacity and check each nominal voltage to verify that the key Characteristics ofa Battery match our emergency load.\nTHIN | 6 | no\nDEF | 7 | The selection of Electrical Wire is determined by factors including color, label information, and specific applications.\nMECH | 7 | Wire gauge size determines how much power a wire can safely carry, where a higher gauge number means a smaller physical wire size and lower current capacity.\nSPEC | 7 | The letters THHN, THWN, THW and XHHN represent the main insulation types of individual wires.\nSTEP | 7 | We install the appropriate gauge of Electrical Wire, utilizing standard NEC color-coding for hot and neutral paths on the board.\nTHIN | 7 | no\nDEF | 8 | The concept of Understanding Electrical Cable involves determining the correct cable for a home based on its types, color, and application factors.\nMECH | 8 | Multi-conductor cables protect electrical systems by featuring more than one individually insulated conductor surrounded by an additional outer insulation sheathing.\nSPEC | 8 | Cable size notation such as 10/3 indicates the presence of three 10-gauge wires within the cable, with the ground wire indicated separately by 'G'.\nSTEP | 8 | To run structured circuits from our board to individual appliances, we bundle these conductors into a non-metallic sheathed variety to complete our Understanding Electrical Cable routing.\nTHIN | 8 | no\nDEF | 9 | The process of transferring the immediate discharge of electrical energy directly to the earth by help of a low resistance wire is defined as Electrical Earthing.\nMECH | 9 | It connects the non-current carrying part of the equipment or neutral of the supply system directly to the ground, providing a simple, low-resistance path that passes short-circuit current to the earth.\nSPEC | 9 | Mostly, the galvanized iron is used for the earthing.\nSTEP | 9 | We ground all non-current carrying metallic parts of the board enclosure to establish safe Electrical Earthing.\nTHIN | 9 | yes\nDEF | 10 | From the earthing of neutral and metallic frames, the main Types of Electrical Earthing are classified into neutral earthing and equipment earthing.\nMECH | 10 | Equipment earthing directs short-circuit fault current through conducting wires directly to the earth instead of passing through a human body.\nSPEC | 10 | Neutral earthing is also called system earthing and is mostly provided to the system which has star winding.\nSTEP | 10 | We ensure both system and metallic frame protection are covered by implementing both neutral and equipment earthing, which are the main Types of Electrical Earthing.\nTHIN | 10 | no\nDEF | 11 | Power Factor is the cosine of the phase difference between the source voltage and current in AC circuits.\nMECH | 11 | Inductors and capacitors store energy rather than dissipating it, triggering a phase shift between voltage and current that restricts the fraction of power performing active work.\nSPEC | 11 | The power factor is calculated as active power divided by apparent power and its value must be between -1 and 1.\nSTEP | 11 | We monitor the phase shift on our AC circuits, noting how inductive loads like motors degrade the Power Factor.\nTHIN | 11 | no\nDEF | 12 | Power Factor Improvement is the process of reducing the phase difference between voltage and current to maintain the power factor close to unity.\nMECH | 12 | Shunt capacitors installed in parallel with the load act as a local source of reactive power, reducing the phase difference between the voltage and current.\nSPEC | 12 | The value of the parallel capacitor is calculated using the formula: C = Q / (2 * pi * f * V^2) farad.\nSTEP | 12 | We install shunt capacitors in parallel with our inductive appliances to achieve Power Factor Improvement on our household board.\nTHIN | 12 | no\nDEF | 13 | The process of How can I calculate the consumption of an electrical appliance? involves multiplying usage hours, days used per year, and capacity in watts divided by 1,000 to get the total kilowatt-hours.\nMECH | 13 | The capacity of the electrical appliance in watts is divided by 1,000 to convert it to kilowatts, then multiplied by the daily usage hours and the annual days of use.\nSPEC | 13 | The annual energy consumption of a 10-watt radio alarm running 24 hours a day for 365 days is 87.6 kWh.\nSTEP | 13 | We apply the book's hourly calculation formula to find out How can I calculate the consumption of an electrical appliance? to determine the total backup capacity our battery must supply.\nTHIN | 13 | no",
       "round3": "TOTAL | 720\nSECTION | 1 | MINIATURE CIRCUIT BREAKER (MCB) | 60\nPOINT | 1 | A miniature circuit breaker automatically switches off an electrical circuit during overload and faulty conditions in a low voltage network [1].\nPOINT | 2 | It is much more sensitive to overcurrent than a fuse, making it electrically safer and allowing quick restoration of supply [1].\nPOINT | 3 | Continuous overcurrent causes a bimetallic strip to heat, bend, and release a mechanical latch that opens the contacts to stop current flow [2].\nPOINT | 4 | During a short circuit, extremely high current causes electromechanical displacement of a plunger inside a tripping coil to instantly strike the trip lever [3].\nSPEC | 1 | A bi-metal provides protection against over load current and an electromagnet provides protection against short-circuit current [3].\nSTEP | 1 | Each individual branch circuit in our household distribution board is protected by a MINIATURE CIRCUIT BREAKER (MCB) against damage from overloads and short circuits [1, 3].\nSECTION | 2 | S.F.U (Switched Fuse Unit) | 30\nPOINT | 2 | A Switched Fuse Unit consists of one switch unit and one fuse unit connected in series to manually operate and isolate the circuit [4].\nPOINT | 2 | Operating the breaker closes the contacts through the switch, allowing the electrical supply to pass through the series fuse unit to the output [4].\nPOINT | 2 | Unlike a Switched Fuse Unit, a Fuse Switch Unit has no separate switch and fuse unit because the fuse unit itself acts as the switch [4].\nSPEC | 2 | Switched Fuse Units are particularly used to trip the circuit for high capacity tripping [4].\nSTEP | 2 | Tracing backwards to the main incoming supply, the power first enters our household board through an S.F.U (Switched Fuse Unit) to provide main manual disconnect and high-capacity fuse protection [4].\nSECTION | 3 | Earth-leakage circuit breaker (ELCB) | 30\nPOINT | 3 | An Earth-leakage circuit breaker is a safety device used in electrical installations with high Earth impedance to prevent electric shock [5].\nPOINT | 3 | It detects small stray voltages on the metal enclosures of electrical equipment and interrupts the circuit if a dangerous voltage is detected [5].\nPOINT | 3 | Modern electrical installations have shifted towards using residual current circuit breakers instead because they detect leakage current directly [5].\nSPEC | 3 | NONE\nSTEP | 3 | To protect residents from electric shocks, we install an Earth-leakage circuit breaker (ELCB) to monitor stray leakage voltages on metallic enclosures [5].\nSECTION | 4 | Molded Case Circuit Breaker (MCCB) | 60\nPOINT | 4 | A Molded Case Circuit Breaker is an electrical protection device suitable for a wide range of voltages and frequencies of both 50 Hz and 60 Hz [6].\nPOINT | 4 | It provides overload protection using a bimetallic contact that expands in response to temperature changes, and fault protection using electromagnetic induction in a solenoid coil [7, 8].\nPOINT | 4 | The thermal overload mechanism features a time delay to permit short-duration overcurrent, while the magnetic fault protection trips instantly [7, 8].\nSPEC | 4 | Current ratings can range from 15 amperes up to industrial ratings of 2,500 amperes, and the trip settings are normally adjustable [6, 9].\nSTEP | 4 | For heavy-duty domestic appliances that exceed the capacity of a standard MCB, a Molded Case Circuit Breaker (MCCB) can be utilized to handle the higher current [6, 10].\nSECTION | 5 | Types of Batteries | 50\nPOINT | 5 | Primary batteries are designed for single usage because their chemical devices are not easily reversible, making them disposable [11].\nPOINT | 5 | Secondary batteries are rechargeable batteries that can be used and recharged by applying an electric current that reverses the chemical reactions [12].\nPOINT | 5 | Secondary battery types used for delivering instant power in applications like UPS include sealed maintenance free, lead acid, lithium, and nickel cadmium [13].\nSPEC | 5 | Secondary batteries are classified into SMF, Lead Acid, Li, and NiCad [13].\nSTEP | 5 | To ensure the distribution board has emergency power during a utility outage, we connect a rechargeable secondary battery system [12].\nSECTION | 6 | Characteristics ofa Battery | 65\nPOINT | 6 | The three main characteristics used to identify a battery are chemistry, voltage, and specific energy or capacity in ampere-hours [14-16].\nPOINT | 6 | Specific energy represents a battery's capacity in weight, whereas volumetric energy density describes its capacity by volume in liters [17].\nPOINT | 6 | C-rates indicate how much time a battery takes to charge or discharge, where a rate of 1C means the battery discharges at a current equal to its marked ampere-hour rating [18].\nPOINT | 6 | Under load, a battery's voltage drops due to internal battery resistance and the state of charge, which eventually causes the end of discharge [18].\nSPEC | 6 | Cold cranking amps denotes the amount of amps that a starter battery is able to provide at -18 degrees Celsius [16].\nSTEP | 6 | Sizing our backup battery requires verifying that its nominal voltage, ampere-hour capacity, and discharge C-rate match our emergency load [15, 16, 18].\nSECTION | 7 | Electrical Wire | 60\nPOINT | 7 | The selection of electrical wire for home installations is affected by factors such as size, insulation letters, applications, and color codes [19].\nPOINT | 7 | Wire sizing is determined by the American wire gauge system, where a higher gauge number represents a smaller physical wire size and lower current capacity [20].\nPOINT | 7 | Letter markings on wire coverings represent NEC insulation requirements, including thermoplastic material, heat resistance limits, and suitability for wet locations [20, 21].\nPOINT | 7 | Common wires include single-phase triplex wires, main power feeders, panel feeds, non-metallic sheathed wires, and single strand wires [21-23].\nSPEC | 7 | The letters THHN, THWN, THW, and XHHN represent the main insulation types meeting National Electrical Code requirements [20].\nSTEP | 7 | Within the distribution board, we route branch circuits using non-metallic sheathed wire (Romex) which is affordable and contains a ground wire [22].\nSECTION | 8 | Understanding Electrical Cable | 60\nPOINT | 8 | An electrical cable is determined by its types, color, and applications, with sizes determined by the wire gauge and number of individual conductors [24, 25].\nPOINT | 8 | Commonly used residential cables include non-metallic sheathed NM building cables, water-resistant underground feeder cables, and armored BX metallic sheathed cables [26, 27].\nPOINT | 8 | Additional specialized cables include multi-conductor cables, coaxial cables for television signals, unshielded twisted pair for data transmission, and direct-buried cables [28-30].\nSPEC | 8 | Cable size is denoted by the wire gauge followed by the number of wires, such as 10/3, with any ground wire indicated by the letter G [25].\nSTEP | 8 | The heavy incoming service to our distribution board is carried via a metallic sheathed BX cable or an underground feeder cable depending on exposure [26, 27].\nSECTION | 9 | Electrical Earthing | 40\nPOINT | 9 | Electrical earthing is the process of transferring the immediate discharge of electrical energy directly to the earth using low-resistance wire [31].\nPOINT | 9 | It connects non-current carrying parts of equipment or the neutral of the supply system to the ground to provide a safe path for leakage current [31].\nPOINT | 9 | When a fault occurs, short-circuit current flows through the earthing system to the ground, which has zero potential, thereby protecting personnel and apparatus [32, 33].\nSPEC | 9 | Galvanized iron is mostly used for the earthing [32].\nSTEP | 9 | By establishing a low-resistance path to the earth for our distribution board enclosure, we ensure any leakage current safely bypasses the human body [31, 34].\nSECTION | 10 | Types of Electrical Earthing | 45\nPOINT | 10 | Electrical earthing is classified into neutral earthing and equipment earthing based on which non-current carrying parts are connected to the ground [32].\nPOINT | 10 | Neutral earthing connects the neutral of a star-wound system, such as a generator or transformer, directly to the earth with a galvanized iron wire [35].\nPOINT | 10 | Equipment earthing connects the non-current carrying metallic frames of electrical apparatus directly to the earth to safely discharge fault currents [35].\nSPEC | 10 | Neutral earthing is also called system earthing [35].\nSTEP | 10 | Our distribution board incorporates equipment earthing for its metal frames, while the utility transformer supplying it utilizes neutral earthing [35].\nSECTION | 11 | Power Factor | 70\nPOINT | 11 | In AC circuits, resistors dissipate energy as heat, while inductors and capacitors store energy in magnetic and electrostatic fields without dissipating it [36, 37].\nPOINT | 11 | Power factor is the cosine of the phase difference between the source voltage and current in an AC circuit [37].\nPOINT | 11 | It represents the ratio of active power doing useful work, measured in watts, to apparent power, measured in volt-amperes [38, 39].\nPOINT | 11 | Inductive and capacitive loads introduce a phase shift between voltage and current waves, reducing the power factor from the ideal value of unity to 0.7 or less [19, 37].\nSPEC | 11 | The numerical value of the power factor is between -1 and 1, and its nature is determined by the position of current with respect to voltage [19, 37].\nSTEP | 11 | Since household appliances like refrigerators present inductive loads, they degrade our board's overall Power Factor and increase current draw [19, 40].\nSECTION | 12 | Power Factor Improvement | 100\nPOINT | 12 | Maintaining the power factor close to unity is essential because a low power factor increases line currents, copper losses, and voltage drops [40].\nPOINT | 12 | Sizing and cost of electrical equipment are reduced at a higher power factor because the current flowing in the conductor is minimized [40, 41].\nPOINT | 12 | Installing shunt capacitors in parallel with inductive loads acts as a local source of reactive power, reducing the phase difference between voltage and current [41, 42].\nPOINT | 12 | Alternate methods of power factor improvement include overexcited synchronous condensers and AC exciters known as phase advancers [41, 43].\nSPEC | 12 | The value of the parallel capacitor is calculated using the formula: C = Q / (2 * pi * f * V^2) farad [42].\nSTEP | 12 | To avoid utility penalty fees and reduce line losses, we install a capacitor bank in parallel with the inductive loads connected to our board [41].\nSECTION | 13 | How can I calculate the consumption of an electrical appliance? | 50\nPOINT | 13 | Sizing a backup system or assessing electrical costs requires calculating the energy consumption of connected appliances in kilowatt-hours [44].\nPOINT | 13 | The calculation is performed by multiplying the usage hours per day, days of use per year, and the wattage capacity of the appliance divided by 1,000 [44].\nPOINT | 13 | Continuous appliances like radio alarms consume energy constantly, whereas intermittent loads like vacuum cleaners consume energy only when active [45, 46].\nSPEC | 13 | A continuously running 10-watt radio alarm consumes 87.6 kWh annually, while a 2000-watt vacuum cleaner used two hours a week consumes 208 kWh [45, 46].\nSTEP | 13 | By using the hourly consumption formula, we calculate the total energy demand of the household to determine the required storage capacity of our backup battery [44].\nGAP | calculations for battery backup",
@@ -1158,12 +1227,335 @@
         50
       ],
       "source_added": true,
-      "state": "downloaded",
+      "state": "postprocessed",
       "style": "paper-craft",
       "subject": "bee-y1",
       "target_minutes": 12,
+      "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u5/thumb.jpg",
       "unit": "u5",
-      "updated_at": "2026-08-07T03:39:42Z"
+      "updated_at": "2026-08-07T19:44:09Z",
+      "watermark": {
+        "bottom_right_box": {
+          "h": 20,
+          "w": 130,
+          "x": 1103,
+          "y": 658
+        },
+        "bottom_right_box_norm": {
+          "frames_agreeing": 96,
+          "frames_sampled": 120,
+          "h": 0.029166666666666667,
+          "method": "ocr",
+          "w": 0.102375,
+          "x": 0.86209375,
+          "y": 0.9145833333333333
+        },
+        "bottom_right_segments": [
+          {
+            "end": 8.2,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 7.5
+          },
+          {
+            "end": 8.4,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 8.2
+          },
+          {
+            "end": 10.3,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 8.4
+          },
+          {
+            "end": 10.7,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 10.3
+          },
+          {
+            "end": 10.8,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 10.7
+          },
+          {
+            "end": 15.7,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 10.8
+          },
+          {
+            "end": 21.0,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 15.7
+          },
+          {
+            "end": 21.2,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 21.0
+          },
+          {
+            "end": 25.4,
+            "light_logo": true,
+            "plate": "0xFC9018",
+            "start": 21.2
+          },
+          {
+            "end": 110.5,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 25.4
+          },
+          {
+            "end": 114.6,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 110.5
+          },
+          {
+            "end": 119.9,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 114.6
+          },
+          {
+            "end": 122.3,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 119.9
+          },
+          {
+            "end": 122.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 122.3
+          },
+          {
+            "end": 130.5,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 122.7
+          },
+          {
+            "end": 133.0,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 130.5
+          },
+          {
+            "end": 133.3,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 133.0
+          },
+          {
+            "end": 135.8,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 133.3
+          },
+          {
+            "end": 175.0,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 135.8
+          },
+          {
+            "end": 175.5,
+            "light_logo": true,
+            "plate": "0xA8A29C",
+            "start": 175.0
+          },
+          {
+            "end": 180.0,
+            "light_logo": true,
+            "plate": "0xA8A29C",
+            "start": 179.5
+          },
+          {
+            "end": 213.3,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 180.0
+          },
+          {
+            "end": 260.2,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 213.3
+          },
+          {
+            "end": 260.4,
+            "light_logo": true,
+            "plate": "0xF08418",
+            "start": 260.2
+          },
+          {
+            "end": 263.5,
+            "light_logo": true,
+            "plate": "0xF08A18",
+            "start": 260.4
+          },
+          {
+            "end": 303.6,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 263.5
+          },
+          {
+            "end": 340.8,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 303.6
+          },
+          {
+            "end": 344.4,
+            "light_logo": true,
+            "plate": "0xF69024",
+            "start": 340.8
+          },
+          {
+            "end": 372.0,
+            "light_logo": false,
+            "plate": "0xF0F0F0",
+            "start": 344.4
+          },
+          {
+            "end": 400.1,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 372.0
+          },
+          {
+            "end": 400.8,
+            "light_logo": true,
+            "plate": "0xFC9012",
+            "start": 400.1
+          },
+          {
+            "end": 402.5,
+            "light_logo": true,
+            "plate": "0xFC9018",
+            "start": 400.8
+          },
+          {
+            "end": 404.7,
+            "light_logo": true,
+            "plate": "0xFC9012",
+            "start": 402.5
+          },
+          {
+            "end": 456.0,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 404.7
+          },
+          {
+            "end": 500.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 456.0
+          },
+          {
+            "end": 545.4,
+            "light_logo": false,
+            "plate": "0xF0F0F0",
+            "start": 500.7
+          },
+          {
+            "end": 545.6,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 545.4
+          },
+          {
+            "end": 545.9,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 545.6
+          },
+          {
+            "end": 547.9,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 545.9
+          },
+          {
+            "end": 551.8,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 547.9
+          },
+          {
+            "end": 554.3,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 551.8
+          },
+          {
+            "end": 554.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 554.3
+          },
+          {
+            "end": 559.7,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 554.7
+          },
+          {
+            "end": 560.0,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 559.7
+          },
+          {
+            "end": 565.0,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 560.0
+          },
+          {
+            "end": 565.3,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 565.0
+          },
+          {
+            "end": 570.3,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 565.3
+          },
+          {
+            "end": 574.5,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 570.3
+          },
+          {
+            "end": 575.5,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 574.5
+          }
+        ],
+        "centre_top_box": null,
+        "discovered": [],
+        "encode": {
+          "crf": "16",
+          "preset": "slow",
+          "tune": "stillimage"
+        },
+        "outro_appended": true,
+        "outro_cut_at": 574.25
+      }
     },
     "cse404-java/u1": {
       "artifact_id": "397b88ba-d46c-4672-9ea1-881a29ae386b",
