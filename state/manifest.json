@@ -1702,6 +1702,7 @@
     },
     "bee-y1/u4": {
       "artifact_id": "8312fe92-1936-4a57-89b7-c540ae419aca",
+      "captions": "/home/runner/work/video-worker/video-worker/build/bee-y1-u4/captions.vtt",
       "chapter_anchors": [
         "principles",
         "synchronous",
@@ -1730,12 +1731,76 @@
         "1.8.2 Wave Winding",
         "2.1 Introduction"
       ],
+      "chapters": [
+        {
+          "label": "Overview",
+          "t": 0
+        },
+        {
+          "label": "Principles of operation",
+          "t": 12
+        },
+        {
+          "label": "Synchronous speed",
+          "t": 118
+        },
+        {
+          "label": "Slip",
+          "t": 186
+        },
+        {
+          "label": "1.1 Introduction",
+          "t": 279
+        },
+        {
+          "label": "1.7.1 Yoke",
+          "t": 333
+        },
+        {
+          "label": "1.7.2 Poles",
+          "t": 394
+        },
+        {
+          "label": "1.7.4 Armature",
+          "t": 456
+        },
+        {
+          "label": "1.7.5 Commutator",
+          "t": 529
+        },
+        {
+          "label": "1.7.7 Bearings",
+          "t": 593
+        },
+        {
+          "label": "1.8.1 Lap Winding",
+          "t": 641
+        },
+        {
+          "label": "1.8.2 Wave Winding",
+          "t": 703
+        },
+        {
+          "label": "2.1 Introduction",
+          "t": 764
+        }
+      ],
+      "duration_sec": 860,
+      "final_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u4/final.mp4",
       "notebook_id": "16b89ebb-b888-4fba-809a-e88362efc74b",
       "notebook_title": "Basic Electrical Engineering - Unit 4: Electrical Machines",
       "profile": "default",
       "prompt_chars": 16535,
       "raw_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u4/raw.mp4",
       "raw_size_mb": 103.62,
+      "readability": {
+        "flesch_reading_ease": 43.4,
+        "grade_level": 10.1,
+        "long_word_pct": 6.6,
+        "sentences": 196,
+        "words": 2300,
+        "words_per_sentence": 11.7
+      },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Principles of operation\nSECTION | 2 | Synchronous speed\nSECTION | 3 | Slip\nSECTION | 4 | 1.1 Introduction\nSECTION | 5 | 1.7.1 Yoke\nSECTION | 6 | 1.7.2 Poles\nSECTION | 7 | 1.7.4 Armature\nSECTION | 8 | 1.7.5 Commutator\nSECTION | 9 | 1.7.7 Bearings\nSECTION | 10 | 1.8.1 Lap Winding\nSECTION | 11 | 1.8.2 Wave Winding\nSECTION | 12 | 2.1 Introduction\nTERM | induction motor\nTERM | asynchronous motor\nTERM | stator\nTERM | rotor\nTERM | synchronous speed\nTERM | slip\nTERM | electromechanical energy conversion\nTERM | Yoke\nTERM | Pole core\nTERM | Pole shoe\nTERM | Exciting winding\nTERM | Commutator\nTERM | Lap winding\nTERM | Wave winding\nTERM | back e.m.f.\nTERM | armature torque\nTERM | loss torque\nTERM | saturation\nTERM | synchronous generator\nMISSING | Generation of rotating magnetic fields\nMISSING | Significance of the torque-slip characteristic\nMISSING | Loss components and efficiency of induction motor\nMISSING | Starting and speed control of induction motor\nMISSING | Single-phase induction motor construction and working",
       "round1_retried": true,
       "round2": "DEF | 1 | An induction or asynchronous motor is an AC electric motor in which the electric current in the rotor needed to produce torque is obtained by electromagnetic induction from the magnetic field of the stator winding [1].\nMECH | 1 | The AC power supplied to the stator creates a rotating magnetic field that rotates relative to the rotor, thereby inducing currents in the short-circuited rotor windings [2]. These induced currents produce their own magnetic fields that react against the stator field, causing the rotor to rotate in the same direction to oppose the change in current [2].\nSPEC | 1 | An induction motor's rotor can be either wound type or squirrel-cage type [3].\nSTEP | 1 | In our pump system, the three-phase AC supply to the stator generates a rotating magnetic field to begin the motoring action [2].\nTHIN | 1 | no\nDEF | 2 | Synchronous speed is the rotation rate of the stator's magnetic field, expressed in revolutions per minute [4].\nMECH | 2 | It represents the constant speed at which the magnetic field rotates in time with the AC supply oscillations [2, 4].\nSPEC | 2 | For a six-pole three-phase motor set 120 degrees apart, the synchronous speed is 1,000 RPM on a 50 Hz supply and 1,200 RPM on a 60 Hz supply [4].\nSTEP | 2 | The speed at which this stator magnetic field rotates is the synchronous speed, which serves as the upper limit for our motor's operating speed [4].\nTHIN | 2 | no\nDEF | 3 | Slip is defined as the difference between synchronous speed and operating speed, at the same frequency, expressed in rpm or in percent or ratio of synchronous speed [4].\nMECH | 3 | As the rotor speed drops below synchronous speed, the relative rotation rate of the magnetic field in the rotor increases, which induces more current in the rotor windings to create sufficient torque to turn the load [5].\nSPEC | 3 | Slip varies from zero at synchronous speed to 1 when the rotor is at rest [4].\nSTEP | 3 | To produce the torque required to drive the pump, the rotor must slip below synchronous speed, because running at synchronous speed would yield zero relative motion and thus zero induced rotor current and torque [2, 4, 5].\nTHIN | 3 | no\nDEF | 4 | Electromechanical energy conversion is the process of transferring energy either from mechanical to electrical form or from electrical to mechanical form [6].\nMECH | 4 | An electric generator converts mechanical energy into electrical energy, while an electrical motor converts electrical energy into mechanical energy [6].\nSPEC | 4 | These electrical machines are broadly classified into alternating type called a.c. machines and direct type called d.c. machines [7].\nSTEP | 4 | To analyze the mechanical torque that drives our pump, we transition to studying electromechanical energy conversion principles under DC machine structures [6].\nTHIN | 4 | no\nDEF | 5 | The yoke serves as the outermost cover of a d.c. machine, providing mechanical support to the poles and forming a low reluctance path for magnetic flux [8].\nMECH | 5 | It protects internal insulating materials from moisture, dust, and acidic gases, while physically holding the pole structures and completing the magnetic circuit with minimal power wastage [8].\nSPEC | 5 | The yoke is prepared using cast iron for cheapness, whereas large machines use rolled steel, cast steel, or silicon steel to provide high permeability and mechanical strength [9].\nSTEP | 5 | We look at the physical framework of machines, starting with the outer yoke of a DC machine which provides mechanical support and a low reluctance path for flux, unlike the stator frame of our AC motor [8].\nTHIN | 5 | no\nDEF | 6 | Each pole in a d.c. machine is divided into a pole core and a pole shoe [9].\nMECH | 6 | The pole core carries a field winding to produce magnetic flux, while the specially shaped pole shoe directs this flux through the air gap to the armature core and enlarges the surface area to produce a larger induced e.m.f. [10].\nSPEC | 6 | The poles are made of magnetic materials like cast iron or cast steel and are stamped together in a laminated construction before being bolted to the yoke [10].\nSTEP | 6 | We examine how stationary pole structures produce flux in DC machines, comparing them to the rotating magnetic poles produced in our AC stator [9, 10].\nTHIN | 6 | no\nDEF | 7 | The armature is a rotating component of a d.c. machine divided into a cylindrical armature core and an interconnected armature winding [11, 12].\nMECH | 7 | As the armature core rotates, its conductors cut the magnetic flux to generate e.m.f. in generator operation, or they carry supplied current to perform useful work in motor operation [12, 13].\nSPEC | 7 | The cylindrical armature core is built with a laminated construction to minimize eddy current losses, and features slots on its periphery for conductors along with air ducts for cooling [11, 12].\nSTEP | 7 | We contrast the short-circuited cage rotor of our pump motor with a DC machine's cylindrical armature core which houses armature windings in slots on its periphery [11, 12].\nTHIN | 7 | no\nDEF | 8 | The commutator is a cylindrical device made of wedge-shaped copper segments that converts internally developed alternating e.m.f. into unidirectional d.c. e.m.f. [14, 15].\nMECH | 8 | It facilitates the collection of current from rotating armature conductors by rectifying the alternating current into a unidirectional flow through connections made via copper lugs or strips [14, 15].\nSPEC | 8 | The commutator segments are made of hard-drawn, high-conductivity copper and are insulated from each other by a thin layer of mica [15].\nSTEP | 8 | Unlike our AC induction motor which needs no mechanical commutation, a DC machine requires a commutator composed of copper segments to rectify alternating EMF to unidirectional EMF [1, 14].\nTHIN | 8 | no\nDEF | 9 | Bearings are mechanical assemblies that support and allow smooth rotation of the armature shaft [16, 17].\nMECH | 9 | They physically house the rotating shaft of the machine to ensure stable mechanical rotation within the frame [16, 17].\nSPEC | 9 | Ball-bearings are usually used for reliability, whereas roller bearings are preferred for heavy duty machines [17].\nSTEP | 9 | Both our pump motor's rotor shaft and the DC armature shaft are supported by ball-bearings to minimize rotational friction [15].\nTHIN | 9 | yes\nDEF | 10 | Lap winding is an armature winding style where connections start from a conductor and overlap each other as the winding proceeds [18].\nMECH | 10 | It divides the total number of armature conductors into parallel paths equal to the number of poles in the machine, which increases the current capacity of the machine [19].\nSPEC | 10 | The number of parallel paths is given by \\\\(A = P\\\\), making this winding style preferred for generators of capacity more than 500 A [19, 20].\nSTEP | 10 | We study how lap winding splits armature conductors into parallel paths equal to the number of poles, which we compare to how induction motor windings are distributed [19].\nTHIN | 10 | no\nDEF | 11 | Wave winding is an armature winding style where the winding travels ahead in a progressive wave fashion to avoid overlapping [21].\nMECH | 11 | It divides the total number of armature conductors into exactly two parallel paths, irrespective of the number of poles in the machine [21].\nSPEC | 11 | The number of parallel paths is always \\\\(A = 2\\\\), making this winding style preferable for low current, high voltage capacity generators under 500 A [20, 21].\nSTEP | 11 | We examine how wave winding always provides two parallel paths regardless of poles, contrasting with the fixed winding configurations in our pump motor [20, 21].\nTHIN | 11 | no\nDEF | 12 | A motor is a device which converts electrical energy into mechanical energy [22].\nMECH | 12 | It operates on a process exactly opposite to a generator, using a supplied d.c. voltage to force current through armature conductors placed in a magnetic field to create a turning torque [22, 23].\nSPEC | 12 | The physical construction of a d.c. machine remains identical whether it is operated as a motor or as a generator [22].\nSTEP | 12 | We conclude by reviewing DC motor operation, where the interaction of armature current and magnetic field produces a turning force or torque, and note that unlike a three-phase motor, a single-phase version lacks a starting torque because its single-phase supply cannot generate a rotating magnetic field [3, 23].\nTHIN | 12 | yes",
@@ -1755,12 +1820,422 @@
         50
       ],
       "source_added": true,
-      "state": "downloaded",
+      "state": "postprocessed",
       "style": "heritage",
       "subject": "bee-y1",
       "target_minutes": 12,
+      "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u4/thumb.jpg",
       "unit": "u4",
-      "updated_at": "2026-08-07T19:43:32Z"
+      "updated_at": "2026-08-07T20:01:39Z",
+      "watermark": {
+        "bottom_right_box": {
+          "h": 56,
+          "w": 158,
+          "x": 1077,
+          "y": 638
+        },
+        "bottom_right_box_norm": {
+          "frames_agreeing": 89,
+          "frames_sampled": 120,
+          "h": 0.07916666666666666,
+          "method": "ocr",
+          "w": 0.12350000000000001,
+          "x": 0.841375,
+          "y": 0.8868055555555555
+        },
+        "bottom_right_segments": [
+          {
+            "end": 12.4,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 11.5
+          },
+          {
+            "end": 12.8,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 12.4
+          },
+          {
+            "end": 12.9,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 12.8
+          },
+          {
+            "end": 13.0,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 12.9
+          },
+          {
+            "end": 14.8,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 13.0
+          },
+          {
+            "end": 26.3,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 14.8
+          },
+          {
+            "end": 26.7,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 26.3
+          },
+          {
+            "end": 31.7,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 26.7
+          },
+          {
+            "end": 32.0,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 31.7
+          },
+          {
+            "end": 37.0,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 32.0
+          },
+          {
+            "end": 37.3,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 37.0
+          },
+          {
+            "end": 42.3,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 37.3
+          },
+          {
+            "end": 42.7,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 42.3
+          },
+          {
+            "end": 47.7,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 42.7
+          },
+          {
+            "end": 48.0,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 47.7
+          },
+          {
+            "end": 53.0,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 48.0
+          },
+          {
+            "end": 53.3,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 53.0
+          },
+          {
+            "end": 58.3,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 53.3
+          },
+          {
+            "end": 58.7,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 58.3
+          },
+          {
+            "end": 63.7,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 58.7
+          },
+          {
+            "end": 64.0,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 63.7
+          },
+          {
+            "end": 69.0,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 64.0
+          },
+          {
+            "end": 69.3,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 69.0
+          },
+          {
+            "end": 79.7,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 69.3
+          },
+          {
+            "end": 80.0,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 79.7
+          },
+          {
+            "end": 87.2,
+            "light_logo": true,
+            "plate": "0xF0CC48",
+            "start": 80.0
+          },
+          {
+            "end": 118.8,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 87.2
+          },
+          {
+            "end": 166.5,
+            "light_logo": false,
+            "plate": "0xF6F0E4",
+            "start": 118.8
+          },
+          {
+            "end": 189.4,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 166.5
+          },
+          {
+            "end": 242.0,
+            "light_logo": true,
+            "plate": "0xF6D254",
+            "start": 189.4
+          },
+          {
+            "end": 279.4,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 242.0
+          },
+          {
+            "end": 279.5,
+            "light_logo": true,
+            "plate": "0xF6D260",
+            "start": 279.4
+          },
+          {
+            "end": 310.3,
+            "light_logo": true,
+            "plate": "0xF6D25A",
+            "start": 309.5
+          },
+          {
+            "end": 335.4,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 310.3
+          },
+          {
+            "end": 369.8,
+            "light_logo": false,
+            "plate": "0xF6F0E4",
+            "start": 335.4
+          },
+          {
+            "end": 370.4,
+            "light_logo": false,
+            "plate": "0xD2D8D2",
+            "start": 369.8
+          },
+          {
+            "end": 370.5,
+            "light_logo": false,
+            "plate": "0xD2D8D2",
+            "start": 370.4
+          },
+          {
+            "end": 394.7,
+            "light_logo": false,
+            "plate": "0xF6F6F0",
+            "start": 394.5
+          },
+          {
+            "end": 432.8,
+            "light_logo": true,
+            "plate": "0xFCD854",
+            "start": 394.7
+          },
+          {
+            "end": 459.6,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 432.8
+          },
+          {
+            "end": 503.2,
+            "light_logo": true,
+            "plate": "0xF6D25A",
+            "start": 459.6
+          },
+          {
+            "end": 531.4,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 503.2
+          },
+          {
+            "end": 570.1,
+            "light_logo": true,
+            "plate": "0xFCD254",
+            "start": 531.4
+          },
+          {
+            "end": 570.2,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 570.1
+          },
+          {
+            "end": 570.4,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 570.2
+          },
+          {
+            "end": 570.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 570.4
+          },
+          {
+            "end": 573.0,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 570.7
+          },
+          {
+            "end": 573.2,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 573.0
+          },
+          {
+            "end": 577.0,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 573.2
+          },
+          {
+            "end": 593.7,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 577.0
+          },
+          {
+            "end": 619.3,
+            "light_logo": true,
+            "plate": "0xFCD254",
+            "start": 593.7
+          },
+          {
+            "end": 639.8,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 619.3
+          },
+          {
+            "end": 640.0,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 639.8
+          },
+          {
+            "end": 641.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 640.0
+          },
+          {
+            "end": 682.0,
+            "light_logo": false,
+            "plate": "0xF0EAD8",
+            "start": 641.7
+          },
+          {
+            "end": 682.2,
+            "light_logo": true,
+            "plate": "0xEACCA2",
+            "start": 682.0
+          },
+          {
+            "end": 682.5,
+            "light_logo": true,
+            "plate": "0xEACCA2",
+            "start": 682.2
+          },
+          {
+            "end": 703.7,
+            "light_logo": true,
+            "plate": "0xEACCA2",
+            "start": 703.5
+          },
+          {
+            "end": 703.9,
+            "light_logo": true,
+            "plate": "0xC69C6C",
+            "start": 703.7
+          },
+          {
+            "end": 744.8,
+            "light_logo": false,
+            "plate": "0xF6F6E4",
+            "start": 703.9
+          },
+          {
+            "end": 768.0,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 744.8
+          },
+          {
+            "end": 821.5,
+            "light_logo": false,
+            "plate": "0xF0F0F0",
+            "start": 768.0
+          }
+        ],
+        "centre_top_box": null,
+        "discovered": [
+          {
+            "frames_seen": 1,
+            "h": 0.16666666666666666,
+            "method": "discovery",
+            "w": 0.50625,
+            "x": 0.24375,
+            "y": 0.43333333333333335
+          }
+        ],
+        "encode": {
+          "crf": "16",
+          "preset": "slow",
+          "tune": "stillimage"
+        },
+        "outro_appended": true,
+        "outro_cut_at": 850.75
+      }
     },
     "bee-y1/u5": {
       "artifact_id": "cac5535c-8a00-4b45-8034-4b76b332a652",
