@@ -153,13 +153,19 @@ def append_outro(ff: str, main: Path, outro: Path, dst: Path, meta: dict,
     b = bars or {}
     l, r = int(b.get("left", 0)), int(b.get("right", 0))
     t, bo = int(b.get("top", 0)), int(b.get("bottom", 0))
-    # Fit the outro into the lecture's actual picture area and re-add the same
-    # black bars, so the visible frame does not change width at the cut.
-    iw, ih = max(W - l - r, 2), max(H - t - bo, 2)
+
+    # Match the lecture's picture area by CROPPING the outro, not scaling it.
+    # scale=1261:720:force_original_aspect_ratio=decrease rounds to even and
+    # returned 1262, which then could not be padded down to 1261 - "Padded
+    # dimensions cannot be smaller than input dimensions", and the run failed
+    # every hour. Cropping has no rounding hazard, costs 19 of 1280 columns, and
+    # keeps the outro unscaled and sharp.
+    iw = max((W - l - r) // 2 * 2, 2)
+    ih = max((H - t - bo) // 2 * 2, 2)
+    ox, oy = (W - iw) // 2, (H - ih) // 2
     filt = (
         f"[0:v]scale={W}:{H},setsar=1,fps={fps}[v0];"
-        f"[1:v]scale={iw}:{ih}:force_original_aspect_ratio=decrease,"
-        f"pad={iw}:{ih}:(ow-iw)/2:(oh-ih)/2:color=white,"
+        f"[1:v]scale={W}:{H},crop={iw}:{ih}:{ox}:{oy},"
         f"pad={W}:{H}:{l}:{t}:color=black,setsar=1,fps={fps}[v1];"
         "[0:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo[a0];"
         "[1:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo[a1];"
@@ -770,12 +776,20 @@ def main() -> None:
         if any(bars.values()):
             log(f"  matching pillarbox: left={bars['left']} right={bars['right']} "
                 f"top={bars['top']} bottom={bars['bottom']}")
-        append_outro(ff_bin, final, outro_path, with_outro, meta,
-                     cfg.get("encode") or {}, bars=bars)
-        with_outro.replace(final)
-        meta = probe(final)
-        log(f"final with outro: {meta['duration_sec']}s, "
-            f"{final.stat().st_size / 1e6:.1f} MB")
+        try:
+            append_outro(ff_bin, final, outro_path, with_outro, meta,
+                         cfg.get("encode") or {}, bars=bars)
+            with_outro.replace(final)
+            meta = probe(final)
+            log(f"final with outro: {meta['duration_sec']}s, "
+                f"{final.stat().st_size / 1e6:.1f} MB")
+            report["outro_appended"] = True
+        except SystemExit as exc:
+            # Branding is not worth losing a lecture over, and a hard failure here
+            # made the hourly cron fail forever on one unit.
+            log(f"  WARNING outro failed, shipping without it: {str(exc)[:200]}")
+            with_outro.unlink(missing_ok=True)
+            report["outro_appended"] = False
     elif outro_cfg.get("enabled", True):
         log(f"outro not found at {outro_path}; skipping")
 
