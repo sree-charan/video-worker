@@ -783,13 +783,13 @@ def main() -> None:
             meta = probe(final)
             log(f"final with outro: {meta['duration_sec']}s, "
                 f"{final.stat().st_size / 1e6:.1f} MB")
-            report["outro_appended"] = True
+            wm_report["outro_appended"] = True
         except SystemExit as exc:
             # Branding is not worth losing a lecture over, and a hard failure here
             # made the hourly cron fail forever on one unit.
             log(f"  WARNING outro failed, shipping without it: {str(exc)[:200]}")
             with_outro.unlink(missing_ok=True)
-            report["outro_appended"] = False
+            wm_report["outro_appended"] = False
     elif outro_cfg.get("enabled", True):
         log(f"outro not found at {outro_path}; skipping")
 
