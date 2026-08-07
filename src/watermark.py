@@ -32,7 +32,8 @@ from __future__ import annotations
 
 import subprocess
 from collections import Counter
-from typing import Iterable
+from pathlib import Path
+from typing import Any, Iterable
 
 # Frame-accurate. At 2fps the plate colour changed up to half a second before
 # the background did, so an orange plate showed on a white slide - clearly
@@ -264,7 +265,7 @@ def detect_outro(ff: str, mp4: str, duration: float, tail: float = 20.0,
 
 
 def _frames_gray(ff: str, mp4: str, W: int, H: int, limit: float | None,
-                 fps: float) -> list[tuple[float, "np.ndarray"]]:
+                 fps: float) -> list[tuple[float, Any]]:
     """Full-resolution greyscale frames, for measuring where a mark actually is."""
     import numpy as np
 
@@ -726,7 +727,7 @@ def _ncc(window, template, t_mean: float, t_std: float) -> float:
     return float(np.mean((window - w_mean) * (template - t_mean)) / (w_std * t_std))
 
 
-def _load_template(path: "Path | str"):
+def _load_template(path: Path | str):
     import numpy as np
     from PIL import Image
 

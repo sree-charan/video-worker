@@ -71,6 +71,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      # py_compile only checks syntax: it happily accepts an undefined name, and
+      # one shipped as a NameError after a full video had been encoded. ruff
+      # catches that in a second, before anything expensive runs.
+      - name: Lint
+        run: |
+          pip install --quiet ruff
+          ruff check --select F src/
+
       - name: Restore NotebookLM auth
         if: ${{ inputs.dry_run == false }}
         env:

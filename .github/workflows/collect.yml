@@ -81,6 +81,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      # py_compile only checks syntax: it happily accepts an undefined name, and
+      # one shipped as a NameError after a full video had been encoded. ruff
+      # catches that in a second, before anything expensive runs.
+      - name: Lint
+        run: |
+          pip install --quiet ruff
+          ruff check --select F src/
+
       # The model is ~500MB and identical every run. Downloading it each time is
       # what got us rate limited (429) after five videos had already been made.
       - name: Cache whisper model

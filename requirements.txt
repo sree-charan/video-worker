@@ -10,3 +10,6 @@ pillow>=10,<12
 numpy>=1.26,<3
 # Reads 'NotebookLM' off the frame to locate the watermark.
 pytesseract>=0.3.10,<0.4
+# Drive upload for the publish stage.
+google-api-python-client>=2.120,<3
+google-auth>=2.28,<3

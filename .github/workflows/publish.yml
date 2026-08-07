@@ -1,0 +1,139 @@
+name: Publish to Drive
+
+# Uploads finished lectures to the Shared Drive, makes them link-readable, then
+# rebuilds the subject's Blogger page and commits it.
+#
+# Separate from collect on purpose: publishing touches storage and sharing, and
+# should be re-runnable on its own without re-encoding anything.
+
+on:
+  workflow_dispatch:
+    inputs:
+      syllabus:
+        description: "Syllabus file"
+        required: true
+        default: "syllabus/oop-java.yml"
+      units:
+        description: "Unit ids, space separated (blank = all published-ready)"
+        required: false
+        default: ""
+      folder:
+        description: "Destination folder id (blank = the GDRIVE_FOLDER_ID variable)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: video-worker-publish-${{ inputs.syllabus }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # py_compile only checks syntax: it happily accepts an undefined name, and
+      # one shipped as a NameError after a full video had been encoded. ruff
+      # catches that in a second, before anything expensive runs.
+      - name: Lint
+        run: |
+          pip install --quiet ruff
+          ruff check --select F src/
+
+      - name: Restore NotebookLM auth
+        env:
+          NOTEBOOKLM_MASTER_TOKEN: ${{ secrets.NOTEBOOKLM_MASTER_TOKEN }}
+        run: |
+          MASTER="$NOTEBOOKLM_MASTER_TOKEN"
+          unset NOTEBOOKLM_MASTER_TOKEN
+          DIR="$HOME/.notebooklm/profiles/default"
+          mkdir -p "$DIR"
+          if [ -n "$MASTER" ]; then
+            printf '%s' "$MASTER" > "$DIR/master_token.json"
+            chmod 600 "$DIR/master_token.json"
+            notebooklm login --master-token-refresh || true
+          fi
+
+      # The finished videos do not survive between runs - build/ is not committed
+      # and every run gets a clean machine - so they are re-fetched and rebuilt
+      # here before upload.
+      - name: Rebuild the finished videos
+        env:
+          HF_HUB_DISABLE_TELEMETRY: "1"
+          HF_HUB_DISABLE_PROGRESS_BARS: "1"
+          ORT_LOGGING_LEVEL: "3"
+        run: |
+          SYL="${{ inputs.syllabus }}"
+          ARGS=""
+          for u in ${{ inputs.units }}; do ARGS="$ARGS --unit $u"; done
+          python src/collect.py --syllabus "$SYL" $ARGS --reprocess --watch-minutes 0
+          python - "$SYL" <<'PY' > work.txt
+          import json, pathlib, sys, yaml
+          sid = yaml.safe_load(open(sys.argv[1]))["subject"]["id"]
+          man = pathlib.Path("state/manifest.json")
+          units = json.loads(man.read_text())["units"] if man.exists() else {}
+          for key, rec in sorted(units.items()):
+              if rec.get("subject") != sid or rec.get("state") != "downloaded":
+                  continue
+              raw = rec.get("raw_mp4")
+              if raw and pathlib.Path(raw).exists():
+                  print(rec["unit"])
+          PY
+          for u in $(cat work.txt); do
+            python src/postprocess.py --syllabus "$SYL" --unit "$u" --whisper-model small
+          done
+
+      - name: Upload to Drive and build the page
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          GDRIVE_FOLDER_ID: ${{ inputs.folder || vars.GDRIVE_FOLDER_ID }}
+        run: |
+          SYL="${{ inputs.syllabus }}"
+          ARGS=""
+          for u in ${{ inputs.units }}; do ARGS="$ARGS --unit $u"; done
+          python src/publish.py --syllabus "$SYL" $ARGS
+          python src/build_page.py --syllabus "$SYL"
+
+      - name: Upload the page as an artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pages
+          path: pages/**
+          if-no-files-found: warn
+
+      - name: Commit the page and manifest
+        if: always()
+        run: |
+          git config user.name "video-worker-bot"
+          git config user.email "video-worker-bot@users.noreply.github.com"
+          git add pages/ state/ || true
+          if git diff --cached --quiet; then echo "Nothing to commit."; exit 0; fi
+          git commit -m "publish: $(date -u +%FT%TZ)"
+          for attempt in 1 2 3 4 5; do
+            git push origin HEAD:"${GITHUB_REF_NAME}" && exit 0
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase "origin/${GITHUB_REF_NAME}" || {
+              git show ":2:state/manifest.json" > /tmp/ours.json 2>/dev/null || cp state/manifest.json /tmp/ours.json
+              git show ":3:state/manifest.json" > /tmp/theirs.json 2>/dev/null || echo '{}' > /tmp/theirs.json
+              python src/merge_manifest.py /tmp/ours.json /tmp/theirs.json state/manifest.json
+              git add state/ pages/
+              GIT_EDITOR=true git rebase --continue || git rebase --abort
+            }
+            sleep $((RANDOM % 4 + 2))
+          done
+          echo "Failed to push." >&2; exit 1
