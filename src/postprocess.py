@@ -109,7 +109,7 @@ def _enable(segs: list[dict], key: str, want: bool) -> str | None:
 
 
 def feathered_plate(colour: str, w: int, h: int, path: Path,
-                    feather: float = 0.18) -> Path:
+                    feather_px: int = 4) -> Path:
     """An RGBA plate of one colour whose edges fade out.
 
     A hard-edged drawbox is unforgiving: if the sampled background colour is even
@@ -123,7 +123,7 @@ def feathered_plate(colour: str, w: int, h: int, path: Path,
         rgb = "fcfcfc"
     r, g, b = (int(rgb[i:i + 2], 16) for i in (0, 2, 4))
 
-    pad = max(int(min(w, h) * feather), 2)
+    pad = max(int(feather_px), 1)
     img = Image.new("RGBA", (w, h), (r, g, b, 0))
     px = img.load()
     for y in range(h):
@@ -137,7 +137,7 @@ def feathered_plate(colour: str, w: int, h: int, path: Path,
 
 
 def append_outro(ff: str, main: Path, outro: Path, dst: Path, meta: dict,
-                 enc: dict) -> None:
+                 enc: dict, bars: dict | None = None) -> None:
     """Concatenate the branded outro onto the finished lecture.
 
     Done last, after chapters and captions are built, so those describe the
@@ -150,10 +150,17 @@ def append_outro(ff: str, main: Path, outro: Path, dst: Path, meta: dict,
     """
     W, H = meta["width"], meta["height"]
     fps = meta.get("fps") or 24
+    b = bars or {}
+    l, r = int(b.get("left", 0)), int(b.get("right", 0))
+    t, bo = int(b.get("top", 0)), int(b.get("bottom", 0))
+    # Fit the outro into the lecture's actual picture area and re-add the same
+    # black bars, so the visible frame does not change width at the cut.
+    iw, ih = max(W - l - r, 2), max(H - t - bo, 2)
     filt = (
         f"[0:v]scale={W}:{H},setsar=1,fps={fps}[v0];"
-        f"[1:v]scale={W}:{H}:force_original_aspect_ratio=decrease,"
-        f"pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:color=white,setsar=1,fps={fps}[v1];"
+        f"[1:v]scale={iw}:{ih}:force_original_aspect_ratio=decrease,"
+        f"pad={iw}:{ih}:(ow-iw)/2:(oh-ih)/2:color=white,"
+        f"pad={W}:{H}:{l}:{t}:color=black,setsar=1,fps={fps}[v1];"
         "[0:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo[a0];"
         "[1:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo[a1];"
         "[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]"
@@ -207,16 +214,19 @@ def _plate_overlays(tag_in: str, tag_out: str, box: dict, segs: list[dict],
     for sg in segs:
         by_colour.setdefault(sg["plate"], []).append(sg)
 
-    # Grow outward by the feather width so the alpha ramp lands on background,
-    # not over the mark - a partially transparent edge across the wordmark would
-    # let it show through.
-    grow = max(int(min(box["w"], box["h"]) * 0.18), 2)
+    # The ramp must finish OUTSIDE the original box, or the mark's own edge sits
+    # under a partly transparent plate. Growing by 0.18x the box size left the
+    # box edge at alpha 204, and the NotebookLM icon showed through at 20%.
+    # Grow strictly further than the feather width instead.
+    feather_px = 4
+    grow = feather_px + 2
     pw, ph = box["w"] + 2 * grow, box["h"] + 2 * grow
     px0, py0 = max(box["x"] - grow, 0), max(box["y"] - grow, 0)
 
     for i, (colour, group) in enumerate(by_colour.items()):
         png = feathered_plate(colour, pw, ph,
-                              workdir / f"plate-{tag_out}-{i}.png")
+                              workdir / f"plate-{tag_out}-{i}.png",
+                              feather_px=feather_px)
         extra_inputs.append(png)
         idx = base_index + len(extra_inputs) - 1
         expr = "+".join(f"between(t,{g['start']:.2f},{g['end']:.2f})" for g in group)
@@ -755,7 +765,13 @@ def main() -> None:
         with_outro = outdir / "final-with-outro.mp4"
         log(f"appending outro {outro_path.name} "
             f"({probe(outro_path)['duration_sec']}s)")
-        append_outro(ff_bin, final, outro_path, with_outro, meta, cfg.get("encode") or {})
+        bars = watermark.detect_pillarbox(ff_bin, str(final), meta["width"],
+                                          meta["height"])
+        if any(bars.values()):
+            log(f"  matching pillarbox: left={bars['left']} right={bars['right']} "
+                f"top={bars['top']} bottom={bars['bottom']}")
+        append_outro(ff_bin, final, outro_path, with_outro, meta,
+                     cfg.get("encode") or {}, bars=bars)
         with_outro.replace(final)
         meta = probe(final)
         log(f"final with outro: {meta['duration_sec']}s, "

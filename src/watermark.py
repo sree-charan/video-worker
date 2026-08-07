@@ -180,6 +180,39 @@ def slide_changes(ff: str, mp4: str, limit: float, threshold: float = 6.0,
     return out
 
 
+def detect_pillarbox(ff: str, mp4: str, W: int, H: int, fps: float = 0.5,
+                     limit: float = 60.0, start: float = 30.0,
+                     black: int = 32) -> dict:
+    """Width of the black bars framing the picture, if any.
+
+    NotebookLM renders 1280x720 with roughly 9 and 10 pixel black bars at left
+    and right, so the actual picture is about 1261 wide. An outro that fills the
+    frame edge to edge therefore appears to widen at the cut. Measuring the bars
+    lets the outro be padded to the same picture area, which removes the jump.
+    """
+    import numpy as np
+    from collections import Counter
+
+    cmd = [ff, "-v", "error", "-ss", f"{start:.2f}", "-t", f"{limit:.2f}",
+           "-i", mp4, "-vf", f"fps={fps}", "-pix_fmt", "gray",
+           "-f", "rawvideo", "-"]
+    raw = subprocess.run(cmd, capture_output=True, check=True).stdout
+    per = W * H
+    if len(raw) < per:
+        return {"left": 0, "right": 0, "top": 0, "bottom": 0}
+
+    counts = {k: Counter() for k in ("left", "right", "top", "bottom")}
+    for i in range(len(raw) // per):
+        fr = np.frombuffer(raw[i * per:(i + 1) * per], dtype=np.uint8).reshape(H, W)
+        cols, rows = fr.max(axis=0), fr.max(axis=1)
+        counts["left"][int(np.argmax(cols > black))] += 1
+        counts["right"][int(np.argmax(cols[::-1] > black))] += 1
+        counts["top"][int(np.argmax(rows > black))] += 1
+        counts["bottom"][int(np.argmax(rows[::-1] > black))] += 1
+    # Modal value: a single busy frame must not move the answer.
+    return {k: (c.most_common(1)[0][0] if c else 0) for k, c in counts.items()}
+
+
 # ------------------------------------------------------------- outro card
 
 def detect_outro(ff: str, mp4: str, duration: float, tail: float = 20.0,

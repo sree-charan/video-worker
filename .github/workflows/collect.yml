@@ -193,7 +193,11 @@ jobs:
             exit 1
           fi
 
+      # always(): a failure on one unit must not discard another unit's finished
+      # video. One run made a complete lecture, a sibling unit failed, and the
+      # upload was skipped - the work was lost and had to be redone.
       - name: Upload finished lectures
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: lectures
