@@ -1,380 +1,57 @@
 {
   "units": {
     "bee-y1/u1": {
-      "artifact_id": "11c1fefd-4d5a-4835-b049-cc6333644a3b",
-      "captions": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/captions.vtt",
+      "artifact_id": "bae2c4f0-f338-41ab-80d9-761da48b0d74",
       "chapter_anchors": [
         "engineering",
         "ohm's",
         "kcl",
         "kvl",
-        "classification",
         "sources",
-        "circuit",
-        "parallel",
         "superposition",
         "thevenin's",
         "norton's",
-        "r-l"
+        "r-l",
+        "excitation"
       ],
       "chapter_labels": [
         "Introduction to Electrical Engineering:",
         "2.5 Ohm's Law",
         "2.14.1 Kirchhoff's Current Law (KCL)",
         "2.14.2 Kirchhoff's Voltage Law (KVL)",
-        "2.3 Classification of Electrical Networks",
         "2.4 Energy Sources",
-        "2.6 Series Circuit",
-        "2.7 Parallel Circuit",
         "2.17 Superposition Theorem",
         "2.18 Thevenin's Theorem",
         "2.19 Norton's Theorem",
-        "Transient Response of Series R-L Circuit for DC Excitation:"
+        "Transient Response of Series R-L Circuit for DC Excitation:",
+        "Transient Response of Series RC Circuit for DC Excitation:-"
       ],
-      "chapters": [
-        {
-          "label": "Overview",
-          "t": 0
-        },
-        {
-          "label": "Introduction to Electrical Engineering:",
-          "t": 16
-        },
-        {
-          "label": "2.5 Ohm's Law",
-          "t": 50
-        },
-        {
-          "label": "2.14.1 Kirchhoff's Current Law (KCL)",
-          "t": 81
-        },
-        {
-          "label": "2.14.2 Kirchhoff's Voltage Law (KVL)",
-          "t": 115
-        },
-        {
-          "label": "2.3 Classification of Electrical Networks",
-          "t": 166
-        },
-        {
-          "label": "2.4 Energy Sources",
-          "t": 218
-        },
-        {
-          "label": "2.6 Series Circuit",
-          "t": 265
-        },
-        {
-          "label": "2.7 Parallel Circuit",
-          "t": 296
-        },
-        {
-          "label": "2.17 Superposition Theorem",
-          "t": 341
-        },
-        {
-          "label": "2.18 Thevenin's Theorem",
-          "t": 405
-        },
-        {
-          "label": "2.19 Norton's Theorem",
-          "t": 487
-        },
-        {
-          "label": "Transient Response of Series R-L Circuit for DC Excitation:",
-          "t": 563
-        }
-      ],
-      "duration_sec": 698,
-      "final_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/final.mp4",
       "notebook_id": "be9007df-abf3-4939-abc4-b0a5174980a5",
       "notebook_title": "Basic Electrical Engineering - Unit 1: DC Circuits",
       "profile": "default",
-      "prompt_chars": 16078,
-      "raw_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/raw.mp4",
-      "raw_size_mb": 40.37,
-      "readability": {
-        "flesch_reading_ease": 46.3,
-        "grade_level": 9.3,
-        "long_word_pct": 6.9,
-        "sentences": 182,
-        "words": 1815,
-        "words_per_sentence": 10.0
-      },
-      "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Introduction to Electrical Engineering:\nSECTION | 2 | 2.5 Ohm's Law\nSECTION | 3 | 2.14.1 Kirchhoff's Current Law (KCL)\nSECTION | 4 | 2.14.2 Kirchhoff's Voltage Law (KVL)\nSECTION | 5 | 2.3 Classification of Electrical Networks\nSECTION | 6 | 2.4 Energy Sources\nSECTION | 7 | 2.6 Series Circuit\nSECTION | 8 | 2.7 Parallel Circuit\nSECTION | 9 | 2.17 Superposition Theorem\nSECTION | 10 | 2.18 Thevenin's Theorem\nSECTION | 11 | 2.19 Norton's Theorem\nSECTION | 12 | Transient Response of Series R-L Circuit for DC Excitation:\nTERM | Network\nTERM | Network Element\nTERM | Node\nTERM | Linear Network\nTERM | Non linear Network\nTERM | Bilateral Network\nTERM | Unilateral Network\nTERM | Active Network\nTERM | Passive Network\nTERM | Lumped Network\nTERM | Distributed Network\nTERM | Ideal voltage source\nTERM | Practical voltage source\nTERM | Ideal current source\nTERM | Practical current source\nTERM | Dependent sources\nTERM | Voltage Dependent Voltage Source\nTERM | Current Dependent Current Source\nTERM | Current Dependent Voltage Source\nTERM | Voltage Dependent Current Source\nTERM | Series Circuit\nTERM | Parallel Circuit\nTERM | Conductance (G)\nTERM | Superposition Theorem\nTERM | Thevenin's Theorem\nTERM | Norton's Theorem\nTERM | driven Series R-L circuit\nTERM | undriven (e) Sovece free Series R-Leircuit\nTERM | steady state response\nTERM | transient response\nTERM | time constant\nMISSING | NONE",
-      "round2": "DEF | 1 | An electrical network is defined as any arrangement of the various electrical energy sources along with the different circuit elements.\nMECH | 1 | In practice, electrical circuits consist of energy sources and parameters like resistors, inductors, and capacitors connected in different ways, where circuit analysis means finding the current through or voltage across any branch.\nSPEC | 1 | Active elements supply power or energy to the network, while passive elements like resistors, inductors, and capacitors either store or dissipate energy.\nSTEP | 1 | We begin our running example with a circuit consisting of a 12 V battery connected in series with a 4 ohm resistor and a 2 ohm resistor.\nTHIN | 1 | no\nDEF | 2 | Ohm's Law states that the current flowing through the electric circuit is directly proportional to the potential difference across the circuit and inversely proportional to the resistance of the circuit, provided the temperature remains constant.\nMECH | 2 | The potential difference between any two points of a conductor divided by the current flowing between them is a constant resistance, and this can be applied either to the entire circuit or to a part of the circuit.\nSPEC | 2 | Ohm's Law is not applicable to nonlinear devices such as diodes, zener diodes, and voltage regulators, and does not hold good for non-metallic conductors such as silicon carbide.\nSTEP | 2 | Applying Ohm's Law to our entire series circuit with an equivalent resistance of 6 ohms, the total current drawn from the 12 V battery is calculated as 2 amperes.\nTHIN | 2 | no\nDEF | 3 | Kirchhoff's Current Law (KCL) states that the total current flowing towards a junction point is equal to the total current flowing away from that junction point.\nMECH | 3 | Currents flowing towards a junction point are assumed to be positive while currents flowing away from a junction point are assumed to be negative, so that their algebraic sum is always zero.\nSPEC | 3 | Applying Kirchhoff's Current Law (KCL) at a junction in a complex network allows the determination of an unknown branch current by setting the algebraic sum of meeting currents to zero.\nSTEP | 3 | At the junction between the 4 ohm and 2 ohm resistors, Kirchhoff's Current Law (KCL) dictates that the 2 amperes of current entering the junction must be equal to the 2 amperes of current leaving it.\nTHIN | 3 | no\nDEF | 4 | Kirchhoff's Voltage Law (KVL) states that in any network, the algebraic sum of the voltage drops across the circuit elements of any closed path (or loop or mesh) is equal to the algebraic sum of the e.mfs in the path.\nMECH | 4 | Tracing and noting all potential drops or rises in one particular direction along a closed path from a starting point and back to it results in a total change in potential of zero.\nSPEC | 4 | If there is a current source in the network, Kirchhoff's Voltage Law (KVL) must not be applied to loops involving that current source because the voltage drop across a current source is unknown.\nSTEP | 4 | Applying Kirchhoff's Voltage Law (KVL) to our closed loop, we write -4I - 2I + 12 = 0, which solves to show the current through the 2 ohm resistor is 2 amperes.\nTHIN | 4 | no\nDEF | 5 | A linear network is defined as a circuit or network whose parameters are always constant irrespective of changes in time, voltage, and temperature, whereas a non linear network has parameters that change value with those factors.\nMECH | 5 | Networks are classified based on the characteristics of their elements into categories such as active networks containing at least one energy source, and passive networks containing no energy sources.\nSPEC | 5 | The book classifies electrical networks into eight categories: linear, non linear, bilateral, unilateral, active, passive, lumped, and distributed networks.\nSTEP | 5 | Our circuit is classified as active because it contains a 12 V battery, linear because the resistances are constant, bilateral because the resistors conduct equally in both directions, and lumped because all elements are physically separable.\nTHIN | 5 | no\nDEF | 6 | An ideal voltage source is defined as the energy source which gives constant voltage across its terminals irrespective of the current drawn through its terminals, while an ideal current source gives constant current irrespective of terminal voltage.\nMECH | 6 | A practical voltage source has a small internal resistance in series that causes the terminal voltage to decrease slightly with an increase in current, whereas a practical current source has a high internal resistance in parallel.\nSPEC | 6 | Dependent sources are classified into four types: Voltage Dependent Voltage Source, Current Dependent Current Source, Current Dependent Voltage Source, and Voltage Dependent Current Source.\nSTEP | 6 | The 12 V battery in our circuit is modeled as an ideal time invariant voltage source, which means its internal series resistance is zero.\nTHIN | 6 | no\nDEF | 7 | A series circuit is defined as one in which several resistances are connected one after the other in an end to end or cascade connection, providing only one path for the flow of current.\nMECH | 7 | The same current flows through each resistance in the circuit, and the total supply voltage is equal to the sum of the individual voltage drops across the resistances.\nSPEC | 7 | The total or equivalent resistance of a series circuit is the arithmetic sum of the individual resistances and is larger than the largest of all individual resistances.\nSTEP | 7 | In our series circuit, the total equivalent resistance is the arithmetic sum of the 4 ohm and 2 ohm resistances, which equals 6 ohms.\nTHIN | 7 | no\nDEF | 8 | A parallel circuit is defined as one in which several resistances are connected across one another in such a way that one terminal of each is connected to form a junction point while the remaining ends are also joined to form another junction point.\nMECH | 8 | The same potential difference is established across all resistances in parallel, while the total current divides into multiple paths and is equal to the sum of all individual currents.\nSPEC | 8 | The reciprocal of the equivalent resistance of a parallel circuit is equal to the sum of the reciprocals of the individual resistances, making the equivalent resistance smaller than the smallest of all parallel resistances.\nSTEP | 8 | If we reconnect our 4 ohm and 2 ohm resistors in parallel across the 12 V battery, the equivalent resistance drops to 1.33 ohms, drawing a total of 9 amperes from the source.\nTHIN | 8 | no\nDEF | 9 | The Superposition Theorem states that in any multisource complex network consisting of linear bilateral elements, the voltage across or current through any given element is equal to the algebraic sum of the individual voltages or currents produced independently across or in that element by each source acting independently.\nMECH | 9 | Each source is considered acting alone while other voltage sources are replaced by short circuits and current sources are replaced by open circuits, and then the individual responses are algebraically added to find the total response.\nSPEC | 9 | The Superposition Theorem does not apply to power calculations because power is proportional to the square of the current, which is not a linear function.\nSTEP | 9 | Since our circuit contains only a single 12 V battery, we do not need to sum multiple independent source contributions to find that the current through our 2 ohm resistor remains 2 amperes.\nTHIN | 9 | no\nDEF | 10 | Thevenin's Theorem states that any combination of linear bilateral circuit elements and active sources connected to a given load R_L may be replaced by a simple two terminal network consisting of a single voltage source of V_TH volts and a single resistance R_eq in series.\nMECH | 10 | The load resistance is removed to calculate the open-circuit voltage V_TH across the terminals, then all active sources are replaced by their internal resistances to calculate the equivalent resistance R_eq as viewed through those terminals.\nSPEC | 10 | Thevenin's Theorem is not applicable to circuits consisting of nonlinear elements or unilateral networks, and there must not be magnetic coupling or controlled sources on the load side.\nSTEP | 10 | Treating the 2 ohm resistor as our load, we remove it to find an open-circuit voltage V_TH of 12 V and an equivalent series resistance R_eq of 4 ohms, allowing us to find the current as 12 / (4 + 2) = 2 amperes.\nTHIN | 10 | no\nDEF | 11 | Norton's Theorem states that any combination of linear bilateral circuit elements and active sources connected to a given load R_L can be replaced by a simple two terminal network consisting of a single current source of I_N amperes and a single impedance R_eq in parallel.\nMECH | 11 | The load terminals are short-circuited to calculate the short-circuit Norton's current I_N, while the equivalent resistance R_eq is calculated in the same manner as Thevenin's equivalent resistance with active sources replaced by their internal resistances.\nSPEC | 11 | Norton's Theorem is called the dual of Thevenin's Theorem because converting a Thevenin's equivalent voltage source to an equivalent current source using source transformation yields the Norton's equivalent.\nSTEP | 11 | Treating the 2 ohm resistor as our load and shorting its terminals, we find a short-circuit current I_N of 3 amperes and a parallel equivalent resistance of 4 ohms, which yields the identical current of 2 amperes through the load.\nTHIN | 11 | no\nDEF | 12 | A driven series R-L circuit is one in which an active source is introduced after transition, whereas an undriven or source free series R-L circuit is one in which an active source is absent.\nMECH | 12 | Applying Kirchhoff's Voltage Law (KVL) to the circuit yields a first-order non-homogeneous differential equation, whose solution shows that the current cannot change instantaneously and instead rises exponentially.\nSPEC | 12 | The time constant \\tau = L/R is the time required for the current to reach 0.632 times its maximum value, and the current practically reaches steady state at a time of t = 6\\tau.\nSTEP | 12 | Adding a capacitor in series with our 4 ohm and 2 ohm resistors, we find that the current no longer settles to its steady-state value of 2 amperes instantly but instead decays exponentially as the capacitor charges to 12 V.\nTHIN | 12 | no",
-      "round3": "TOTAL | 720\nSECTION | 1 | Introduction to Electrical Engineering: | 35\nPOINT | 1 | An electrical network consists of energy sources and parameters like resistors, inductors, and capacitors connected in various configurations.\nPOINT | 1 | Passive elements like resistors, inductors, and capacitors are distinct because they either store or dissipate energy.\nSPEC | 1 | Resistors dissipate energy in the form of heat, while inductors and capacitors are capable of storing energy.\nSTEP | 1 | We begin our running example with a circuit consisting of a 12 V battery connected in series with a 4 ohm resistor and a 2 ohm resistor.\nSECTION | 2 | 2.5 Ohm's Law | 40\nPOINT | 2 | Current flowing through a conductor is directly proportional to potential difference and inversely proportional to resistance under constant temperature.\nPOINT | 2 | Ohm's Law can be applied to either an entire electrical circuit or to a specific part of a circuit.\nSPEC | 2 | Ohm's Law is not applicable to non-metallic conductors such as silicon carbide or to nonlinear devices like diodes.\nSTEP | 2 | Applying Ohm's Law to our entire series circuit with an equivalent resistance of 6 ohms, the total current drawn from the 12 V battery is calculated as 2 amperes.\nSECTION | 3 | 2.14.1 Kirchhoff's Current Law (KCL) | 55\nPOINT | 3 | Kirchhoff's Current Law states that the total current flowing toward a junction is equal to the total current flowing away from it.\nPOINT | 3 | Currents entering a junction are assumed positive while currents leaving are assumed negative, making their algebraic sum zero.\nSPEC | 3 | Sign convention: Currents flowing towards a junction point are assumed to be positive while currents flowing away are assumed to be negative.\nSTEP | 3 | At the junction between the 4 ohm and 2 ohm resistors, Kirchhoff's Current Law dictates that the 2 amperes of current entering the junction must be equal to the 2 amperes of current leaving it.\nSECTION | 4 | 2.14.2 Kirchhoff's Voltage Law (KVL) | 65\nPOINT | 4 | Kirchhoff's Voltage Law states that the algebraic sum of all branch voltages around any closed loop is always zero.\nPOINT | 4 | Tracing a closed path in a single direction and summing all potential drops and rises returns you to the starting potential.\nPOINT | 4 | Loop equations must not be written for loops containing current sources because the voltage drop across a current source is unknown.\nSPEC | 4 | KVL must be applied to a sufficient number of loops such that each element of the network is included at least once in the equations.\nSTEP | 4 | Applying Kirchhoff's Voltage Law to our closed loop, we write the equation -4I - 2I + 12 = 0 to solve for the circuit current of 2 amperes.\nSECTION | 5 | 2.3 Classification of Electrical Networks | 40\nPOINT | 5 | Linear networks have parameters that remain constant regardless of changes in time, voltage, or temperature.\nPOINT | 5 | Bilateral networks behave identically regardless of the direction of current flowing through their elements.\nPOINT | 5 | Lumped networks feature physically separable elements, whereas distributed networks have parameters spread along their entire length.\nSPEC | 5 | The book classifies electrical networks into eight distinct categories: linear, non linear, bilateral, unilateral, active, passive, lumped, and distributed.\nSTEP | 5 | Our circuit is classified as active because it contains a 12 V battery, linear because the resistances are constant, bilateral because the resistors conduct equally in both directions, and lumped because all elements are physically separable.\nSECTION | 6 | 2.4 Energy Sources | 55\nPOINT | 6 | Ideal voltage sources maintain a constant voltage terminal output regardless of the current drawn.\nPOINT | 6 | Practical voltage sources have a small series internal resistance that causes the terminal voltage to decrease as current increases.\nPOINT | 6 | Dependent or controlled sources produce a voltage or current that is a function of a voltage or current elsewhere in the circuit.\nSPEC | 6 | Dependent sources are classified into four types: Voltage Dependent Voltage Source, Current Dependent Current Source, Current Dependent Voltage Source, and Voltage Dependent Current Source.\nSTEP | 6 | The 12 V battery in our circuit is modeled as an ideal time-invariant voltage source, which means its internal series resistance is zero.\nSECTION | 7 | 2.6 Series Circuit | 45\nPOINT | 7 | A series circuit provides only a single path for the flow of current, meaning the same current passes through all connected resistances.\nPOINT | 7 | The total equivalent resistance of a series circuit is the arithmetic sum of the individual resistances.\nSPEC | 7 | The total equivalent resistance of a series circuit is always larger than the largest of all individual resistances.\nSTEP | 7 | In our series circuit, the total equivalent resistance is the arithmetic sum of the 4 ohm and 2 ohm resistances, which equals 6 ohms.\nSECTION | 8 | 2.7 Parallel Circuit | 45\nPOINT | 8 | A parallel circuit connects elements across the same two junctions, establishing the same potential difference across all branches.\nPOINT | 8 | The reciprocal of the equivalent parallel resistance is equal to the sum of the reciprocals of the individual resistances.\nSPEC | 8 | The equivalent resistance is smaller than the smallest of all the resistances connected in parallel.\nSTEP | 8 | If we reconnect our 4 ohm and 2 ohm resistors in parallel across the 12 V battery, the equivalent resistance drops to 1.33 ohms, drawing a total of 9 amperes from the source.\nSECTION | 9 | 2.17 Superposition Theorem | 85\nPOINT | 9 | Superposition states that in a multi-source linear bilateral network, the response in any element is the sum of the independent responses from each source.\nPOINT | 9 | To analyze a single source independently, other independent voltage sources are replaced by short circuits and current sources by open circuits.\nSPEC | 9 | The Superposition Theorem does not apply to power calculations because power is proportional to the square of current, which is a non-linear relationship.\nSTEP | 9 | Since our circuit contains only a single 12 V battery, the superposition theorem confirms the current through our 2 ohm resistor remains 2 amperes.\nSECTION | 10 | 2.18 Thevenin's Theorem | 95\nPOINT | 10 | Any network of linear bilateral elements and active sources can be replaced across two terminals by a single voltage source in series with an equivalent resistance.\nPOINT | 10 | Thevenin's voltage is the open-circuit voltage across the terminals of interest, and the equivalent resistance is viewed through the open terminals with sources deactivated.\nSPEC | 10 | Thevenin's Theorem is not applicable to circuits consisting of non-linear elements, unilateral networks, or those with magnetic coupling between load and circuit.\nSTEP | 10 | Treating the 2 ohm resistor as our load, we remove it to find an open-circuit voltage of 12 V and an equivalent series resistance of 4 ohms, allowing us to find the current as 12 V / (4 + 2) = 2 amperes.\nSECTION | 11 | 2.19 Norton's Theorem | 80\nPOINT | 11 | Any combination of active sources and linear bilateral elements can be represented across a load by a single parallel current source and equivalent resistance.\nPOINT | 11 | The Norton current is the short-circuit current flowing through the load terminals when they are directly connected.\nSPEC | 11 | Norton's Theorem is considered the dual of Thevenin's Theorem because converting a Thevenin equivalent to an equivalent current source using source transformation yields the Norton equivalent.\nSTEP | 11 | Treating the 2 ohm resistor as our load and shorting its terminals, we find a short-circuit current of 3 amperes and a parallel equivalent resistance of 4 ohms, which yields the identical current of 2 amperes through the load.\nSECTION | 12 | Transient Response of Series R-L Circuit for DC Excitation: | 80\nPOINT | 12 | Applying KVL to a driven series R-L circuit yields a first-order differential equation, showing that current rises exponentially over time.\nPOINT | 12 | In an undriven or source-free R-L circuit, the inductor's stored energy is discharged, and current decays exponentially to zero.\nPOINT | 12 | In first-order R-C circuits, the voltage across the charging capacitor rises exponentially, while the charging current decays exponentially.\nSPEC | 12 | The time constant for a series R-L circuit is L/R, and for a series R-C circuit is RC, representing the time required to complete 63.2% of the total transition.\nSTEP | 12 | Adding a capacitor in series with our 4 ohm and 2 ohm resistors, we find that the current no longer settles to its steady-state value of 2 amperes instantly but instead decays exponentially as the capacitor charges to 12 V.\nGAP | NONE",
+      "prompt_chars": 15772,
+      "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Introduction to Electrical Engineering:\nSECTION | 2 | 2.5 Ohm's Law\nSECTION | 3 | 2.14.1 Kirchhoff's Current Law (KCL)\nSECTION | 4 | 2.14.2 Kirchhoff's Voltage Law (KVL)\nSECTION | 5 | 2.4 Energy Sources\nSECTION | 6 | 2.17 Superposition Theorem\nSECTION | 7 | 2.18 Thevenin's Theorem\nSECTION | 8 | 2.19 Norton's Theorem\nSECTION | 9 | Transient Response of Series R-L Circuit for DC Excitation:\nSECTION | 10 | Transient Response of Series RC Circuit for DC Excitation:-\nTERM | Network\nTERM | Network Element\nTERM | Node\nTERM | Linear Network\nTERM | Non linear Network\nTERM | Bilateral Network\nTERM | Unilateral Network\nTERM | Active Network\nTERM | Passive Network\nTERM | Lumped Network\nTERM | Distributed Network\nTERM | Ideal voltage source\nTERM | Practical voltage source\nTERM | Ideal current source\nTERM | Practical current source\nTERM | Dependent sources\nTERM | Voltage Dependent Voltage Source\nTERM | Current Dependent Current Source\nTERM | Current Dependent Voltage Source\nTERM | Voltage Dependent Current Source\nTERM | Series Circuit\nTERM | Parallel Circuit\nTERM | Conductance (G)\nTERM | Superposition Theorem\nTERM | Thevenin's Theorem\nTERM | Norton's Theorem\nTERM | driven Series R-L circuit\nTERM | undriven (e) Sovece free Series R-Leircuit\nTERM | steady state response\nTERM | transient response\nTERM | time constant\nMISSING | NONE",
+      "round2": "DEF | 1 | An electrical network is defined as any arrangement of the various electrical energy sources along with the different circuit elements.\nMECH | 1 | In practice, electrical circuits consist of energy sources and parameters like resistors, inductors, and capacitors connected in different ways, where circuit analysis means finding the current through or voltage across any branch.\nSPEC | 1 | Active elements supply power or energy to the network, while passive elements like resistors, inductors, and capacitors either store or dissipate energy.\nSTEP | 1 | We begin our running example with a circuit consisting of a 12 V battery connected in series with a 4 ohm resistor and a 2 ohm resistor.\nTHIN | 1 | no\nDEF | 2 | Ohm's Law states that the current flowing through the electric circuit is directly proportional to the potential difference across the circuit and inversely proportional to the resistance of the circuit, provided the temperature remains constant.\nMECH | 2 | The potential difference between any two points of a conductor divided by the current flowing between them is a constant resistance, and this can be applied either to the entire circuit or to a part of the circuit.\nSPEC | 2 | Ohm's Law is not applicable to nonlinear devices such as diodes, zener diodes, and voltage regulators, and does not hold good for non-metallic conductors such as silicon carbide.\nSTEP | 2 | Applying Ohm's Law to our entire series circuit with an equivalent resistance of 6 ohms, the total current drawn from the 12 V battery is calculated as 2 amperes.\nTHIN | 2 | no\nDEF | 3 | Kirchhoff's Current Law (KCL) states that the total current flowing towards a junction point is equal to the total current flowing away from that junction point.\nMECH | 3 | Currents flowing towards a junction point are assumed to be positive while currents flowing away from a junction point are assumed to be negative, so that their algebraic sum is always zero.\nSPEC | 3 | Applying Kirchhoff's Current Law (KCL) at a junction in a complex network allows the determination of an unknown branch current by setting the algebraic sum of meeting currents to zero.\nSTEP | 3 | At the junction between the 4 ohm and 2 ohm resistors, Kirchhoff's Current Law (KCL) dictates that the 2 amperes of current entering the junction must be equal to the 2 amperes of current leaving it.\nTHIN | 3 | no\nDEF | 4 | Kirchhoff's Voltage Law (KVL) states that in any network, the algebraic sum of the voltage drops across the circuit elements of any closed path (or loop or mesh) is equal to the algebraic sum of the e.mfs in the path.\nMECH | 4 | Tracing and noting all potential drops or rises in one particular direction along a closed path from a starting point and back to it results in a total change in potential of zero.\nSPEC | 4 | If there is a current source in the network, Kirchhoff's Voltage Law (KVL) must not be applied to loops involving that current source because the voltage drop across a current source is unknown.\nSTEP | 4 | Applying Kirchhoff's Voltage Law (KVL) to our closed loop, we write -4I - 2I + 12 = 0, which solves to show the current through the 2 ohm resistor is 2 amperes.\nTHIN | 4 | no\nDEF | 5 | An ideal voltage source is defined as the energy source which gives constant voltage across its terminals irrespective of the current drawn through its terminals, while an ideal current source gives constant current irrespective of terminal voltage.\nMECH | 5 | A practical voltage source has a small internal resistance in series that causes the terminal voltage to decrease slightly with an increase in current, whereas a practical current source has a high internal resistance in parallel.\nSPEC | 5 | Dependent sources are classified into four types: Voltage Dependent Voltage Source, Current Dependent Current Source, Current Dependent Voltage Source, and Voltage Dependent Current Source.\nSTEP | 5 | The 12 V battery in our circuit is modeled as an ideal time invariant voltage source, which means its internal series resistance is zero.\nTHIN | 5 | no\nDEF | 6 | The Superposition Theorem states that in any multisource complex network consisting of linear bilateral elements, the voltage across or current through any given element of the network is equal to the algebraic sum of the individual voltages or currents, produced independently across or in that element by each source acting independently, when all the remaining sources are replaced by their respective internal resistances.\nMECH | 6 | Each source is considered acting alone while other voltage sources are replaced by short circuits and current sources are replaced by open circuits, and then the individual responses are algebraically added to find the total response.\nSPEC | 6 | The Superposition Theorem does not apply to power calculations because power is proportional to the square of the current, which is not a linear function.\nSTEP | 6 | Since our circuit contains only a single 12 V battery, we do not need to sum multiple independent source contributions to find that the current through our 2 ohm resistor remains 2 amperes.\nTHIN | 6 | no\nDEF | 7 | Thevenin's Theorem states that any combination of linear bilateral circuit elements and active sources connected to a given load R_L may be replaced by a simple two terminal network consisting of a single voltage source of V_TH volts and a single resistance R_eq in series.\nMECH | 7 | The load resistance is removed to calculate the open-circuit voltage V_TH across the terminals, then all active sources are replaced by their internal resistances to calculate the equivalent resistance R_eq as viewed through those terminals.\nSPEC | 7 | Thevenin's Theorem is not applicable to circuits consisting of nonlinear elements or unilateral networks, and there must not be magnetic coupling or controlled sources on the load side.\nSTEP | 7 | Treating the 2 ohm resistor as our load, we remove it to find an open-circuit voltage V_TH of 12 V and an equivalent series resistance R_eq of 4 ohms, allowing us to find the current as 12 / (4 + 2) = 2 amperes.\nTHIN | 7 | no\nDEF | 8 | Norton's Theorem states that any combination of linear bilateral circuit elements and active sources connected to a given load R_L can be replaced by a simple two terminal network consisting of a single current source of I_N amperes and a single impedance R_eq in parallel.\nMECH | 8 | The load terminals are short-circuited to calculate the short-circuit Norton's current I_N, while the equivalent resistance R_eq is calculated in the same manner as Thevenin's equivalent resistance with active sources replaced by their internal resistances.\nSPEC | 8 | Norton's Theorem is called the dual of Thevenin's Theorem because converting a Thevenin's equivalent voltage source to an equivalent current source using source transformation yields the Norton's equivalent.\nSTEP | 8 | Treating the 2 ohm resistor as our load and shorting its terminals, we find a short-circuit current I_N of 3 amperes and a parallel equivalent resistance of 4 ohms, which yields the identical current of 2 amperes through the load.\nTHIN | 8 | no\nDEF | 9 | A driven series R-L circuit is one in which an active source is introduced after transition, whereas an undriven or source free series R-L circuit is one in which an active source is absent.\nMECH | 9 | Applying Kirchhoff's Voltage Law (KVL) to the circuit yields a first-order non-homogeneous differential equation, whose solution shows that the current cannot change instantaneously and instead rises exponentially.\nSPEC | 9 | The time constant \\tau = L/R is the time required for the current to reach 0.632 times its maximum value, and the current practically reaches steady state at a time of t = 6\\tau.\nSTEP | 9 | Replacing the 2 ohm resistor with an inductor in series, we find that the current no longer rises to 2 amperes instantly but instead rises exponentially over time.\nTHIN | 9 | no\nDEF | 10 | In a series RC circuit, the capacitor may be initially charged or uncharged, and analyzing the driven or undriven source free cases provides the voltage response as a function of time.\nMECH | 10 | Applying Kirchhoff's Voltage Law (KVL) to a driven circuit yields a first-order differential equation where the voltage across the charging capacitor rises exponentially, while the charging current decays exponentially.\nSPEC | 10 | The time constant for a series RC circuit is represented by \\tau = RC, at which point the capacitor voltage rises to 0.632 times its steady-state value.\nSTEP | 10 | Adding a capacitor in series with our 4 ohm and 2 ohm resistors, we find that the current no longer settles to its steady-state value of 2 amperes instantly but instead decays exponentially as the capacitor charges to 12 V.\nTHIN | 10 | no",
+      "round3": "TOTAL | 720\nSECTION | 1 | Introduction to Electrical Engineering: | 50\nPOINT | 1 | An electrical network consists of energy sources and parameters like resistors, inductors, and capacitors connected in various configurations.\nPOINT | 1 | Passive elements like resistors, inductors, and capacitors are distinct because they either store or dissipate energy.\nSPEC | 1 | Resistors dissipate energy in the form of heat, while inductors and capacitors are capable of storing energy.\nSTEP | 1 | We begin our running example with a circuit consisting of a 12 V battery connected in series with a 4 ohm resistor and a 2 ohm resistor.\nSECTION | 2 | 2.5 Ohm's Law | 55\nPOINT | 2 | Current flowing through a conductor is directly proportional to potential difference and inversely proportional to resistance under constant temperature.\nPOINT | 2 | Ohm's Law can be applied to either an entire electrical circuit or to a specific part of a circuit.\nSPEC | 2 | Ohm's Law is not applicable to non-metallic conductors such as silicon carbide or to nonlinear devices like diodes.\nSTEP | 2 | Applying Ohm's Law to our entire series circuit with an equivalent resistance of 6 ohms, the total current drawn from the 12 V battery is calculated as 2 amperes.\nSECTION | 3 | 2.14.1 Kirchhoff's Current Law (KCL) | 65\nPOINT | 3 | Kirchhoff's Current Law states that the total current flowing toward a junction is equal to the total current flowing away from it.\nPOINT | 3 | Currents entering a junction are assumed positive while currents leaving are assumed negative, making their algebraic sum zero.\nSPEC | 3 | Sign convention: Currents flowing towards a junction point are assumed to be positive while currents flowing away are assumed to be negative.\nSTEP | 3 | At the junction between the 4 ohm and 2 ohm resistors, Kirchhoff's Current Law dictates that the 2 amperes of current entering the junction must be equal to the 2 amperes of current leaving it.\nSECTION | 4 | 2.14.2 Kirchhoff's Voltage Law (KVL) | 75\nPOINT | 4 | Kirchhoff's Voltage Law states that the algebraic sum of all branch voltages around any closed loop is always zero.\nPOINT | 4 | Tracing a closed path in a single direction and summing all potential drops and rises returns you to the starting potential.\nPOINT | 4 | Loop equations must not be written for loops containing current sources because the voltage drop across a current source is unknown.\nSPEC | 4 | KVL must be applied to a sufficient number of loops such that each element of the network is included at least once in the equations.\nSTEP | 4 | Applying Kirchhoff's Voltage Law to our closed loop, we write the equation -4I - 2I + 12 = 0 to solve for the circuit current of 2 amperes.\nSECTION | 5 | 2.4 Energy Sources | 65\nPOINT | 5 | Ideal voltage sources maintain a constant voltage terminal output regardless of the current drawn.\nPOINT | 5 | Practical voltage sources have a small series internal resistance that causes the terminal voltage to decrease as current increases.\nPOINT | 5 | Dependent or controlled sources produce a voltage or current that is a function of a voltage or current elsewhere in the circuit.\nSPEC | 5 | Dependent sources are classified into four types: Voltage Dependent Voltage Source, Current Dependent Current Source, Current Dependent Voltage Source, and Voltage Dependent Current Source.\nSTEP | 5 | The 12 V battery in our circuit is modeled as an ideal time-invariant voltage source, which means its internal series resistance is zero.\nSECTION | 6 | 2.17 Superposition Theorem | 85\nPOINT | 6 | Superposition states that in a multi-source linear bilateral network, the response in any element is the sum of the independent responses from each source.\nPOINT | 6 | To analyze a single source independently, other independent voltage sources are replaced by short circuits and current sources by open circuits.\nSPEC | 6 | The Superposition Theorem does not apply to power calculations because power is proportional to the square of current, which is a non-linear relationship.\nSTEP | 6 | Since our circuit contains only a single 12 V battery, the superposition theorem confirms the current through our 2 ohm resistor remains 2 amperes.\nSECTION | 7 | 2.18 Thevenin's Theorem | 100\nPOINT | 7 | Any network of linear bilateral elements and active sources can be replaced across two terminals by a single voltage source in series with an equivalent resistance.\nPOINT | 7 | Thevenin's voltage is the open-circuit voltage across the terminals of interest, and the equivalent resistance is viewed through the open terminals with sources deactivated.\nSPEC | 7 | Thevenin's Theorem is not applicable to circuits consisting of non-linear elements, unilateral networks, or those with magnetic coupling between load and circuit.\nSTEP | 7 | Treating the 2 ohm resistor as our load, we remove it to find an open-circuit voltage of 12 V and an equivalent series resistance of 4 ohms, allowing us to find the current as 12 V / (4 + 2) = 2 amperes.\nSECTION | 8 | 2.19 Norton's Theorem | 80\nPOINT | 8 | Any combination of active sources and linear bilateral elements can be represented across a load by a single parallel current source and equivalent resistance.\nPOINT | 8 | The Norton current is the short-circuit current flowing through the load terminals when they are directly connected.\nSPEC | 8 | Norton's Theorem is considered the dual of Thevenin's Theorem because converting a Thevenin equivalent to an equivalent current source using source transformation yields the Norton equivalent.\nSTEP | 8 | Treating the 2 ohm resistor as our load and shorting its terminals, we find a short-circuit current of 3 amperes and a parallel equivalent resistance of 4 ohms, which yields the identical current of 2 amperes through the load.\nSECTION | 9 | Transient Response of Series R-L Circuit for DC Excitation: | 75\nPOINT | 9 | Applying KVL to a driven series R-L circuit yields a first-order differential equation, showing that current rises exponentially over time.\nPOINT | 9 | In an undriven or source-free R-L circuit, the inductor's stored energy is discharged, and current decays exponentially to zero.\nSPEC | 9 | The time constant for a series R-L circuit is L/R, representing the time required to complete 63.2% of the total transition.\nSTEP | 9 | Replacing the 2 ohm resistor with an inductor in series, we find that the current no longer rises to 2 amperes instantly but instead rises exponentially over time.\nSECTION | 10 | Transient Response of Series RC Circuit for DC Excitation:- | 70\nPOINT | 10 | In first-order R-C circuits, the voltage across the charging capacitor rises exponentially, while the charging current decays exponentially.\nPOINT | 10 | In an undriven or source-free R-C circuit, the capacitor's stored energy is discharged through the resistor, causing the voltage to decay.\nSPEC | 10 | The time constant for a series RC circuit is represented by \\tau = RC, representing the time required to complete 63.2% of the total transition.\nSTEP | 10 | Adding a capacitor in series with our 4 ohm and 2 ohm resistors, we find that the current no longer settles to its steady-state value of 2 amperes instantly but instead decays exponentially as the capacitor charges to 12 V.\nGAP | NONE",
       "section_seconds": [
-        35,
-        40,
+        50,
         55,
         65,
-        40,
-        55,
-        45,
-        45,
+        75,
+        65,
         85,
-        95,
+        100,
         80,
-        80
+        75,
+        70
       ],
       "source_added": true,
-      "state": "postprocessed",
+      "state": "generating",
       "style": "whiteboard",
       "subject": "bee-y1",
       "target_minutes": 12,
-      "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-07T03:52:12Z",
-      "watermark": {
-        "bottom_right_box": {
-          "h": 16,
-          "w": 94,
-          "x": 1134,
-          "y": 661
-        },
-        "bottom_right_box_norm": {
-          "frames_agreeing": 105,
-          "frames_sampled": 120,
-          "h": 0.022222222222222223,
-          "method": "ocr",
-          "w": 0.0734375,
-          "x": 0.8859375,
-          "y": 0.9180555555555555
-        },
-        "bottom_right_segments": [
-          {
-            "end": 16.0,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 4.5
-          },
-          {
-            "end": 18.8,
-            "light_logo": true,
-            "plate": "0xFC8A0C",
-            "start": 16.0
-          },
-          {
-            "end": 50.2,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 18.8
-          },
-          {
-            "end": 52.2,
-            "light_logo": true,
-            "plate": "0xFC8A0C",
-            "start": 50.2
-          },
-          {
-            "end": 81.6,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 52.2
-          },
-          {
-            "end": 82.5,
-            "light_logo": true,
-            "plate": "0xFC8A06",
-            "start": 81.6
-          },
-          {
-            "end": 85.8,
-            "light_logo": true,
-            "plate": "0xFC8A06",
-            "start": 85.5
-          },
-          {
-            "end": 115.7,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 85.8
-          },
-          {
-            "end": 117.3,
-            "light_logo": true,
-            "plate": "0xFC8A0C",
-            "start": 115.7
-          },
-          {
-            "end": 119.8,
-            "light_logo": true,
-            "plate": "0xFC840C",
-            "start": 117.3
-          },
-          {
-            "end": 121.1,
-            "light_logo": true,
-            "plate": "0xFC8A0C",
-            "start": 119.8
-          },
-          {
-            "end": 166.2,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 121.1
-          },
-          {
-            "end": 166.4,
-            "light_logo": true,
-            "plate": "0xFC9C30",
-            "start": 166.2
-          },
-          {
-            "end": 166.5,
-            "light_logo": true,
-            "plate": "0xFC9C30",
-            "start": 166.4
-          },
-          {
-            "end": 166.8,
-            "light_logo": true,
-            "plate": "0xF69C36",
-            "start": 166.5
-          },
-          {
-            "end": 167.8,
-            "light_logo": true,
-            "plate": "0xFCA242",
-            "start": 166.8
-          },
-          {
-            "end": 170.2,
-            "light_logo": true,
-            "plate": "0xF69C36",
-            "start": 167.8
-          },
-          {
-            "end": 217.9,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 170.2
-          },
-          {
-            "end": 220.7,
-            "light_logo": true,
-            "plate": "0xFC8A0C",
-            "start": 217.9
-          },
-          {
-            "end": 265.5,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 220.7
-          },
-          {
-            "end": 267.8,
-            "light_logo": false,
-            "plate": "0xF0F0F0",
-            "start": 265.5
-          },
-          {
-            "end": 296.3,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 267.8
-          },
-          {
-            "end": 298.6,
-            "light_logo": false,
-            "plate": "0xF0F0F0",
-            "start": 296.3
-          },
-          {
-            "end": 341.9,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 298.6
-          },
-          {
-            "end": 345.0,
-            "light_logo": true,
-            "plate": "0xFC8A0C",
-            "start": 341.9
-          },
-          {
-            "end": 404.8,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 345.0
-          },
-          {
-            "end": 407.2,
-            "light_logo": false,
-            "plate": "0xF0F0F0",
-            "start": 404.8
-          },
-          {
-            "end": 487.2,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 407.2
-          },
-          {
-            "end": 489.7,
-            "light_logo": true,
-            "plate": "0xFC840C",
-            "start": 487.2
-          },
-          {
-            "end": 490.5,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 489.7
-          },
-          {
-            "end": 563.2,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 542.5
-          },
-          {
-            "end": 563.4,
-            "light_logo": false,
-            "plate": "0xF0F0F0",
-            "start": 563.2
-          },
-          {
-            "end": 563.5,
-            "light_logo": false,
-            "plate": "0xF0F0F0",
-            "start": 563.4
-          },
-          {
-            "end": 567.8,
-            "light_logo": false,
-            "plate": "0xF0F0F0",
-            "start": 567.5
-          },
-          {
-            "end": 568.2,
-            "light_logo": false,
-            "plate": "0xEAEAEA",
-            "start": 567.8
-          },
-          {
-            "end": 688.5,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 568.2
-          },
-          {
-            "end": 689.5,
-            "light_logo": false,
-            "plate": "0xF6F6FC",
-            "start": 688.5
-          }
-        ],
-        "centre_top_box": null,
-        "discovered": [],
-        "encode": {
-          "crf": "16",
-          "preset": "slow",
-          "tune": "stillimage"
-        },
-        "outro_cut_at": 688.25
-      }
+      "updated_at": "2026-08-07T19:23:37Z"
     },
     "bee-y1/u2": {
       "artifact_id": "96e7ac16-cd4a-4278-93df-f9b45624b891",
