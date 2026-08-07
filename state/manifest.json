@@ -2,6 +2,7 @@
   "units": {
     "bee-y1/u1": {
       "artifact_id": "bae2c4f0-f338-41ab-80d9-761da48b0d74",
+      "captions": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/captions.vtt",
       "chapter_anchors": [
         "engineering",
         "ohm's",
@@ -26,10 +27,68 @@
         "Transient Response of Series R-L Circuit for DC Excitation:",
         "Transient Response of Series RC Circuit for DC Excitation:-"
       ],
+      "chapters": [
+        {
+          "label": "Overview",
+          "t": 0
+        },
+        {
+          "label": "Introduction to Electrical Engineering:",
+          "t": 23
+        },
+        {
+          "label": "2.5 Ohm's Law",
+          "t": 76
+        },
+        {
+          "label": "2.14.1 Kirchhoff's Current Law (KCL)",
+          "t": 136
+        },
+        {
+          "label": "2.14.2 Kirchhoff's Voltage Law (KVL)",
+          "t": 197
+        },
+        {
+          "label": "2.4 Energy Sources",
+          "t": 265
+        },
+        {
+          "label": "2.17 Superposition Theorem",
+          "t": 335
+        },
+        {
+          "label": "2.18 Thevenin's Theorem",
+          "t": 422
+        },
+        {
+          "label": "2.19 Norton's Theorem",
+          "t": 510
+        },
+        {
+          "label": "Transient Response of Series R-L Circuit for DC Excitation:",
+          "t": 589
+        },
+        {
+          "label": "Transient Response of Series RC Circuit for DC Excitation:-",
+          "t": 668
+        }
+      ],
+      "duration_sec": 794,
+      "final_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/final.mp4",
       "notebook_id": "be9007df-abf3-4939-abc4-b0a5174980a5",
       "notebook_title": "Basic Electrical Engineering - Unit 1: DC Circuits",
       "profile": "default",
       "prompt_chars": 15772,
+      "raw_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/raw.mp4",
+      "raw_size_mb": 51.58,
+      "readability": {
+        "flesch_reading_ease": 35.7,
+        "grade_level": 10.8,
+        "long_word_pct": 7.9,
+        "sentences": 197,
+        "words": 1979,
+        "words_per_sentence": 10.0
+      },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Introduction to Electrical Engineering:\nSECTION | 2 | 2.5 Ohm's Law\nSECTION | 3 | 2.14.1 Kirchhoff's Current Law (KCL)\nSECTION | 4 | 2.14.2 Kirchhoff's Voltage Law (KVL)\nSECTION | 5 | 2.4 Energy Sources\nSECTION | 6 | 2.17 Superposition Theorem\nSECTION | 7 | 2.18 Thevenin's Theorem\nSECTION | 8 | 2.19 Norton's Theorem\nSECTION | 9 | Transient Response of Series R-L Circuit for DC Excitation:\nSECTION | 10 | Transient Response of Series RC Circuit for DC Excitation:-\nTERM | Network\nTERM | Network Element\nTERM | Node\nTERM | Linear Network\nTERM | Non linear Network\nTERM | Bilateral Network\nTERM | Unilateral Network\nTERM | Active Network\nTERM | Passive Network\nTERM | Lumped Network\nTERM | Distributed Network\nTERM | Ideal voltage source\nTERM | Practical voltage source\nTERM | Ideal current source\nTERM | Practical current source\nTERM | Dependent sources\nTERM | Voltage Dependent Voltage Source\nTERM | Current Dependent Current Source\nTERM | Current Dependent Voltage Source\nTERM | Voltage Dependent Current Source\nTERM | Series Circuit\nTERM | Parallel Circuit\nTERM | Conductance (G)\nTERM | Superposition Theorem\nTERM | Thevenin's Theorem\nTERM | Norton's Theorem\nTERM | driven Series R-L circuit\nTERM | undriven (e) Sovece free Series R-Leircuit\nTERM | steady state response\nTERM | transient response\nTERM | time constant\nMISSING | NONE",
       "round2": "DEF | 1 | An electrical network is defined as any arrangement of the various electrical energy sources along with the different circuit elements.\nMECH | 1 | In practice, electrical circuits consist of energy sources and parameters like resistors, inductors, and capacitors connected in different ways, where circuit analysis means finding the current through or voltage across any branch.\nSPEC | 1 | Active elements supply power or energy to the network, while passive elements like resistors, inductors, and capacitors either store or dissipate energy.\nSTEP | 1 | We begin our running example with a circuit consisting of a 12 V battery connected in series with a 4 ohm resistor and a 2 ohm resistor.\nTHIN | 1 | no\nDEF | 2 | Ohm's Law states that the current flowing through the electric circuit is directly proportional to the potential difference across the circuit and inversely proportional to the resistance of the circuit, provided the temperature remains constant.\nMECH | 2 | The potential difference between any two points of a conductor divided by the current flowing between them is a constant resistance, and this can be applied either to the entire circuit or to a part of the circuit.\nSPEC | 2 | Ohm's Law is not applicable to nonlinear devices such as diodes, zener diodes, and voltage regulators, and does not hold good for non-metallic conductors such as silicon carbide.\nSTEP | 2 | Applying Ohm's Law to our entire series circuit with an equivalent resistance of 6 ohms, the total current drawn from the 12 V battery is calculated as 2 amperes.\nTHIN | 2 | no\nDEF | 3 | Kirchhoff's Current Law (KCL) states that the total current flowing towards a junction point is equal to the total current flowing away from that junction point.\nMECH | 3 | Currents flowing towards a junction point are assumed to be positive while currents flowing away from a junction point are assumed to be negative, so that their algebraic sum is always zero.\nSPEC | 3 | Applying Kirchhoff's Current Law (KCL) at a junction in a complex network allows the determination of an unknown branch current by setting the algebraic sum of meeting currents to zero.\nSTEP | 3 | At the junction between the 4 ohm and 2 ohm resistors, Kirchhoff's Current Law (KCL) dictates that the 2 amperes of current entering the junction must be equal to the 2 amperes of current leaving it.\nTHIN | 3 | no\nDEF | 4 | Kirchhoff's Voltage Law (KVL) states that in any network, the algebraic sum of the voltage drops across the circuit elements of any closed path (or loop or mesh) is equal to the algebraic sum of the e.mfs in the path.\nMECH | 4 | Tracing and noting all potential drops or rises in one particular direction along a closed path from a starting point and back to it results in a total change in potential of zero.\nSPEC | 4 | If there is a current source in the network, Kirchhoff's Voltage Law (KVL) must not be applied to loops involving that current source because the voltage drop across a current source is unknown.\nSTEP | 4 | Applying Kirchhoff's Voltage Law (KVL) to our closed loop, we write -4I - 2I + 12 = 0, which solves to show the current through the 2 ohm resistor is 2 amperes.\nTHIN | 4 | no\nDEF | 5 | An ideal voltage source is defined as the energy source which gives constant voltage across its terminals irrespective of the current drawn through its terminals, while an ideal current source gives constant current irrespective of terminal voltage.\nMECH | 5 | A practical voltage source has a small internal resistance in series that causes the terminal voltage to decrease slightly with an increase in current, whereas a practical current source has a high internal resistance in parallel.\nSPEC | 5 | Dependent sources are classified into four types: Voltage Dependent Voltage Source, Current Dependent Current Source, Current Dependent Voltage Source, and Voltage Dependent Current Source.\nSTEP | 5 | The 12 V battery in our circuit is modeled as an ideal time invariant voltage source, which means its internal series resistance is zero.\nTHIN | 5 | no\nDEF | 6 | The Superposition Theorem states that in any multisource complex network consisting of linear bilateral elements, the voltage across or current through any given element of the network is equal to the algebraic sum of the individual voltages or currents, produced independently across or in that element by each source acting independently, when all the remaining sources are replaced by their respective internal resistances.\nMECH | 6 | Each source is considered acting alone while other voltage sources are replaced by short circuits and current sources are replaced by open circuits, and then the individual responses are algebraically added to find the total response.\nSPEC | 6 | The Superposition Theorem does not apply to power calculations because power is proportional to the square of the current, which is not a linear function.\nSTEP | 6 | Since our circuit contains only a single 12 V battery, we do not need to sum multiple independent source contributions to find that the current through our 2 ohm resistor remains 2 amperes.\nTHIN | 6 | no\nDEF | 7 | Thevenin's Theorem states that any combination of linear bilateral circuit elements and active sources connected to a given load R_L may be replaced by a simple two terminal network consisting of a single voltage source of V_TH volts and a single resistance R_eq in series.\nMECH | 7 | The load resistance is removed to calculate the open-circuit voltage V_TH across the terminals, then all active sources are replaced by their internal resistances to calculate the equivalent resistance R_eq as viewed through those terminals.\nSPEC | 7 | Thevenin's Theorem is not applicable to circuits consisting of nonlinear elements or unilateral networks, and there must not be magnetic coupling or controlled sources on the load side.\nSTEP | 7 | Treating the 2 ohm resistor as our load, we remove it to find an open-circuit voltage V_TH of 12 V and an equivalent series resistance R_eq of 4 ohms, allowing us to find the current as 12 / (4 + 2) = 2 amperes.\nTHIN | 7 | no\nDEF | 8 | Norton's Theorem states that any combination of linear bilateral circuit elements and active sources connected to a given load R_L can be replaced by a simple two terminal network consisting of a single current source of I_N amperes and a single impedance R_eq in parallel.\nMECH | 8 | The load terminals are short-circuited to calculate the short-circuit Norton's current I_N, while the equivalent resistance R_eq is calculated in the same manner as Thevenin's equivalent resistance with active sources replaced by their internal resistances.\nSPEC | 8 | Norton's Theorem is called the dual of Thevenin's Theorem because converting a Thevenin's equivalent voltage source to an equivalent current source using source transformation yields the Norton's equivalent.\nSTEP | 8 | Treating the 2 ohm resistor as our load and shorting its terminals, we find a short-circuit current I_N of 3 amperes and a parallel equivalent resistance of 4 ohms, which yields the identical current of 2 amperes through the load.\nTHIN | 8 | no\nDEF | 9 | A driven series R-L circuit is one in which an active source is introduced after transition, whereas an undriven or source free series R-L circuit is one in which an active source is absent.\nMECH | 9 | Applying Kirchhoff's Voltage Law (KVL) to the circuit yields a first-order non-homogeneous differential equation, whose solution shows that the current cannot change instantaneously and instead rises exponentially.\nSPEC | 9 | The time constant \\tau = L/R is the time required for the current to reach 0.632 times its maximum value, and the current practically reaches steady state at a time of t = 6\\tau.\nSTEP | 9 | Replacing the 2 ohm resistor with an inductor in series, we find that the current no longer rises to 2 amperes instantly but instead rises exponentially over time.\nTHIN | 9 | no\nDEF | 10 | In a series RC circuit, the capacitor may be initially charged or uncharged, and analyzing the driven or undriven source free cases provides the voltage response as a function of time.\nMECH | 10 | Applying Kirchhoff's Voltage Law (KVL) to a driven circuit yields a first-order differential equation where the voltage across the charging capacitor rises exponentially, while the charging current decays exponentially.\nSPEC | 10 | The time constant for a series RC circuit is represented by \\tau = RC, at which point the capacitor voltage rises to 0.632 times its steady-state value.\nSTEP | 10 | Adding a capacitor in series with our 4 ohm and 2 ohm resistors, we find that the current no longer settles to its steady-state value of 2 amperes instantly but instead decays exponentially as the capacitor charges to 12 V.\nTHIN | 10 | no",
       "round3": "TOTAL | 720\nSECTION | 1 | Introduction to Electrical Engineering: | 50\nPOINT | 1 | An electrical network consists of energy sources and parameters like resistors, inductors, and capacitors connected in various configurations.\nPOINT | 1 | Passive elements like resistors, inductors, and capacitors are distinct because they either store or dissipate energy.\nSPEC | 1 | Resistors dissipate energy in the form of heat, while inductors and capacitors are capable of storing energy.\nSTEP | 1 | We begin our running example with a circuit consisting of a 12 V battery connected in series with a 4 ohm resistor and a 2 ohm resistor.\nSECTION | 2 | 2.5 Ohm's Law | 55\nPOINT | 2 | Current flowing through a conductor is directly proportional to potential difference and inversely proportional to resistance under constant temperature.\nPOINT | 2 | Ohm's Law can be applied to either an entire electrical circuit or to a specific part of a circuit.\nSPEC | 2 | Ohm's Law is not applicable to non-metallic conductors such as silicon carbide or to nonlinear devices like diodes.\nSTEP | 2 | Applying Ohm's Law to our entire series circuit with an equivalent resistance of 6 ohms, the total current drawn from the 12 V battery is calculated as 2 amperes.\nSECTION | 3 | 2.14.1 Kirchhoff's Current Law (KCL) | 65\nPOINT | 3 | Kirchhoff's Current Law states that the total current flowing toward a junction is equal to the total current flowing away from it.\nPOINT | 3 | Currents entering a junction are assumed positive while currents leaving are assumed negative, making their algebraic sum zero.\nSPEC | 3 | Sign convention: Currents flowing towards a junction point are assumed to be positive while currents flowing away are assumed to be negative.\nSTEP | 3 | At the junction between the 4 ohm and 2 ohm resistors, Kirchhoff's Current Law dictates that the 2 amperes of current entering the junction must be equal to the 2 amperes of current leaving it.\nSECTION | 4 | 2.14.2 Kirchhoff's Voltage Law (KVL) | 75\nPOINT | 4 | Kirchhoff's Voltage Law states that the algebraic sum of all branch voltages around any closed loop is always zero.\nPOINT | 4 | Tracing a closed path in a single direction and summing all potential drops and rises returns you to the starting potential.\nPOINT | 4 | Loop equations must not be written for loops containing current sources because the voltage drop across a current source is unknown.\nSPEC | 4 | KVL must be applied to a sufficient number of loops such that each element of the network is included at least once in the equations.\nSTEP | 4 | Applying Kirchhoff's Voltage Law to our closed loop, we write the equation -4I - 2I + 12 = 0 to solve for the circuit current of 2 amperes.\nSECTION | 5 | 2.4 Energy Sources | 65\nPOINT | 5 | Ideal voltage sources maintain a constant voltage terminal output regardless of the current drawn.\nPOINT | 5 | Practical voltage sources have a small series internal resistance that causes the terminal voltage to decrease as current increases.\nPOINT | 5 | Dependent or controlled sources produce a voltage or current that is a function of a voltage or current elsewhere in the circuit.\nSPEC | 5 | Dependent sources are classified into four types: Voltage Dependent Voltage Source, Current Dependent Current Source, Current Dependent Voltage Source, and Voltage Dependent Current Source.\nSTEP | 5 | The 12 V battery in our circuit is modeled as an ideal time-invariant voltage source, which means its internal series resistance is zero.\nSECTION | 6 | 2.17 Superposition Theorem | 85\nPOINT | 6 | Superposition states that in a multi-source linear bilateral network, the response in any element is the sum of the independent responses from each source.\nPOINT | 6 | To analyze a single source independently, other independent voltage sources are replaced by short circuits and current sources by open circuits.\nSPEC | 6 | The Superposition Theorem does not apply to power calculations because power is proportional to the square of current, which is a non-linear relationship.\nSTEP | 6 | Since our circuit contains only a single 12 V battery, the superposition theorem confirms the current through our 2 ohm resistor remains 2 amperes.\nSECTION | 7 | 2.18 Thevenin's Theorem | 100\nPOINT | 7 | Any network of linear bilateral elements and active sources can be replaced across two terminals by a single voltage source in series with an equivalent resistance.\nPOINT | 7 | Thevenin's voltage is the open-circuit voltage across the terminals of interest, and the equivalent resistance is viewed through the open terminals with sources deactivated.\nSPEC | 7 | Thevenin's Theorem is not applicable to circuits consisting of non-linear elements, unilateral networks, or those with magnetic coupling between load and circuit.\nSTEP | 7 | Treating the 2 ohm resistor as our load, we remove it to find an open-circuit voltage of 12 V and an equivalent series resistance of 4 ohms, allowing us to find the current as 12 V / (4 + 2) = 2 amperes.\nSECTION | 8 | 2.19 Norton's Theorem | 80\nPOINT | 8 | Any combination of active sources and linear bilateral elements can be represented across a load by a single parallel current source and equivalent resistance.\nPOINT | 8 | The Norton current is the short-circuit current flowing through the load terminals when they are directly connected.\nSPEC | 8 | Norton's Theorem is considered the dual of Thevenin's Theorem because converting a Thevenin equivalent to an equivalent current source using source transformation yields the Norton equivalent.\nSTEP | 8 | Treating the 2 ohm resistor as our load and shorting its terminals, we find a short-circuit current of 3 amperes and a parallel equivalent resistance of 4 ohms, which yields the identical current of 2 amperes through the load.\nSECTION | 9 | Transient Response of Series R-L Circuit for DC Excitation: | 75\nPOINT | 9 | Applying KVL to a driven series R-L circuit yields a first-order differential equation, showing that current rises exponentially over time.\nPOINT | 9 | In an undriven or source-free R-L circuit, the inductor's stored energy is discharged, and current decays exponentially to zero.\nSPEC | 9 | The time constant for a series R-L circuit is L/R, representing the time required to complete 63.2% of the total transition.\nSTEP | 9 | Replacing the 2 ohm resistor with an inductor in series, we find that the current no longer rises to 2 amperes instantly but instead rises exponentially over time.\nSECTION | 10 | Transient Response of Series RC Circuit for DC Excitation:- | 70\nPOINT | 10 | In first-order R-C circuits, the voltage across the charging capacitor rises exponentially, while the charging current decays exponentially.\nPOINT | 10 | In an undriven or source-free R-C circuit, the capacitor's stored energy is discharged through the resistor, causing the voltage to decay.\nSPEC | 10 | The time constant for a series RC circuit is represented by \\tau = RC, representing the time required to complete 63.2% of the total transition.\nSTEP | 10 | Adding a capacitor in series with our 4 ohm and 2 ohm resistors, we find that the current no longer settles to its steady-state value of 2 amperes instantly but instead decays exponentially as the capacitor charges to 12 V.\nGAP | NONE",
@@ -46,12 +105,614 @@
         70
       ],
       "source_added": true,
-      "state": "generating",
+      "state": "postprocessed",
       "style": "whiteboard",
       "subject": "bee-y1",
       "target_minutes": 12,
+      "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-07T19:23:37Z"
+      "updated_at": "2026-08-07T19:59:04Z",
+      "watermark": {
+        "bottom_right_box": {
+          "h": 16,
+          "w": 94,
+          "x": 1134,
+          "y": 661
+        },
+        "bottom_right_box_norm": {
+          "frames_agreeing": 112,
+          "frames_sampled": 120,
+          "h": 0.022222222222222223,
+          "method": "ocr",
+          "w": 0.0734375,
+          "x": 0.8859375,
+          "y": 0.9180555555555555
+        },
+        "bottom_right_segments": [
+          {
+            "end": 23.5,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 3.5
+          },
+          {
+            "end": 31.3,
+            "light_logo": true,
+            "plate": "0x06E4AE",
+            "start": 23.5
+          },
+          {
+            "end": 31.7,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 31.3
+          },
+          {
+            "end": 37.0,
+            "light_logo": true,
+            "plate": "0x06E4AE",
+            "start": 31.7
+          },
+          {
+            "end": 37.3,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 37.0
+          },
+          {
+            "end": 39.8,
+            "light_logo": true,
+            "plate": "0x06E4AE",
+            "start": 37.3
+          },
+          {
+            "end": 42.7,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 39.8
+          },
+          {
+            "end": 47.7,
+            "light_logo": true,
+            "plate": "0x06E4AE",
+            "start": 42.7
+          },
+          {
+            "end": 48.0,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 47.7
+          },
+          {
+            "end": 51.1,
+            "light_logo": true,
+            "plate": "0x06E4AE",
+            "start": 48.0
+          },
+          {
+            "end": 76.8,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 51.1
+          },
+          {
+            "end": 79.2,
+            "light_logo": true,
+            "plate": "0x06E4AE",
+            "start": 76.8
+          },
+          {
+            "end": 104.8,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 79.2
+          },
+          {
+            "end": 136.6,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 104.8
+          },
+          {
+            "end": 145.0,
+            "light_logo": true,
+            "plate": "0x06EAB4",
+            "start": 136.6
+          },
+          {
+            "end": 146.0,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 145.0
+          },
+          {
+            "end": 169.0,
+            "light_logo": true,
+            "plate": "0x06EAB4",
+            "start": 146.0
+          },
+          {
+            "end": 197.0,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 169.0
+          },
+          {
+            "end": 197.2,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 197.0
+          },
+          {
+            "end": 197.3,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 197.2
+          },
+          {
+            "end": 202.4,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 197.3
+          },
+          {
+            "end": 202.7,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 202.4
+          },
+          {
+            "end": 231.0,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 202.7
+          },
+          {
+            "end": 265.5,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 231.0
+          },
+          {
+            "end": 266.8,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 265.5
+          },
+          {
+            "end": 267.7,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 266.8
+          },
+          {
+            "end": 269.2,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 267.7
+          },
+          {
+            "end": 271.8,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 269.2
+          },
+          {
+            "end": 272.0,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 271.8
+          },
+          {
+            "end": 274.5,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 272.0
+          },
+          {
+            "end": 277.3,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 274.5
+          },
+          {
+            "end": 280.0,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 277.3
+          },
+          {
+            "end": 281.2,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 280.0
+          },
+          {
+            "end": 282.3,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 281.2
+          },
+          {
+            "end": 282.6,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 282.3
+          },
+          {
+            "end": 285.2,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 282.6
+          },
+          {
+            "end": 288.0,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 285.2
+          },
+          {
+            "end": 290.5,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 288.0
+          },
+          {
+            "end": 291.7,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 290.5
+          },
+          {
+            "end": 293.0,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 291.7
+          },
+          {
+            "end": 293.3,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 293.0
+          },
+          {
+            "end": 295.9,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 293.3
+          },
+          {
+            "end": 298.6,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 295.9
+          },
+          {
+            "end": 301.2,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 298.6
+          },
+          {
+            "end": 335.8,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 301.2
+          },
+          {
+            "end": 381.0,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 335.8
+          },
+          {
+            "end": 422.4,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 381.0
+          },
+          {
+            "end": 466.5,
+            "light_logo": true,
+            "plate": "0x06E4AE",
+            "start": 422.4
+          },
+          {
+            "end": 510.0,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 466.5
+          },
+          {
+            "end": 510.5,
+            "light_logo": false,
+            "plate": "0xF0F0F0",
+            "start": 510.0
+          },
+          {
+            "end": 548.1,
+            "light_logo": false,
+            "plate": "0xF0F0F0",
+            "start": 547.5
+          },
+          {
+            "end": 588.9,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 548.1
+          },
+          {
+            "end": 589.2,
+            "light_logo": true,
+            "plate": "0x18E4B4",
+            "start": 588.9
+          },
+          {
+            "end": 589.5,
+            "light_logo": true,
+            "plate": "0x18E4B4",
+            "start": 589.2
+          },
+          {
+            "end": 590.8,
+            "light_logo": true,
+            "plate": "0x18E4B4",
+            "start": 589.5
+          },
+          {
+            "end": 591.2,
+            "light_logo": true,
+            "plate": "0x18E4B4",
+            "start": 590.8
+          },
+          {
+            "end": 591.3,
+            "light_logo": true,
+            "plate": "0x18E4B4",
+            "start": 591.2
+          },
+          {
+            "end": 592.0,
+            "light_logo": true,
+            "plate": "0x1EE4B4",
+            "start": 591.3
+          },
+          {
+            "end": 594.1,
+            "light_logo": true,
+            "plate": "0x12E4B4",
+            "start": 592.0
+          },
+          {
+            "end": 594.5,
+            "light_logo": true,
+            "plate": "0x30F0C0",
+            "start": 594.1
+          },
+          {
+            "end": 597.1,
+            "light_logo": true,
+            "plate": "0x24F0C0",
+            "start": 594.5
+          },
+          {
+            "end": 597.4,
+            "light_logo": true,
+            "plate": "0x24F0C0",
+            "start": 597.1
+          },
+          {
+            "end": 598.3,
+            "light_logo": true,
+            "plate": "0x24F0C0",
+            "start": 597.4
+          },
+          {
+            "end": 599.8,
+            "light_logo": true,
+            "plate": "0x1EC69C",
+            "start": 598.3
+          },
+          {
+            "end": 602.3,
+            "light_logo": true,
+            "plate": "0x0CE4AE",
+            "start": 599.8
+          },
+          {
+            "end": 602.7,
+            "light_logo": true,
+            "plate": "0x1EC69C",
+            "start": 602.3
+          },
+          {
+            "end": 603.7,
+            "light_logo": true,
+            "plate": "0x24F0C0",
+            "start": 602.7
+          },
+          {
+            "end": 605.2,
+            "light_logo": true,
+            "plate": "0x1EC69C",
+            "start": 603.7
+          },
+          {
+            "end": 608.0,
+            "light_logo": true,
+            "plate": "0x12E4B4",
+            "start": 605.2
+          },
+          {
+            "end": 609.0,
+            "light_logo": true,
+            "plate": "0x24F0C0",
+            "start": 608.0
+          },
+          {
+            "end": 610.5,
+            "light_logo": true,
+            "plate": "0x1EC69C",
+            "start": 609.0
+          },
+          {
+            "end": 613.0,
+            "light_logo": true,
+            "plate": "0x0CE4AE",
+            "start": 610.5
+          },
+          {
+            "end": 613.4,
+            "light_logo": true,
+            "plate": "0x1EC69C",
+            "start": 613.0
+          },
+          {
+            "end": 614.3,
+            "light_logo": true,
+            "plate": "0x24F0C0",
+            "start": 613.4
+          },
+          {
+            "end": 615.8,
+            "light_logo": true,
+            "plate": "0x12E4B4",
+            "start": 614.3
+          },
+          {
+            "end": 618.0,
+            "light_logo": true,
+            "plate": "0x1EC69C",
+            "start": 615.8
+          },
+          {
+            "end": 618.4,
+            "light_logo": true,
+            "plate": "0x1EC69C",
+            "start": 618.0
+          },
+          {
+            "end": 618.7,
+            "light_logo": true,
+            "plate": "0x24F0C0",
+            "start": 618.4
+          },
+          {
+            "end": 619.7,
+            "light_logo": true,
+            "plate": "0x24F0C0",
+            "start": 618.7
+          },
+          {
+            "end": 621.2,
+            "light_logo": true,
+            "plate": "0x1EC69C",
+            "start": 619.7
+          },
+          {
+            "end": 623.7,
+            "light_logo": true,
+            "plate": "0x0CE4AE",
+            "start": 621.2
+          },
+          {
+            "end": 624.0,
+            "light_logo": true,
+            "plate": "0x1EC69C",
+            "start": 623.7
+          },
+          {
+            "end": 626.5,
+            "light_logo": true,
+            "plate": "0x12E4B4",
+            "start": 624.0
+          },
+          {
+            "end": 628.4,
+            "light_logo": true,
+            "plate": "0x1EC69C",
+            "start": 626.5
+          },
+          {
+            "end": 629.0,
+            "light_logo": true,
+            "plate": "0x1EC69C",
+            "start": 628.4
+          },
+          {
+            "end": 630.1,
+            "light_logo": true,
+            "plate": "0x24EABA",
+            "start": 629.0
+          },
+          {
+            "end": 630.2,
+            "light_logo": true,
+            "plate": "0x12E4B4",
+            "start": 630.1
+          },
+          {
+            "end": 630.8,
+            "light_logo": true,
+            "plate": "0x12E4B4",
+            "start": 630.2
+          },
+          {
+            "end": 631.3,
+            "light_logo": true,
+            "plate": "0x12E4B4",
+            "start": 630.8
+          },
+          {
+            "end": 668.1,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 631.3
+          },
+          {
+            "end": 712.0,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 668.1
+          },
+          {
+            "end": 748.6,
+            "light_logo": false,
+            "plate": "0xF0F0F0",
+            "start": 712.0
+          },
+          {
+            "end": 785.0,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 748.6
+          },
+          {
+            "end": 785.5,
+            "light_logo": false,
+            "plate": "0xF6F6FC",
+            "start": 785.0
+          }
+        ],
+        "centre_top_box": null,
+        "discovered": [
+          {
+            "frames_seen": 1,
+            "h": 0.06666666666666667,
+            "method": "discovery",
+            "w": 0.3875,
+            "x": 0.35,
+            "y": 0.45555555555555555
+          }
+        ],
+        "encode": {
+          "crf": "16",
+          "preset": "slow",
+          "tune": "stillimage"
+        },
+        "outro_appended": true,
+        "outro_cut_at": 784.75
+      }
     },
     "bee-y1/u2": {
       "artifact_id": "96e7ac16-cd4a-4278-93df-f9b45624b891",
@@ -1099,7 +1760,7 @@
       "subject": "bee-y1",
       "target_minutes": 12,
       "unit": "u4",
-      "updated_at": "2026-08-07T03:39:37Z"
+      "updated_at": "2026-08-07T19:43:32Z"
     },
     "bee-y1/u5": {
       "artifact_id": "cac5535c-8a00-4b45-8034-4b76b332a652",
