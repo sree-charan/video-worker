@@ -93,8 +93,12 @@ printed in the book:
 # heading the book actually prints above an explanation.
 MAX_HEADING_COMMAS = 2
 MAX_HEADING_WORDS = 10
-MIN_SECTIONS = 6
-MAX_SECTIONS = 14
+MIN_SECTIONS = 5
+# Fewer, longer sections. Thirteen sections in twelve minutes is about 55 seconds
+# each, which is what made a unit feel rushed even with simple words. Ten leaves
+# roughly 70 seconds - enough for a definition, a concrete case, and a second pass
+# at the hard part.
+MAX_SECTIONS = 10
 
 
 def round1_prompt(syl: dict, unit: dict) -> str:
@@ -103,7 +107,7 @@ def round1_prompt(syl: dict, unit: dict) -> str:
         title=unit["title"],
         topics=bullets(unit["topics"]),
         excludes="; ".join(syl["subject"].get("exclude_sections", [])) or "none",
-        lo=MIN_SECTIONS + 2,
+        lo=MIN_SECTIONS + 1,
         hi=MAX_SECTIONS,
     )
 
@@ -214,9 +218,14 @@ CHECK 3 - Substance. Delete any point that is motivational, definitional
           padding, or a restatement of a point already made.
 CHECK 4 - Weight. Sections that later sections depend on deserve more time.
           Terminal or purely descriptive sections deserve less. The budget must
-          total {seconds} seconds. Give no section less than 25 seconds and no
-          section more than 150 seconds - a single heading held for longer than
-          that becomes padding.
+          total {seconds} seconds. Give no section less than 45 seconds - below
+          that there is no room to define a thing, show a real case, and say the
+          hard part twice - and no section more than 170 seconds.
+
+CHECK 5 - Pacing. If the plan has more than {max_sections} sections, MERGE the
+          weakest ones until it does. This audience is not strong and too many
+          sections in one video is the most common reason they lose the thread.
+          Merging is better than rushing.
 
 Then answer using ONLY these line formats:
 
@@ -244,7 +253,7 @@ def round3_prompt(unit: dict, headings: list[str], minutes: int) -> str:
     listing = "\n".join(f"  {i + 1}. {h}" for i, h in enumerate(headings))
     prompt = ROUND3.format(
         n=unit["n"], minutes=minutes, seconds=minutes * 60,
-        headings=listing, topics=topics,
+        headings=listing, topics=topics, max_sections=MAX_SECTIONS,
     )
     if len(prompt) > MAX_PROMPT_CHARS:
         # Topic list is the only expendable part; the headings and the protocol
@@ -253,6 +262,7 @@ def round3_prompt(unit: dict, headings: list[str], minutes: int) -> str:
         prompt = ROUND3.format(
             n=unit["n"], minutes=minutes, seconds=minutes * 60,
             headings=listing, topics=topics[:max(keep, 200)].rstrip() + "\n  - ...",
+            max_sections=MAX_SECTIONS,
         )
     return prompt
 
@@ -356,19 +366,22 @@ sources for their subject content only, never for their imagery.
 ## INFORMATION DENSITY - highest priority
 
 Every sentence must do one of: introduce an idea, explain how something works,
-connect two ideas, say why something exists, or give one concrete example.
-A sentence that does none of these must be cut. This rule and the LANGUAGE rules
-below apply together: short plain sentences that each still teach something.
+connect two ideas, say why something exists, give one concrete example, or restate
+one hard idea a second way for a listener who missed it. A sentence that does none
+of these must be cut.
+
+That last one matters. Restating a hard idea differently is allowed and wanted;
+what is banned is a sentence that carries no idea at all.
 
 Never say, in any wording: "let's understand", "now that we know", "before
 moving ahead", "as we discussed", "as we saw earlier", "let us now move on to",
 "you might be wondering", "imagine this", "think about it", "it is important to
 note", "interestingly", "in this video we will", "by the end of this video".
 
-No agenda preview. No recap of what was just said. No motivational or
+No agenda preview. No recap listing what a section covered. No motivational or
 encouraging language. No study advice. No dramatic pause or rhetorical question
-after the opening. No repeating an idea in different words. No re-defining a
-term already defined.
+after the opening. Do not re-define a term you have already defined - though you
+may remind the listener what it means in three words.
 
 {math_rule}
 
@@ -378,7 +391,7 @@ term already defined.
 Every sentence must be understood the first time it is heard, without pausing or
 rewinding.
 
-- Keep sentences short. Aim for about 12 words. Never go past 20.
+- Keep sentences short. Aim for about 10 words. Never go past 18.
 - One idea per sentence. If a sentence has two ideas, split it.
 - Always choose the plainest word that is still correct.{plain_swaps}
 - A technical term may only appear after you have said what it means in plain
@@ -396,6 +409,31 @@ something. Say the same substance in words a beginner already knows.
 
 Before you say any sentence, ask: would a nineteen-year-old hearing this once
 understand it? If not, say it shorter and plainer.
+
+## PACING - the most common reason a lecture fails
+
+This audience is not strong. Going too fast loses them even when every word is
+simple. So for each section:
+
+1. Say what the thing IS, in one short sentence.
+2. Give a CONCRETE case immediately - a real number, a real object, a real line
+   of code - before any general statement about it.
+3. Then say the one hard part again, differently. Not a recap of the section:
+   one single idea, restated in other words, because a listener who missed it the
+   first time gets a second chance.
+4. Only then move on.
+
+That second pass is REINFORCEMENT and is required. It is not filler. Filler is a
+sentence that adds nothing - "let us now look at the next topic", "this is very
+important". Reinforcement adds a second route to the same idea. Keep the first,
+cut the second.
+
+Introduce at most one new term every twenty seconds. If a section has more terms
+than its time allows, teach the ones the exam asks about and name the rest in
+passing rather than rushing all of them.
+
+Never assume the listener remembers something from earlier in this video without
+a three-word reminder of what it was.
 
 ## STYLE
 
