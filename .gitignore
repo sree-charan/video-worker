@@ -3,6 +3,8 @@
 # as workflow artifacts and get uploaded to Drive/R2 by the publish stage.
 build/
 *.mp4
+# ...except the branded outro, which is an input, not output.
+!assets/outro-*.mp4
 *.mkv
 *.webm
 

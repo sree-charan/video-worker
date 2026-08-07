@@ -38,5 +38,10 @@
   },
   "discover": true,
   "discover_fps": 0.2,
-  "_discover_comment": "Whole-frame OCR sweep for placements the two configured regions do not cover. 0.2fps is one frame every five seconds - coarse on purpose, since a full-frame pass is expensive and any mark that persists a few seconds is still caught. Anything found is logged as a warning and covered."
+  "_discover_comment": "Whole-frame OCR sweep for placements the two configured regions do not cover. 0.2fps is one frame every five seconds - coarse on purpose, since a full-frame pass is expensive and any mark that persists a few seconds is still caught. Anything found is logged as a warning and covered.",
+  "outro": {
+    "_comment": "Branded outro concatenated after everything else. Appended last so chapter times and captions still describe the lecture - the outro only lands after the final chapter. The light cut matches NotebookLM's output exactly (1280x720, 24fps), so no scaling is needed; the dark cut is 848x478 at 60fps and would be padded.",
+    "enabled": true,
+    "file": "assets/outro-light.mp4"
+  }
 }

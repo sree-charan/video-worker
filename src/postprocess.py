@@ -49,10 +49,19 @@ def probe(mp4: Path) -> dict:
                "-show_format", "-show_streams", str(mp4)])
     data = json.loads(out)
     v = next((s for s in data["streams"] if s["codec_type"] == "video"), {})
+    fps = 24.0
+    rate = v.get("avg_frame_rate") or v.get("r_frame_rate") or "24/1"
+    try:
+        num, den = (float(x) for x in rate.split("/"))
+        if den:
+            fps = num / den
+    except ValueError:
+        pass
     return {
         "duration_sec": int(float(data["format"]["duration"])),
         "width": v.get("width"),
         "height": v.get("height"),
+        "fps": round(fps, 3),
     }
 
 
@@ -99,6 +108,67 @@ def _enable(segs: list[dict], key: str, want: bool) -> str | None:
     return "+".join(f"between(t,{s['start']:.2f},{s['end']:.2f})" for s in picked)
 
 
+def feathered_plate(colour: str, w: int, h: int, path: Path,
+                    feather: float = 0.18) -> Path:
+    """An RGBA plate of one colour whose edges fade out.
+
+    A hard-edged drawbox is unforgiving: if the sampled background colour is even
+    slightly off, the rectangle's border shows as a visible seam. Ramping the
+    alpha over a few pixels makes a small colour mismatch invisible instead.
+    """
+    from PIL import Image
+
+    rgb = colour.lower().replace("0x", "").replace("#", "")
+    if len(rgb) != 6:
+        rgb = "fcfcfc"
+    r, g, b = (int(rgb[i:i + 2], 16) for i in (0, 2, 4))
+
+    pad = max(int(min(w, h) * feather), 2)
+    img = Image.new("RGBA", (w, h), (r, g, b, 0))
+    px = img.load()
+    for y in range(h):
+        for x in range(w):
+            # Distance to the nearest edge, clamped to the feather width.
+            d = min(x, y, w - 1 - x, h - 1 - y)
+            a = 255 if d >= pad else int(255 * (d + 1) / (pad + 1))
+            px[x, y] = (r, g, b, a)
+    img.save(path)
+    return path
+
+
+def append_outro(ff: str, main: Path, outro: Path, dst: Path, meta: dict,
+                 enc: dict) -> None:
+    """Concatenate the branded outro onto the finished lecture.
+
+    Done last, after chapters and captions are built, so those describe the
+    lecture rather than the branding: every chapter time stays valid because the
+    outro only ever lands after all of them.
+
+    Audio is resampled and the outro padded to the lecture's geometry, because
+    concat demands matching streams and the two sources differ (the lecture is
+    mono 44.1kHz from NotebookLM, the outro stereo 48kHz).
+    """
+    W, H = meta["width"], meta["height"]
+    fps = meta.get("fps") or 24
+    filt = (
+        f"[0:v]scale={W}:{H},setsar=1,fps={fps}[v0];"
+        f"[1:v]scale={W}:{H}:force_original_aspect_ratio=decrease,"
+        f"pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:color=white,setsar=1,fps={fps}[v1];"
+        "[0:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo[a0];"
+        "[1:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo[a1];"
+        "[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]"
+    )
+    cmd = [ff, "-y", "-i", str(main), "-i", str(outro),
+           "-filter_complex", filt, "-map", "[v]", "-map", "[a]",
+           "-c:v", "libx264", "-crf", str(enc.get("crf", 16)),
+           "-preset", str(enc.get("preset", "slow"))]
+    if enc.get("tune"):
+        cmd += ["-tune", str(enc["tune"])]
+    cmd += ["-pix_fmt", "yuv420p", "-movflags", "+faststart",
+            "-c:a", "aac", "-b:a", "128k", str(dst)]
+    run(cmd)
+
+
 def _variant_scales(segs: list[dict], box: dict, prefix: str,
                     ratio: float) -> tuple[list[str], dict]:
     """Scale filters for only the logo variants this box actually needs.
@@ -121,9 +191,47 @@ def _variant_scales(segs: list[dict], box: dict, prefix: str,
     return steps, tags
 
 
+def _plate_overlays(tag_in: str, tag_out: str, box: dict, segs: list[dict],
+                    workdir: Path, extra_inputs: list[Path],
+                    base_index: int) -> tuple[list[str], str]:
+    """One feathered plate per distinct colour, time-gated to its segments.
+
+    Grouped by colour rather than per segment: colours repeat heavily (a light
+    grey and an orange account for nearly every segment), so a handful of inputs
+    covers hundreds of time ranges. A plate per segment would mean hundreds of
+    ffmpeg inputs.
+    """
+    steps: list[str] = []
+    cur = tag_in
+    by_colour: dict[str, list[dict]] = {}
+    for sg in segs:
+        by_colour.setdefault(sg["plate"], []).append(sg)
+
+    # Grow outward by the feather width so the alpha ramp lands on background,
+    # not over the mark - a partially transparent edge across the wordmark would
+    # let it show through.
+    grow = max(int(min(box["w"], box["h"]) * 0.18), 2)
+    pw, ph = box["w"] + 2 * grow, box["h"] + 2 * grow
+    px0, py0 = max(box["x"] - grow, 0), max(box["y"] - grow, 0)
+
+    for i, (colour, group) in enumerate(by_colour.items()):
+        png = feathered_plate(colour, pw, ph,
+                              workdir / f"plate-{tag_out}-{i}.png")
+        extra_inputs.append(png)
+        idx = base_index + len(extra_inputs) - 1
+        expr = "+".join(f"between(t,{g['start']:.2f},{g['end']:.2f})" for g in group)
+        nxt = f"{tag_out}p{i}"
+        steps.append(f"[{cur}][{idx}:v]overlay={px0}:{py0}:"
+                     f"format=auto:enable='{expr}'[{nxt}]")
+        cur = nxt
+    return steps, cur
+
+
 def _cover_chain(tag_in: str, tag_out: str, tags: dict,
                  box: dict, segs: list[dict], align: str,
-                 window=None) -> list[str]:
+                 window=None, workdir: Path | None = None,
+                 extra_inputs: list[Path] | None = None,
+                 base_index: int = 3) -> list[str]:
     """Per-segment plate matching the background, then the right logo variant.
 
     Two overlays with complementary time gates: the brand-coloured logo over
@@ -131,14 +239,9 @@ def _cover_chain(tag_in: str, tag_out: str, tags: dict,
     the plate already matches, so only the glyphs need to change.
     """
     x, y, w, h = box["x"], box["y"], box["w"], box["h"]
-    steps: list[str] = []
-    cur = tag_in
-    for i, s in enumerate(segs):
-        nxt = f"{tag_out}b{i}"
-        steps.append(f"[{cur}]drawbox=x={x}:y={y}:w={w}:h={h}:"
-                     f"color={s['plate']}@1:t=fill:"
-                     f"enable='between(t,{s['start']:.2f},{s['end']:.2f})'[{nxt}]")
-        cur = nxt
+    steps, cur = _plate_overlays(tag_in, tag_out, box, segs,
+                                 workdir or Path("."), extra_inputs
+                                 if extra_inputs is not None else [], base_index)
 
     # Centred on the plate. Right-aligned boxes keep the right edge flush with
     # the plate, matching where the original mark sat.
@@ -208,10 +311,13 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
     report["bottom_right_segments"] = [
         {**s, "start": round(s["start"], 1), "end": round(s["end"], 1)} for s in br_segs]
 
+    extra_inputs: list[Path] = []
+    wd = workdir or dst.parent
     filters, br_tags = _variant_scales(
         br_segs, br, "lgbr", float(cfg["bottom_right"].get("logo_height_ratio", 1.5)))
     filters += _cover_chain("0:v", "v1", br_tags, br, br_segs,
-                            cfg["bottom_right"].get("align", "right"))
+                            cfg["bottom_right"].get("align", "right"),
+                            workdir=wd, extra_inputs=extra_inputs, base_index=3)
     last = "v1"
 
     # Title-card mark: present only for the opening seconds, and how many is not
@@ -261,7 +367,9 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
                 tc_segs, tc, "lgtc", float(tc_cfg.get("logo_height_ratio", 1.4)))
             filters += tc_steps
             filters += _cover_chain(last, "v2", tc_tags, tc, tc_segs,
-                                    tc_cfg.get("align", "centre"), window=window)
+                                    tc_cfg.get("align", "centre"), window=window,
+                                    workdir=wd, extra_inputs=extra_inputs,
+                                    base_index=3)
             last = "v2"
 
     enc = cfg.get("encode") or {}
@@ -293,14 +401,18 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
                 continue
             steps, tags = _variant_scales(segs, bx, f"lgx{i}", 1.4)
             filters += steps
-            filters += _cover_chain(last, f"vx{i}", tags, bx, segs, "centre")
+            filters += _cover_chain(last, f"vx{i}", tags, bx, segs, "centre",
+                                    workdir=wd, extra_inputs=extra_inputs,
+                                    base_index=3)
             last = f"vx{i}"
 
     cmd = [ff, "-y"]
     if cut:
         cmd += ["-t", f"{cut:.2f}"]        # applies to both video and audio
-    cmd += ["-i", str(src), "-i", str(logo), "-i", str(light),
-            "-filter_complex", ";".join(filters), "-map", f"[{last}]", "-map", "0:a?",
+    cmd += ["-i", str(src), "-i", str(logo), "-i", str(light)]
+    for extra in extra_inputs:
+        cmd += ["-i", str(extra)]
+    cmd += ["-filter_complex", ";".join(filters), "-map", f"[{last}]", "-map", "0:a?",
             "-c:v", "libx264", "-crf", crf, "-preset", preset]
     if tune:
         cmd += ["-tune", tune]
@@ -552,6 +664,7 @@ def main() -> None:
                     help="run everything except the watermark swap (box not measured yet)")
     a = ap.parse_args()
 
+    ff_bin = "ffmpeg"
     for tool in ("ffmpeg", "ffprobe"):
         if not shutil.which(tool):
             raise SystemExit(f"{tool} not found on PATH")
@@ -633,6 +746,22 @@ def main() -> None:
     log(f"{len(chapters)} chapters: " + ", ".join(f"{c['t']}s {c['label']}" for c in chapters))
 
     thumbnail(final, outdir / "thumb.jpg", at=min(meta["duration_sec"] * 0.1, 30))
+
+    # Outro last: chapters and captions already describe the lecture, and the
+    # outro only lands after every chapter time, so none of them shift.
+    outro_cfg = cfg.get("outro") or {}
+    outro_path = ROOT / str(outro_cfg.get("file", "assets/outro-light.mp4"))
+    if outro_cfg.get("enabled", True) and outro_path.exists():
+        with_outro = outdir / "final-with-outro.mp4"
+        log(f"appending outro {outro_path.name} "
+            f"({probe(outro_path)['duration_sec']}s)")
+        append_outro(ff_bin, final, outro_path, with_outro, meta, cfg.get("encode") or {})
+        with_outro.replace(final)
+        meta = probe(final)
+        log(f"final with outro: {meta['duration_sec']}s, "
+            f"{final.stat().st_size / 1e6:.1f} MB")
+    elif outro_cfg.get("enabled", True):
+        log(f"outro not found at {outro_path}; skipping")
 
     entry = catalog_entry(
         syl, unit, meta, chapters,
