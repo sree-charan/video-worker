@@ -47,7 +47,10 @@ def collect_unit(syl: dict, unit: dict, rec: dict, retry_failed: bool) -> str:
     st = status_of(payload)
 
     if st in TERMINAL_BAD:
-        log(f"unit {unit['id']} generation failed upstream")
+        # Log the payload. A unit was marked failed while its video existed
+        # upstream, and with no record of what poll actually said there was
+        # nothing to diagnose.
+        log(f"unit {unit['id']} poll reports '{st}'; payload={str(payload)[:300]}")
         if retry_failed:
             try:
                 nlm("artifact", "retry", art, "-n", nb, "--json", profile=profile)
@@ -56,10 +59,15 @@ def collect_unit(syl: dict, unit: dict, rec: dict, retry_failed: bool) -> str:
             except CliError as e:
                 record(subject_id, unit["id"], state="failed", error=str(e)[:500])
                 return f"retry-refused ({'quota' if e.rate_limited else 'error'})"
-        record(subject_id, unit["id"], state="failed")
+        record(subject_id, unit["id"], state="failed",
+               error=f"poll status {st}: {str(payload)[:300]}")
         return "failed"
 
     if st not in TERMINAL_OK:
+        if st == "unknown":
+            # Unrecognised shape: treat as still working rather than terminal, and
+            # say so, since guessing either way silently loses a finished video.
+            log(f"unit {unit['id']} poll shape unrecognised; payload={str(payload)[:300]}")
         return f"still {st}"
 
     outdir = BUILD / f"{subject_id}-{unit['id']}"

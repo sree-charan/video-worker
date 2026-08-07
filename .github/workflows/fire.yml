@@ -140,7 +140,11 @@ jobs:
             git push origin HEAD:"${GITHUB_REF_NAME}" && exit 0
             git fetch origin "${GITHUB_REF_NAME}"
             git rebase "origin/${GITHUB_REF_NAME}" || {
-              git checkout --theirs -- state/manifest.json 2>/dev/null || true
+              # Merge both versions. Taking one side discarded the other runs'
+              # records, which is how a fired unit disappeared from the manifest.
+              git show ":2:state/manifest.json" > /tmp/ours.json 2>/dev/null || cp state/manifest.json /tmp/ours.json
+              git show ":3:state/manifest.json" > /tmp/theirs.json 2>/dev/null || echo '{}' > /tmp/theirs.json
+              python src/merge_manifest.py /tmp/ours.json /tmp/theirs.json state/manifest.json
               git add state/
               GIT_EDITOR=true git rebase --continue || git rebase --abort
             }
