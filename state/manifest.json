@@ -466,6 +466,7 @@
     },
     "bee-y1/u3": {
       "artifact_id": "6b97d060-adf2-4245-8d44-5091bdf140db",
+      "captions": "/home/runner/work/video-worker/video-worker/build/bee-y1-u3/captions.vtt",
       "chapter_anchors": [
         "experiment",
         "principle",
@@ -490,12 +491,68 @@
         "7.24 Losses in a Transformer",
         "7.25 Efficiency of a Transformer"
       ],
+      "chapters": [
+        {
+          "label": "Overview",
+          "t": 0
+        },
+        {
+          "label": "Faraday's experiment with induction between coils of wire",
+          "t": 12
+        },
+        {
+          "label": "PRINCIPLE OF WORKING",
+          "t": 16
+        },
+        {
+          "label": "CONSTRUCTION OF TRANSFORMER:",
+          "t": 19
+        },
+        {
+          "label": "1. Core Type Transformer",
+          "t": 224
+        },
+        {
+          "label": "2. Shell Type Transformer",
+          "t": 288
+        },
+        {
+          "label": "Comparison of Core and Shell Type Transformers",
+          "t": 344
+        },
+        {
+          "label": "E.M.F EQUATION OF TRANSFORMER:",
+          "t": 347
+        },
+        {
+          "label": "7.12 Exact Equivalent Circuit of a Loaded Transformer",
+          "t": 477
+        },
+        {
+          "label": "7.24 Losses in a Transformer",
+          "t": 579
+        },
+        {
+          "label": "7.25 Efficiency of a Transformer",
+          "t": 656
+        }
+      ],
+      "duration_sec": 770,
+      "final_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u3/final.mp4",
       "notebook_id": "15004e73-0959-4598-a05b-89fe76c73b16",
       "notebook_title": "Basic Electrical Engineering - Unit 3: Transformers",
       "profile": "default",
       "prompt_chars": 16138,
       "raw_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u3/raw.mp4",
       "raw_size_mb": 93.19,
+      "readability": {
+        "flesch_reading_ease": 46.7,
+        "grade_level": 9.0,
+        "long_word_pct": 7.7,
+        "sentences": 207,
+        "words": 1893,
+        "words_per_sentence": 9.1
+      },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Discovery\nSECTION | 2 | Faraday's experiment with induction between coils of wire\nSECTION | 3 | WORKING PRINCIPLE OF TRANSFORMER:\nSECTION | 4 | Introduction\nSECTION | 5 | PRINCIPLE OF WORKING\nSECTION | 6 | CONSTRUCTION OF TRANSFORMER:\nSECTION | 7 | 1. Core Type Transformer\nSECTION | 8 | 2. Shell Type Transformer\nSECTION | 9 | Comparison of Core and Shell Type Transformers\nSECTION | 10 | E.M.F EQUATION OF TRANSFORMER:\nSECTION | 11 | 7.12 Exact Equivalent Circuit of a Loaded Transformer\nSECTION | 12 | 7.24 Losses in a Transformer\nSECTION | 13 | 7.25 Efficiency of a Transformer\nTERM | transformer\nTERM | inductive coupling\nTERM | primary winding\nTERM | secondary winding\nTERM | electromagnetic induction\nTERM | mutual induction\nTERM | limb\nTERM | yoke\nTERM | lamination\nTERM | silicon steel\nTERM | Core type\nTERM | Shell type\nTERM | Berry type\nTERM | sandwich coils\nTERM | imbricated joint\nTERM | leakage reactance\nTERM | magnetizing current\nTERM | core losses\nTERM | hysteresis\nTERM | eddy current\nTERM | no-load current\nTERM | short-circuit test\nTERM | open-circuit test\nMISSING | regulation\nMISSING | Auto-transformer\nMISSING | Three-phase transformer connections",
       "round2": "DEF | 1 | NONE\nMECH | 1 | NONE\nSPEC | 1 | NONE\nSTEP | 1 | We begin our study of the 230 V to 12 V single-phase transformer by tracing its historical discovery in the field of electromagnetism.\nTHIN | 1 | yes\nDEF | 2 | Faraday's law of induction states that the magnitude of the electromotive force is equal to the rate of change of magnetic flux through the circuit.\nMECH | 2 | In Faraday's experiment with induction between coils of wire, winding a pair of coils of wire around an iron ring demonstrated that changing the magnetic flux in one coil induces an electromotive force in the other.\nSPEC | 2 | The relationship is formalized by the equation \\\\(|\\mathcal{E}|=|\\frac{d\\Phi_{B}}{dt}|\\\\).\nSTEP | 2 | For our 230 V to 12 V single-phase transformer, Faraday's experiment with induction between coils of wire demonstrates how a changing magnetic flux induces a voltage in the secondary winding.\nTHIN | 2 | no\nDEF | 3 | NONE\nMECH | 3 | NONE\nSPEC | 3 | NONE\nSTEP | 3 | The working principle of transformer explains how we transfer electrical energy from a 230 V primary circuit to a 12 V secondary circuit without any direct electrical connection.\nTHIN | 3 | yes\nDEF | 4 | The book defines a transformer as a static piece of apparatus by means of which an electrical power is transformed from one alternating current circuit to another with the desired change in voltage and current, without any change in the frequency.\nMECH | 4 | In the introduction, the book explains that a transformer operates on the principle of mutual induction to transfer electrical energy between circuits without any electrical connection.\nSPEC | 4 | The book classifies the different stages of an electrical network where alternating voltages are raised or lowered as generation, transmission, distribution, and utilization.\nSTEP | 4 | Following the introduction, we set up our single-phase transformer with a turns ratio that will step down the incoming 230 V alternating voltage to 12 V.\nTHIN | 4 | no\nDEF | 5 | The principle of mutual induction states that when two coils are inductively coupled and if current in one coil is changed uniformly then an e.m.f. gets induced in the other coil.\nMECH | 5 | When the primary winding is excited by an alternating voltage, it circulates an alternating current that produces an alternating flux in the magnetic core, which induces a mutually induced e.m.f. in the secondary winding.\nSPEC | 5 | The frequency of the mutually induced e.m.f. is constrained to be the same as that of the alternating source supplying the primary winding.\nSTEP | 5 | Under the principle of working, supplying 230 V alternating voltage to our primary winding of N1 turns induces a 12 V alternating voltage in our secondary winding of N2 turns.\nTHIN | 5 | no\nDEF | 6 | The book defines limb as the vertical portion of the magnetic core on which coils are wound, and yoke as the top and bottom horizontal portion of the core.\nMECH | 6 | Varnish insulation is applied between thin silicon steel laminations of the magnetic core to minimize eddy current losses, and the laminations are overlapped to avoid air gaps at joints.\nSPEC | 6 | The book specifies using high grade silicon steel laminations that are 0.3 to 0.5 mm thick.\nSTEP | 6 | During the construction of transformer, we select thin silicon steel laminations to assemble the magnetic core for our 230 V to 12 V unit.\nTHIN | 6 | no\nDEF | 7 | The book defines a core type transformer as a single-phase transformer having a single magnetic circuit where the winding encircles the core rectangular limbs.\nMECH | 7 | Cylindrical coils wound in helical layers insulated by paper or mica are placed on both limbs, with the low voltage coil inside near the core and the high voltage coil surrounding it.\nSPEC | 7 | The windings must be uniformly distributed over the two limbs to make natural cooling more effective.\nSTEP | 7 | For our 230 V to 12 V core type transformer, we place the 12 V low voltage coil closest to the rectangular limbs and surround it with the 230 V high voltage coil.\nTHIN | 7 | no\nDEF | 8 | The book defines a shell type transformer as a single-phase transformer having a double magnetic circuit with three limbs where the core encircles most part of the windings.\nMECH | 8 | Multilayer disc or sandwich coils are wound on the central limb, and laminated core joints are staggered at alternate layers to avoid narrow air gaps.\nSPEC | 8 | The staggered core joints are defined as overlapped or imbricated joints.\nSTEP | 8 | If we construct our 230 V to 12 V unit as a shell type transformer, both windings are interleaved as sandwich coils on the central limb of the laminated core.\nTHIN | 8 | no\nDEF | 9 | NONE\nMECH | 9 | Core type transformers utilize distributed windings on two limbs to make natural cooling more effective, whereas shell type transformers encircle the central limb windings which prevents natural cooling.\nSPEC | 9 | The core type construction is preferred for low voltage transformers, whereas the shell type construction is preferred for very high voltage transformers.\nSTEP | 9 | A comparison of core and shell type transformers confirms that our 230 V to 12 V step-down application is best suited to the core type configuration due to its natural cooling.\nTHIN | 9 | no\nDEF | 10 | The e.m.f. equations of a transformer are defined as E1 = 4.44 f \\Phi_m N1 volts for the primary winding and E2 = 4.44 f \\Phi_m N2 volts for the secondary winding.\nMECH | 10 | Sinusoidal flux produced by primary winding excitation induces an average e.m.f. per turn of four times the frequency times the maximum value of flux, which is converted to R.M.S. value by multiplying by the form factor.\nSPEC | 10 | The derivation relies on the sinusoidal form factor constraint, which is the ratio of R.M.S. value to average value and equals 1.11.\nSTEP | 10 | From the e.m.f equation of transformer, if our 230 V primary winding has 460 turns and the frequency is 50 Hz, the 12 V secondary winding must have 24 turns, establishing a turns ratio of 19.17.\nTHIN | 10 | no\nDEF | 11 | In the exact equivalent circuit of a loaded transformer, R0 represents the core losses, X0 is the inductive reactance representing a loss-free coil that passes magnetizing current, and I0 is the no-load current.\nMECH | 11 | Imperfections are modeled as series resistances and leakage reactances for both windings, while a parallel R0-X0 circuit represents core losses and the magnetizing current.\nSPEC | 11 | The total primary current is calculated as the phasor sum of the no-load current and the load-reflecting primary current, given by the equation I1 = I0 + (-K I2).\nSTEP | 11 | In the exact equivalent circuit of a loaded transformer for our 230 V to 12 V running example, the series resistances represent where copper losses occur as heat in the windings under load.\nTHIN | 11 | no\nDEF | 12 | Core or iron losses consist of constant hysteresis and eddy current losses occurring in the core due to alternating flux, while copper losses consist of variable ohmic resistance losses in both windings.\nMECH | 12 | Alternating flux in the magnetic core generates hysteresis and eddy current losses as heat, while currents flowing through the winding resistances generate variable copper losses as heat.\nSPEC | 12 | The book states that copper losses vary as the square of the load current and typically account for about 90% of the total losses in a transformer.\nSTEP | 12 | For our step-down unit, the losses in a transformer generate heat, with constant iron losses occurring in the laminated steel core and variable copper losses occurring in the 230 V and 12 V windings.\nTHIN | 12 | no\nDEF | 13 | The efficiency of a transformer is defined as the ratio of output power to input power.\nMECH | 13 | Instead of direct loading, open-circuit and short-circuit tests are carried out to determine constant core losses and variable copper losses to calculate the total losses.\nSPEC | 13 | The direct loading method is seldom used because even a 1% error in input and output wattmeters can yield ridiculous results, such as an efficiency higher than 100%.\nSTEP | 13 | After calculating the efficiency of a transformer for our step-down unit, we can reconfigure its windings as an auto-transformer where a single continuous coil is shared between the 230 V and 12 V circuits.\nTHIN | 13 | no",
       "round3": "TOTAL | 720\nSECTION | 1 | Faraday's experiment with induction between coils of wire | 35\nPOINT | 1 | Michael Faraday discovered the phenomenon of electromagnetic induction in 1831 by winding a pair of coils around an iron ring.\nPOINT | 1 | Faraday's law of induction formalizes the relationship between the induced electromotive force and the rate of change of magnetic flux.\nSPEC | 1 | |\\mathcal{E}|=|\\frac{d\\Phi_{B}}{dt}|\nSTEP | 1 | For our 230 V to 12 V single-phase transformer, Faraday's experiment demonstrates how a changing magnetic flux in the core induces a voltage in the secondary winding.\nSECTION | 2 | PRINCIPLE OF WORKING | 90\nPOINT | 2 | A transformer is defined as a static piece of apparatus by means of which electrical power is transformed from one alternating current circuit to another without any change in frequency.\nPOINT | 2 | The primary winding is connected to the alternating voltage source to produce alternating flux, while the secondary winding connects to the load.\nPOINT | 2 | Mutual induction allows electrical energy to transfer from the primary winding to the secondary winding even though there is no direct electrical connection.\nSPEC | 2 | The frequency of the mutually induced electromotive force is same as that of the alternating source supplying the primary winding.\nSTEP | 2 | Applying 230 V alternating voltage to the primary winding with N1 turns induces a 12 V alternating voltage in the secondary winding with N2 turns.\nSECTION | 3 | CONSTRUCTION OF TRANSFORMER: | 40\nPOINT | 3 | The physical construction of a transformer consists of two basic parts, which are the magnetic core and the winding or coils.\nPOINT | 3 | The vertical core portions on which the coils are wound are defined as limbs, and the top and bottom horizontal core portions are defined as yokes.\nPOINT | 3 | Varnish insulation is applied between thin silicon steel core laminations to minimize eddy current losses.\nSPEC | 3 | Core laminations are 0.3 to 0.5 mm thick and overlapped to avoid air gaps at joints.\nSTEP | 3 | To build our 230 V to 12 V transformer, we construct a magnetic core using thin, varnished silicon steel laminations to keep core losses low.\nSECTION | 4 | 1. Core Type Transformer | 75\nPOINT | 4 | In a core type transformer, there is a single magnetic circuit where cylindrical coils encircle the rectangular core limbs.\nPOINT | 4 | Helical winding layers insulated by paper or mica are placed on both limbs, with the low voltage coil inside near the core and the high voltage coil surrounding it.\nPOINT | 4 | The windings can be easily accessed and removed for maintenance by removing the laminations of the top yoke.\nSPEC | 4 | The windings are uniformly distributed over the two limbs to make natural cooling more effective.\nSTEP | 4 | In our 230 V to 12 V core type design, the 12 V secondary winding is wound nearest to the rectangular limbs, and the 230 V primary winding surrounds it.\nSECTION | 5 | 2. Shell Type Transformer | 75\nPOINT | 5 | A shell type transformer features a double magnetic circuit with three limbs where the laminated core encircles most part of the windings.\nPOINT | 5 | Multilayer disc or sandwich coils are wound on the central limb, placing each high voltage coil between two low voltage coils.\nPOINT | 5 | Moving any winding for maintenance is difficult because it requires removing a large number of core laminations.\nSPEC | 5 | Core joints at alternate layers are staggered to avoid narrow air gaps, creating overlapped or imbricated joints.\nSTEP | 5 | If our 230 V to 12 V unit were built as a shell type transformer, both windings would be arranged on the central limb as interleaved sandwich coils.\nSECTION | 6 | Comparison of Core and Shell Type Transformers | 55\nPOINT | 6 | Core type transformers have a single magnetic circuit with two limbs, whereas shell type transformers have a double magnetic circuit with three limbs.\nPOINT | 6 | Core type construction is preferred for low voltage transformers, whereas shell type construction is preferred for very high voltage transformers.\nPOINT | 6 | Natural cooling is highly effective in core type transformers but does not exist in shell type transformers where the core surrounds the windings.\nSPEC | 6 | NONE\nSTEP | 6 | Since our 230 V to 12 V transformer is a low voltage application that benefits from natural cooling, we select the core type configuration.\nSECTION | 7 | E.M.F EQUATION OF TRANSFORMER: | 95\nPOINT | 7 | Primary excitation produces a sinusoidal flux in the common magnetic core with a maximum value of maximum flux.\nPOINT | 7 | The average electromotive force induced per turn is equal to four times the supply frequency times the maximum value of flux.\nPOINT | 7 | Multiplying the average electromotive force per turn by the sinusoidal form factor of 1.11 yields the R.M.S. value.\nSPEC | 7 | The primary R.M.S. induced electromotive force is E1 = 4.44 f \\Phi_m N1 and the secondary is E2 = 4.44 f \\Phi_m N2.\nSTEP | 7 | With an applied voltage of 230 V on the primary with 460 turns at 50 Hz, the 12 V secondary requires 24 turns, giving a turns ratio of 19.17.\nSECTION | 8 | 7.12 Exact Equivalent Circuit of a Loaded Transformer | 100\nPOINT | 8 | Winding resistances and leakage reactances represent physical imperfections in both the primary and secondary windings.\nPOINT | 8 | A parallel circuit consisting of resistance R0 and inductive reactance X0 represents core losses and the magnetizing current under no-load.\nPOINT | 8 | When loaded, the total primary current is calculated as the phasor sum of the no-load current and the load-reflecting primary current.\nSPEC | 8 | The primary input voltage equation is V1 = -E1 + I1(R1 + j X1) and the total primary current is I1 = I0 + (-K I2).\nSTEP | 8 | In our loaded 230 V to 12 V transformer equivalent circuit, the winding resistances model where the electrical energy is converted into heat.\nSECTION | 9 | 7.24 Losses in a Transformer | 85\nPOINT | 9 | Constant core or iron losses consist of hysteresis and eddy current losses, which occur in the core and do not vary with load.\nPOINT | 9 | Variable copper losses occur in the ohmic resistances of both windings and vary as the square of the load current.\nPOINT | 9 | Hysteresis loss is minimized by using steel of high silicon content, whereas eddy current loss is reduced by using thin laminations.\nSPEC | 9 | The copper losses account for about 90% of the total losses in a transformer.\nSTEP | 9 | At full load, our 230 V to 12 V transformer produces heat in the core due to constant iron losses and in both windings due to variable copper losses.\nSECTION | 10 | 7.25 Efficiency of a Transformer | 70\nPOINT | 10 | The efficiency of a transformer is defined as the ratio of output power to input power.\nPOINT | 10 | Direct loading is seldom used because even a 1% error in input and output wattmeters can yield ridiculous results, such as an efficiency higher than 100%.\nPOINT | 10 | In practice, open-circuit and short-circuit tests are carried out to determine the constant core losses and variable copper losses to calculate efficiency.\nSPEC | 10 | Efficiency = Output / (Output + Losses)\nSTEP | 10 | After determining the efficiency of our 230 V to 12 V transformer, we identify that the notes do not show how to wire it as an auto-transformer.\nGAP | regulation\nGAP | Auto-transformer\nGAP | Three-phase transformer connections",
@@ -512,12 +569,481 @@
         70
       ],
       "source_added": true,
-      "state": "downloaded",
+      "state": "postprocessed",
       "style": "retro-print",
       "subject": "bee-y1",
       "target_minutes": 12,
+      "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u3/thumb.jpg",
       "unit": "u3",
-      "updated_at": "2026-08-07T02:19:09Z"
+      "updated_at": "2026-08-07T03:41:21Z",
+      "watermark": {
+        "bottom_right_box": {
+          "h": 20,
+          "w": 130,
+          "x": 1103,
+          "y": 658
+        },
+        "bottom_right_box_norm": {
+          "frames_agreeing": 46,
+          "frames_sampled": 120,
+          "h": 0.029166666666666667,
+          "method": "ocr",
+          "w": 0.102375,
+          "x": 0.86209375,
+          "y": 0.9145833333333333
+        },
+        "bottom_right_segments": [
+          {
+            "end": 13.0,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 12.5
+          },
+          {
+            "end": 22.5,
+            "light_logo": false,
+            "plate": "0xE4DECC",
+            "start": 13.0
+          },
+          {
+            "end": 23.8,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 22.5
+          },
+          {
+            "end": 27.8,
+            "light_logo": false,
+            "plate": "0xE4DECC",
+            "start": 23.8
+          },
+          {
+            "end": 29.2,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 27.8
+          },
+          {
+            "end": 32.6,
+            "light_logo": false,
+            "plate": "0xE4DECC",
+            "start": 29.2
+          },
+          {
+            "end": 33.5,
+            "light_logo": true,
+            "plate": "0xF0CC54",
+            "start": 32.6
+          },
+          {
+            "end": 37.1,
+            "light_logo": true,
+            "plate": "0xF0CC54",
+            "start": 36.5
+          },
+          {
+            "end": 84.4,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 37.1
+          },
+          {
+            "end": 84.8,
+            "light_logo": false,
+            "plate": "0xE4E4D2",
+            "start": 84.4
+          },
+          {
+            "end": 144.0,
+            "light_logo": false,
+            "plate": "0xE4E4D2",
+            "start": 84.8
+          },
+          {
+            "end": 147.2,
+            "light_logo": true,
+            "plate": "0xF0CC4E",
+            "start": 144.0
+          },
+          {
+            "end": 213.8,
+            "light_logo": false,
+            "plate": "0xE4E4D8",
+            "start": 147.2
+          },
+          {
+            "end": 224.2,
+            "light_logo": true,
+            "plate": "0xEAE4CC",
+            "start": 213.8
+          },
+          {
+            "end": 226.5,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 224.2
+          },
+          {
+            "end": 229.4,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 226.5
+          },
+          {
+            "end": 229.5,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 229.4
+          },
+          {
+            "end": 229.7,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 229.5
+          },
+          {
+            "end": 230.3,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 229.7
+          },
+          {
+            "end": 231.8,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 230.3
+          },
+          {
+            "end": 234.3,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 231.8
+          },
+          {
+            "end": 234.7,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 234.3
+          },
+          {
+            "end": 237.2,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 234.7
+          },
+          {
+            "end": 239.7,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 237.2
+          },
+          {
+            "end": 240.0,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 239.7
+          },
+          {
+            "end": 242.5,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 240.0
+          },
+          {
+            "end": 245.0,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 242.5
+          },
+          {
+            "end": 245.3,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 245.0
+          },
+          {
+            "end": 247.9,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 245.3
+          },
+          {
+            "end": 248.0,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 247.9
+          },
+          {
+            "end": 250.4,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 248.0
+          },
+          {
+            "end": 250.7,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 250.4
+          },
+          {
+            "end": 253.2,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 250.7
+          },
+          {
+            "end": 255.7,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 253.2
+          },
+          {
+            "end": 256.0,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 255.7
+          },
+          {
+            "end": 258.6,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 256.0
+          },
+          {
+            "end": 259.8,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 258.6
+          },
+          {
+            "end": 261.3,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 259.8
+          },
+          {
+            "end": 263.8,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 261.3
+          },
+          {
+            "end": 266.3,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 263.8
+          },
+          {
+            "end": 266.7,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 266.3
+          },
+          {
+            "end": 269.2,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 266.7
+          },
+          {
+            "end": 269.4,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 269.2
+          },
+          {
+            "end": 271.7,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 269.4
+          },
+          {
+            "end": 272.0,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 271.7
+          },
+          {
+            "end": 274.5,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 272.0
+          },
+          {
+            "end": 277.0,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 274.5
+          },
+          {
+            "end": 277.3,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 277.0
+          },
+          {
+            "end": 279.9,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 277.3
+          },
+          {
+            "end": 280.0,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 279.9
+          },
+          {
+            "end": 282.3,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 280.0
+          },
+          {
+            "end": 282.7,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 282.3
+          },
+          {
+            "end": 285.2,
+            "light_logo": false,
+            "plate": "0xEAE4D2",
+            "start": 282.7
+          },
+          {
+            "end": 287.7,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 285.2
+          },
+          {
+            "end": 288.0,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 287.7
+          },
+          {
+            "end": 288.2,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 288.0
+          },
+          {
+            "end": 288.3,
+            "light_logo": false,
+            "plate": "0xE4E4D2",
+            "start": 288.2
+          },
+          {
+            "end": 288.5,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 288.3
+          },
+          {
+            "end": 293.0,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 288.5
+          },
+          {
+            "end": 293.3,
+            "light_logo": false,
+            "plate": "0xE4E4D8",
+            "start": 293.0
+          },
+          {
+            "end": 343.9,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 293.3
+          },
+          {
+            "end": 384.4,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 343.9
+          },
+          {
+            "end": 387.1,
+            "light_logo": true,
+            "plate": "0xE4D8C6",
+            "start": 384.4
+          },
+          {
+            "end": 387.5,
+            "light_logo": false,
+            "plate": "0xE4DECC",
+            "start": 387.1
+          },
+          {
+            "end": 415.1,
+            "light_logo": false,
+            "plate": "0xE4DECC",
+            "start": 414.5
+          },
+          {
+            "end": 477.6,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 415.1
+          },
+          {
+            "end": 483.3,
+            "light_logo": true,
+            "plate": "0xE4D8C0",
+            "start": 477.6
+          },
+          {
+            "end": 579.5,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 483.3
+          },
+          {
+            "end": 583.3,
+            "light_logo": true,
+            "plate": "0xEAD8C0",
+            "start": 579.5
+          },
+          {
+            "end": 731.7,
+            "light_logo": false,
+            "plate": "0xEAE4D8",
+            "start": 583.3
+          },
+          {
+            "end": 760.9,
+            "light_logo": false,
+            "plate": "0xE4DED2",
+            "start": 731.7
+          },
+          {
+            "end": 761.5,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 760.9
+          }
+        ],
+        "centre_top_box": null,
+        "discovered": [
+          {
+            "frames_seen": 1,
+            "h": 0.16666666666666666,
+            "method": "discovery",
+            "w": 0.50625,
+            "x": 0.24375,
+            "y": 0.43333333333333335
+          }
+        ],
+        "encode": {
+          "crf": "16",
+          "preset": "slow",
+          "tune": "stillimage"
+        },
+        "outro_cut_at": 760.75
+      }
     },
     "bee-y1/u4": {
       "artifact_id": "8312fe92-1936-4a57-89b7-c540ae419aca",
