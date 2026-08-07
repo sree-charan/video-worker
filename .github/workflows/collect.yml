@@ -164,6 +164,14 @@ jobs:
           for key, rec in sorted(units.items()):
               if rec.get("state") != "downloaded":
                   continue
+              # The manifest is shared across runs but build/ is not: every run
+              # gets a clean runner. A unit downloaded by an earlier run is still
+              # marked "downloaded" while its file lives on a machine that is
+              # gone, so postprocessing it here fails with "no downloaded video".
+              # Only take units whose raw file is actually present.
+              raw = rec.get("raw_mp4")
+              if not raw or not pathlib.Path(raw).exists():
+                  continue
               syl = subj.get(rec.get("subject"))
               if syl:
                   print(syl, rec["unit"])
