@@ -629,6 +629,12 @@ def discover_marks(ff: str, mp4: str, W: int, H: int, fps: float = 0.2,
     import numpy as np
     from PIL import Image
 
+    # Discovery is OCR-only: there is no template sweep for an unknown placement.
+    # Without this guard a missing tesseract raised TesseractNotFoundError and took
+    # the whole run down, instead of simply skipping the sweep.
+    if not ocr_available():
+        return []
+
     frames = _frames_gray(ff, mp4, W, H, limit, fps)
     votes: Counter = Counter()
     for _t, fr in frames:
