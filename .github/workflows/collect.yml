@@ -113,13 +113,28 @@ jobs:
 
       - name: Collect finished videos
         run: |
-          SYL="${{ inputs.syllabus || 'syllabus/oop-java.yml' }}"
+          # A scheduled run has no inputs, so this used to default to one
+          # syllabus and every other subject sat in "generating" forever - BEE
+          # units waited 24 hours untouched. With no syllabus given, sweep them
+          # all.
+          if [ -n "${{ inputs.syllabus }}" ]; then
+            SYLS="${{ inputs.syllabus }}"
+          else
+            SYLS=$(ls syllabus/*.yml)
+          fi
+          echo "syllabi: $SYLS"
           ARGS=""
           for u in ${{ inputs.units }}; do ARGS="$ARGS --unit $u"; done
-          python src/collect.py --syllabus "$SYL" $ARGS \
-            ${{ inputs.reprocess == true && '--reprocess' || '' }} \
-            --watch-minutes "${{ inputs.watch_minutes || 45 }}" --interval 180 \
-            ${{ inputs.retry_failed == true && '--retry-failed' || '' }}
+          rc=0
+          for SYL in $SYLS; do
+            echo "::group::collect $SYL"
+            python src/collect.py --syllabus "$SYL" $ARGS \
+              ${{ inputs.reprocess == true && '--reprocess' || '' }} \
+              --watch-minutes "${{ inputs.watch_minutes || 45 }}" --interval 180 \
+              ${{ inputs.retry_failed == true && '--retry-failed' || '' }} || rc=1
+            echo "::endgroup::"
+          done
+          exit $rc
 
       - name: Postprocess anything downloaded
         env:
@@ -129,34 +144,42 @@ jobs:
           # may still slip through, and it is harmless either way.
           HF_HUB_DISABLE_TELEMETRY: "1"
           HF_HUB_DISABLE_PROGRESS_BARS: "1"
-          # Optional. Raises the Hub rate limit if the cache ever misses.
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           ORT_LOGGING_LEVEL: "3"
           OMP_NUM_THREADS: "2"
         run: |
-          SYL="${{ inputs.syllabus || 'syllabus/oop-java.yml' }}"
-          python - "$SYL" <<'PY' > units.txt
-          import json, sys, pathlib
-          p = pathlib.Path("state/manifest.json")
-          m = json.loads(p.read_text()) if p.exists() else {"units": {}}
-          print(" ".join(r["unit"] for r in m["units"].values()
-                         if r.get("state") == "downloaded"))
+          # Pair each downloaded unit with ITS OWN syllabus. Using one syllabus
+          # for everything would postprocess a Basic Electrical Engineering unit
+          # against the Java syllabus and silently mislabel its chapters.
+          python - <<'PY' > work.txt
+          import glob, json, pathlib, yaml
+          subj = {}
+          for p in glob.glob("syllabus/*.yml"):
+              try:
+                  subj[yaml.safe_load(open(p))["subject"]["id"]] = p
+              except Exception:
+                  pass
+          man = pathlib.Path("state/manifest.json")
+          units = json.loads(man.read_text())["units"] if man.exists() else {}
+          for key, rec in sorted(units.items()):
+              if rec.get("state") != "downloaded":
+                  continue
+              syl = subj.get(rec.get("subject"))
+              if syl:
+                  print(syl, rec["unit"])
           PY
-          UNITS=$(cat units.txt)
-          if [ -z "$UNITS" ]; then echo "Nothing to postprocess."; exit 0; fi
-          # A failure on one unit must not abandon the rest: they are already
-          # downloaded, and losing them means re-spending download time on the
-          # next pass.
+          if [ ! -s work.txt ]; then echo "Nothing to postprocess."; exit 0; fi
+          cat work.txt
           FAILED=""
-          for u in $UNITS; do
-            echo "::group::postprocess $u"
-            if ! python src/postprocess.py --syllabus "$SYL" --unit "$u" \
+          while read SYL U; do
+            echo "::group::postprocess $SYL $U"
+            if ! python src/postprocess.py --syllabus "$SYL" --unit "$U" \
                  --whisper-model "${{ inputs.whisper_model || 'small' }}"; then
-              echo "postprocess failed for $u"
-              FAILED="$FAILED $u"
+              echo "postprocess failed for $SYL $U"
+              FAILED="$FAILED $SYL/$U"
             fi
             echo "::endgroup::"
-          done
+          done < work.txt
           if [ -n "$FAILED" ]; then
             echo "::warning::postprocess failed for:$FAILED"
             exit 1
