@@ -457,12 +457,18 @@ def mark_presence(ff: str, mp4: str, box: dict, fps: float = 4.0,
 
 
 def _ocr_boxes(img, min_conf: int = 40) -> list[dict]:
-    """OCR a PIL image and return boxes for words that read as 'NotebookLM'.
+    """OCR a PIL image and return boxes for the generator's wordmark.
 
     Tesseract splits and mangles the wordmark in several ways depending on the
     frame - "NotebookLM", "Notebook LM", "NotebooklM" - so matching is done on a
     letters-only lowercase form and accepts any word containing "notebook", plus
     a bare "lm" immediately to its right.
+
+    The product was renamed from NotebookLM to Google Notebook, and the mark
+    changed with it: the wordmark is now two words, so "Google" sits to the LEFT
+    of the word we key on and has to be absorbed as well, or half the mark stays
+    uncovered. "gemini" is accepted for the same reason - the branding moved once
+    and can move again, and a missed mark ships in the video.
     """
     import re
 
@@ -486,18 +492,31 @@ def _ocr_boxes(img, min_conf: int = 40) -> list[dict]:
                       "x": data["left"][i], "y": data["top"][i],
                       "w": data["width"][i], "h": data["height"][i]})
 
+    def same_line(a: dict, b: dict) -> bool:
+        return abs(a["y"] - b["y"]) < max(a["h"], b["h"])
+
     hits = []
     for i, wd in enumerate(words):
-        if "notebook" not in wd["text"]:
+        if "notebook" not in wd["text"] and "gemini" not in wd["text"]:
             continue
         box = dict(wd)
         # Absorb a trailing "lm" that tesseract split off.
         for other in words[i + 1:i + 3]:
             if other["text"] in ("lm", "im", "l", "m") and \
-               abs(other["y"] - wd["y"]) < wd["h"] and \
+               same_line(other, wd) and \
                0 <= other["x"] - (wd["x"] + wd["w"]) < wd["h"] * 2:
                 right = max(box["x"] + box["w"], other["x"] + other["w"])
                 box["w"] = right - box["x"]
+        # Absorb a leading "Google" from the current two-word wordmark.
+        for other in words[max(i - 3, 0):i]:
+            if other["text"] in ("google", "googie", "gemini") and \
+               same_line(other, wd) and \
+               0 <= wd["x"] - (other["x"] + other["w"]) < wd["h"] * 2:
+                right = box["x"] + box["w"]
+                box["x"] = min(box["x"], other["x"])
+                box["y"] = min(box["y"], other["y"])
+                box["w"] = right - box["x"]
+                box["h"] = max(box["h"], other["h"])
         hits.append(box)
     return hits
 
@@ -508,9 +527,16 @@ def refine_extent(frame, box: dict, W: int, H: int, drop: int = 40,
 
     OCR returns the text only, so a fixed "icon is 1.5x the text height" guess
     left the icon and the final M poking out either side of the replacement logo.
-    Measuring instead: dark column runs around the OCR box are merged across gaps
-    up to 0.7x the mark height - the icon sits 11px from the text on a 20px mark,
-    while inter-letter gaps are 1-2px - and the run overlapping the OCR box wins.
+    Measuring instead: column runs that differ from the local background around
+    the OCR box are merged across gaps up to 0.7x the mark height - the icon sits
+    11px from the text on a 20px mark, while inter-letter gaps are 1-2px - and the
+    run overlapping the OCR box wins.
+
+    The comparison is on absolute difference from the background, in either
+    direction. It used to look only for pixels DARKER than the 85th percentile,
+    which cannot see a white mark on a saturated background: on those segments the
+    measurement silently returned the text-only box, that box won the vote, and
+    the icon was left uncovered 14px to the left of the plate.
     """
     import numpy as np
 
@@ -521,8 +547,10 @@ def refine_extent(frame, box: dict, W: int, H: int, drop: int = 40,
     if sub.size == 0:
         return box
 
-    bg = np.percentile(sub, 85)
-    mask = sub < (bg - drop)
+    # Median, not a high percentile: the window is mostly background whichever
+    # side of it the mark sits on in brightness.
+    bg = np.median(sub)
+    mask = np.abs(sub - bg) > drop
     cols = mask.any(axis=0)
 
     runs, start = [], None
@@ -608,6 +636,18 @@ def locate_mark_ocr(ff: str, mp4: str, W: int, H: int,
     }
 
 
+# Plausibility bounds for a discovered wordmark, as fractions of the frame.
+# The real mark measures w=0.073 h=0.022 (aspect 3.3) bottom-right, and roughly
+# w=0.15 h=0.03 on the title card. The false positive that triggered these was
+# w=0.39 h=0.067 - a line of slide text that got plated over.
+MAX_MARK_W = 0.22
+MAX_MARK_H = 0.05
+MIN_MARK_ASPECT = 1.8
+MAX_MARK_ASPECT = 14.0
+# A mark seen in a single sampled frame is an OCR misread, not branding.
+MIN_DISCOVERY_FRAMES = 2
+
+
 def discover_marks(ff: str, mp4: str, W: int, H: int, fps: float = 0.2,
                    limit: float | None = None, upscale: int = 2,
                    known: list[dict] | None = None,
@@ -654,6 +694,25 @@ def discover_marks(ff: str, mp4: str, W: int, H: int, fps: float = 0.2,
         # Skip anything already handled by a configured region, and near-duplicates.
         if any(abs(box["x"] - k["x"]) < overlap_tol and abs(box["y"] - k["y"]) < overlap_tol
                for k in (known or []) + out):
+            continue
+        # A wordmark is small and wide. Slide text is not, and covering it
+        # destroys teaching content: a box 39% of the frame wide over the words
+        # "Deactivate / Short voltage sources" was plated as if it were branding.
+        if box["w"] > MAX_MARK_W or box["h"] > MAX_MARK_H:
+            log(f"  discovery ignored an implausible box at y={box['y']:.4f} "
+                f"x={box['x']:.4f} w={box['w']:.4f} h={box['h']:.4f}: too large "
+                f"for a wordmark, almost certainly slide text")
+            continue
+        aspect = box["w"] / box["h"] if box["h"] else 0
+        if not MIN_MARK_ASPECT <= aspect <= MAX_MARK_ASPECT:
+            log(f"  discovery ignored a box at y={box['y']:.4f} x={box['x']:.4f}: "
+                f"aspect {aspect:.1f} is not wordmark-shaped")
+            continue
+        # One frame is not evidence. At 0.2fps a real mark persists across
+        # samples; a single OCR misread does not.
+        if seen < MIN_DISCOVERY_FRAMES:
+            log(f"  discovery saw a box at y={box['y']:.4f} x={box['x']:.4f} in "
+                f"only {seen} frame(s); ignoring as a misread")
             continue
         out.append(box)
     return out

@@ -555,8 +555,26 @@ def _norm(text: str) -> str:
     Programming :" while the narration says "object oriented programming", so a
     literal search finds nothing and the chapter silently falls back to an even
     split.
+
+    Dotted acronyms are joined up first: "S.F.U" becomes "sfu", not "s f u", and
+    "A.C." becomes "ac". Splitting them produced single-letter tokens, and the
+    two-letter candidate "s f" then matched inside "watches for", which put the
+    S.F.U chapter on the wrong section.
     """
-    return " ".join(re.sub(r"[^0-9a-z]+", " ", text.lower()).split())
+    lowered = text.lower()
+    lowered = re.sub(r"\b(?:[a-z]\.){2,}", lambda m: m.group(0).replace(".", ""), lowered)
+    lowered = re.sub(r"\b([a-z])\.(?=\s|$)", r"\1", lowered)
+    return " ".join(re.sub(r"[^0-9a-z]+", " ", lowered).split())
+
+
+# A candidate shorter than this cannot localise anything: it matches inside
+# ordinary words and lands the chapter on an unrelated section.
+MIN_CANDIDATE_LEN = 4
+
+
+# Two section starts closer than this are not both real. Measured against the
+# shipped videos: genuine sections ran 22-80s apart, false matches 1-4s.
+MIN_CHAPTER_GAP = 15
 
 
 def build_chapters(segs: list[dict], labels: list[str], anchors: list[str],
@@ -576,26 +594,51 @@ def build_chapters(segs: list[dict], labels: list[str], anchors: list[str],
     corpus = " ".join(t for _, t in timeline)
 
     def first_hit(needle: str, after: float) -> float | None:
-        if not needle:
+        """First mention at or after `after`. Forward only, on purpose.
+
+        This used to fall back to searching from zero when nothing was found
+        ahead. That produced hits out of order, which the monotonic pass below
+        then clamped to `last + 1` - and a run of those is what put eight
+        chapters one second apart at the end of bee unit 5.
+        """
+        if not needle or len(needle) < MIN_CANDIDATE_LEN:
             return None
+        # Word-boundary match. A plain substring search let "s f" match inside
+        # "watches for", so a chapter pointed at a section it had nothing to do
+        # with. Padding both sides makes every match a whole-word one.
+        padded = f" {needle} "
         for t, txt in timeline:
-            if t >= after and needle in txt:
-                return t
-        for t, txt in timeline:          # allow going back if nothing ahead
-            if needle in txt:
+            if t >= after and padded in f" {txt} ":
                 return t
         return None
 
     def candidates(heading: str, anchor: str) -> list[str]:
-        toks = [w for w in _norm(heading).split() if w not in STOPWORDS_NORM]
+        """Search phrases for one heading, most specific first.
+
+        Phrases keep their stopwords. They used to be built from the
+        stopword-stripped token list, which made "6.2 Advantages of A.C." into
+        the phrase "advantages ac" - a phrase the narration can never say,
+        because it says "advantages of AC". Stopwords are only removed for
+        picking a single anchor word.
+
+        The leading section number goes too: "2.14.1 Kirchhoff's Current Law" is
+        never read aloud as "2 14 1", so leaving it in guaranteed the strongest
+        candidate failed.
+        """
+        body = re.sub(r"^\s*\d+(?:\.\d+)*\.?\s+", "", heading.strip())
+        words = _norm(body).split()
         out: list[str] = []
-        if len(toks) > 1:
-            out.append(" ".join(toks))                    # full phrase
-            for cut in range(len(toks) - 1, 1, -1):       # shorter phrases
-                out.append(" ".join(toks[:cut]))
+        if len(words) > 1:
+            out.append(" ".join(words))
+            for cut in range(len(words) - 1, 1, -1):
+                out.append(" ".join(words[:cut]))
+
+        toks = [w for w in words if w not in STOPWORDS_NORM and len(w) >= 2]
         if toks:
-            # rarest token in the transcript, ignoring absent ones
-            counted = [(corpus.count(t), t) for t in toks]
+            # rarest token in the transcript, ignoring absent ones. Counted on
+            # whole words: a substring count made short tokens look common
+            # because they appear inside longer words.
+            counted = [(f" {corpus} ".count(f" {t} "), t) for t in toks]
             present = [(c, t) for c, t in counted if c > 0]
             if present:
                 out.append(min(present)[1])
@@ -604,7 +647,7 @@ def build_chapters(segs: list[dict], labels: list[str], anchors: list[str],
             out.append(_norm(anchor))
         seen, uniq = set(), []
         for c in out:
-            if c and c not in seen:
+            if c and len(c) >= MIN_CANDIDATE_LEN and c not in seen:
                 seen.add(c)
                 uniq.append(c)
         return uniq
@@ -627,21 +670,39 @@ def build_chapters(segs: list[dict], labels: list[str], anchors: list[str],
     matched = sum(1 for c in found if c["t"] is not None)
     log(f"chapter alignment: {matched}/{len(found)} located in the transcript")
 
-    # Fill gaps and enforce monotonicity.
+    # A chapter is only kept if its heading was actually spoken. Inventing a
+    # time for an unspoken heading gives a chapter that jumps to the wrong
+    # place, which is worse than not offering it: bee unit 5 shipped eight of
+    # them stamped 8:28 to 8:35 for sections the narration never reached.
+    missing = [c["label"] for c in found if c["t"] is None]
+    if missing:
+        log(f"  {len(missing)} heading(s) never spoken, dropped from chapters: "
+            + "; ".join(m[:40] for m in missing))
+
     out: list[dict] = []
     last = -1
-    for i, ch in enumerate(found):
+    for ch in found:
         t = ch["t"]
         if t is None:
-            t = int(duration * i / max(len(found), 1))
-        if t <= last:
-            t = last + 1
+            continue
+        # Two chapters seconds apart cannot both be real section starts. Keep
+        # the first and drop the second rather than nudging it forward.
+        if t - last < MIN_CHAPTER_GAP and last >= 0:
+            log(f"  dropped '{ch['label'][:40]}' at {t}s: "
+                f"only {t - last}s after the previous chapter")
+            continue
         t = min(t, max(duration - 1, 0))
         out.append({"t": t, "label": ch["label"]})
         last = t
 
     if out and out[0]["t"] > 5:
         out.insert(0, {"t": 0, "label": "Overview"})
+
+    # Low coverage means the narration did not reach the later sections at all,
+    # which is a content problem the chapter list would otherwise hide.
+    if found and matched / len(found) < 0.7:
+        log(f"  WARNING only {matched}/{len(found)} sections were spoken; the "
+            f"video probably does not cover the whole unit")
     return out
 
 
