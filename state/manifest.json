@@ -2703,6 +2703,7 @@
     },
     "cse404-java/u2": {
       "artifact_id": "8597dd81-7526-48bf-82aa-fc3afba9ed6b",
+      "captions": "/home/runner/work/video-worker/video-worker/build/cse404-java-u2/captions.vtt",
       "chapter_anchors": [
         "inheritance",
         "overriding",
@@ -2723,6 +2724,46 @@
         "Inner classes",
         "Packages"
       ],
+      "chapters": [
+        {
+          "label": "Overview",
+          "t": 0
+        },
+        {
+          "label": "Inheritance",
+          "t": 24
+        },
+        {
+          "label": "Method Overriding",
+          "t": 211
+        },
+        {
+          "label": "Preventing inheritance",
+          "t": 212
+        },
+        {
+          "label": "Abstract classes",
+          "t": 246
+        },
+        {
+          "label": "Interfaces",
+          "t": 306
+        },
+        {
+          "label": "Interfaces Vs Abstract Classes",
+          "t": 379
+        },
+        {
+          "label": "Inner classes",
+          "t": 455
+        },
+        {
+          "label": "Packages",
+          "t": 510
+        }
+      ],
+      "duration_sec": 613,
+      "final_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u2/final.mp4",
       "notebook_id": "417eabb2-cf35-4e2a-9f0b-fc7e159b0116",
       "notebook_title": "Object Oriented Programming through Java - Unit 2: Inheritance, Polymorphism, Interfaces and Packages",
       "profile": "default",
@@ -2741,6 +2782,14 @@
       ],
       "raw_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u2/raw.mp4",
       "raw_size_mb": 29.32,
+      "readability": {
+        "flesch_reading_ease": 62.8,
+        "grade_level": 6.3,
+        "long_word_pct": 4.4,
+        "sentences": 235,
+        "words": 1655,
+        "words_per_sentence": 7.0
+      },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Inheritance\nSECTION | 2 | Method Overriding\nSECTION | 3 | Preventing inheritance\nSECTION | 4 | Abstract classes\nSECTION | 5 | Interfaces\nSECTION | 6 | Interfaces Vs Abstract Classes\nSECTION | 7 | Inner classes\nSECTION | 8 | Packages\nTERM | superclass\nTERM | subclass\nTERM | extends\nTERM | overridden method\nTERM | runtime polymorphism\nTERM | abstract class\nTERM | abstract method\nTERM | concrete class\nTERM | Single Inheritance\nTERM | Multiple Inheritance\nTERM | Multilevel Inheritance\nTERM | Hierarchical inheritance\nTERM | Hybrid Inheritance\nTERM | interface\nTERM | implements\nTERM | Inner classes\nTERM | nested classes\nTERM | package\nTERM | User defined package\nTERM | Built-in package\nTERM | import\nMISSING | the Object class and its methods\nMISSING | dynamic binding\nMISSING | local inner classes\nMISSING | anonymous inner classes\nMISSING | static inner classes\nMISSING | understanding CLASSPATH\nMISSING | extending an interface",
       "round2": "DEF | 1 | The book defines Inheritance as the process by which objects of one class can get the properties of objects of another class [1].\nMECH | 1 | A subclass inherits variables and methods from its superclass and can access all non-private members of that parent class [2, 3].\nSPEC | 1 | Java uses the keyword extends to indicate that a new class is being derived from a superclass [4].\nSTEP | 1 | class Shape { double dim; Shape(double d) { dim = d; } } class Circle extends Shape { Circle() { super(5.0); } }\nTHIN | 1 | no\nDEF | 2 | When a method in a subclass has same name and type signature as a method in its superclass, then the method is known as an overridden method [5].\nMECH | 2 | A subclass redefines a method from its superclass, and at runtime the Java Virtual Machine executes the subclass version of the method when called on a subclass object [5, 6].\nSPEC | 2 | Method overriding is also referred to as runtime polymorphism [5, 7].\nSTEP | 2 | class Shape { double area() { return 0.0; } } class Circle extends Shape { double area() { return 3.14 * 5.0 * 5.0; } }\nTHIN | 2 | no\nDEF | 3 | Preventing inheritance makes sure the way a class behaves is not corrupted by a subclass [8].\nMECH | 3 | Using the final keyword in a class declaration stops it from being extended, while declaring a method as final prevents subclasses from overriding it [6, 9].\nSPEC | 3 | A method when declared final cannot be overridden, and a class when declared final cannot be inherited [6].\nSTEP | 3 | class Shape { final void show() { System.out.println(5.0); } }\nTHIN | 3 | yes\nDEF | 4 | An abstract class is a class that is declared as abstract, which cannot be instantiated but can be subclassed [10].\nMECH | 4 | It contains fields and methods, including abstract methods declared without an implementation that must be defined by concrete subclasses [10, 11].\nSPEC | 4 | If a class includes abstract methods, the class itself must be declared abstract [10].\nSTEP | 4 | abstract class Shape { abstract double area(); } class Circle extends Shape { double area() { return 78.5; } }\nTHIN | 4 | no\nDEF | 5 | An interface provides a mechanism to define a class with absolutely no implementation [12].\nMECH | 5 | An interface is defined using the interface keyword, and one or more classes can implement it by providing code and logic for all declared methods [12].\nSPEC | 5 | In Java, there is nothing which prevents from inheriting from multiple interfaces [13].\nSTEP | 5 | interface Drawable { void draw(); } class Circle implements Drawable { public void draw() { System.out.println(5.0); } }\nTHIN | 5 | no\nDEF | 6 | Interfaces are similar to abstract classes but specify a pure abstract contract rather than allowing partial implementation [14, 15].\nMECH | 6 | A class can extend only one abstract class using the extends keyword, but it can implement multiple interfaces simultaneously using the implements keyword [15].\nSPEC | 6 | All methods in an interface are abstract and all properties in an interface are static final [15].\nSTEP | 6 | abstract class Shape { } interface Drawable { } class Circle extends Shape implements Drawable { }\nTHIN | 6 | no\nDEF | 7 | Inner classes are classes that are declared within other classes [8].\nMECH | 7 | The scope of the inner class is limited to its enclosing class, and an object of the inner class can directly access members of the outer class [8].\nSPEC | 7 | Syntax for declaring these is class Outer { class Inner { } } [8].\nSTEP | 7 | class Outer { Object obj = new Object() { public String toString() { return \"5.0\"; } }; }\nTHIN | 7 | yes\nDEF | 8 | A package is a namespace that organizes a set of related classes and interfaces [9].\nMECH | 8 | The package keyword defines the namespace at the top of a file, mapping classes to directory structures, and the import keyword is used to access them [9, 16, 17].\nSPEC | 8 | Packages are divided into user-defined packages and built-in packages like java.io and java.lang [16].\nSTEP | 8 | package tools; public class Hammer { public void id() { System.out.println(\"Hammer\"); } }\nTHIN | 8 | no",
       "round3": "TOTAL | 720\nSECTION | 1 | Inheritance | 145\nPOINT | 1 | Inheritance is the process by which objects of one class can get the properties and behaviors of objects of another class using the extends keyword.\nPOINT | 1 | The class being inherited is the superclass or parent class, and the inheriting class is the subclass or child class.\nPOINT | 1 | Subclasses can access all non-private members of a superclass, while the super keyword invokes superclass constructors or hidden members.\nPOINT | 1 | The Object class is the superclass of every class in Java and defines fundamental methods like equals, toString, and clone.\nSPEC | 1 | class subclassname extends superclassname\nSTEP | 1 | class Shape { double dim; Shape(double d) { dim = d; } } class Circle extends Shape { Circle() { super(5.0); } }\nSECTION | 2 | Method Overriding | 120\nPOINT | 2 | Method overriding occurs when a subclass defines a method with the exact same name and type signature as a method in its superclass.\nPOINT | 2 | Overridden methods implement runtime polymorphism through dynamic binding, which resolves the method call at runtime based on the type of object.\nPOINT | 2 | A subclass can call the hidden superclass version of an overridden method using super followed by the method name.\nSPEC | 2 | Method overriding is also referred to as runtime polymorphism.\nSTEP | 2 | class Shape { double area() { return 0.0; } } class Circle extends Shape { double area() { return 3.14 * 5.0 * 5.0; } }\nSECTION | 3 | Preventing inheritance | 45\nPOINT | 3 | Declaring a class with the final keyword prevents any other class from extending it, securing its behavior from corruption.\nPOINT | 3 | Declaring a method as final prevents subclasses from overriding that specific method.\nPOINT | 3 | A class cannot be declared as both final and abstract because an abstract class requires subclassing.\nSPEC | 3 | A method when declared final cannot be overridden, and a class when declared final cannot be inherited.\nSTEP | 3 | class Shape { final void show() { System.out.println(5.0); } }\nSECTION | 4 | Abstract classes | 90\nPOINT | 4 | An abstract class is declared using the abstract keyword and cannot be directly instantiated.\nPOINT | 4 | Abstract methods contain signatures followed by a semicolon without method bodies, forcing subclasses to provide implementations.\nPOINT | 4 | A concrete subclass must implement all abstract methods of its superclass to be instantiated.\nSPEC | 4 | The subclass of an abstract class which can create an object is called as \"concrete class\".\nSTEP | 4 | abstract class Shape { abstract double area(); } class Circle extends Shape { double area() { return 78.5; } }\nSECTION | 5 | Interfaces | 140\nPOINT | 5 | An interface is defined using the interface keyword to specify a fully abstract contract without instance variables or method bodies.\nPOINT | 5 | Classes use the implements keyword to provide concrete implementations for all declared interface methods.\nPOINT | 5 | Polymorphic behavior is achieved by assigning implementing objects to interface reference variables.\nPOINT | 5 | One interface can extend another interface using the extends keyword, requiring implementing classes to implement all inherited methods.\nSPEC | 5 | To define an interface, use the interface keyword instead of the class keyword.\nSTEP | 5 | interface Drawable { void draw(); } class Circle implements Drawable { public void draw() { System.out.println(5.0); } }\nSECTION | 6 | Interfaces Vs Abstract Classes | 60\nPOINT | 6 | Interfaces contain only public abstract methods and static final constants, whereas abstract classes can contain non-final fields and concrete methods.\nPOINT | 6 | A class can implement multiple interfaces simultaneously, but it can extend only one abstract or concrete class.\nPOINT | 6 | Abstract classes allow partial abstraction, whereas interfaces enforce complete abstraction.\nSPEC | 6 | All methods in an interface are abstract and all properties in an interface are static final.\nSTEP | 6 | abstract class Shape { } interface Drawable { } class Circle extends Shape implements Drawable { }\nSECTION | 7 | Inner classes | 60\nPOINT | 7 | Inner classes are non-static classes declared within the enclosing scope of another class.\nPOINT | 7 | An inner class instance has direct access to all members, including private fields, of its enclosing class instance.\nPOINT | 7 | Java supports nested classes categorized as member inner classes, local inner classes, anonymous inner classes, and static inner classes.\nSPEC | 7 | Syntax for declaring these is class Outer { class Inner { } }.\nSTEP | 7 | class Outer { Object obj = new Object() { public String toString() { return \"5.0\"; } }; }\nSECTION | 8 | Packages | 60\nPOINT | 8 | A package is a named group of related classes and interfaces that provides namespace management and access protection.\nPOINT | 8 | The package keyword at the top of a file places its classes in that package, mapping to directory structures.\nPOINT | 8 | The import keyword makes classes from other packages visible, and the CLASSPATH specifies search directories for class files.\nSPEC | 8 | Packages are divided into user-defined packages and built-in packages like java.io and java.lang.\nSTEP | 8 | package tools; public class Hammer { public void id() { System.out.println(\"Hammer\"); } }\nGAP | NONE",
@@ -2755,12 +2804,62 @@
         60
       ],
       "source_added": true,
-      "state": "downloaded",
+      "state": "postprocessed",
       "style": "classic",
       "subject": "cse404-java",
       "target_minutes": 12,
+      "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u2/thumb.jpg",
       "unit": "u2",
-      "updated_at": "2026-08-08T08:20:25Z"
+      "updated_at": "2026-08-08T09:17:57Z",
+      "watermark": {
+        "bottom_right_box": {
+          "h": 16,
+          "w": 94,
+          "x": 1134,
+          "y": 663
+        },
+        "bottom_right_box_norm": {
+          "frames_agreeing": 84,
+          "frames_sampled": 120,
+          "h": 0.022222222222222223,
+          "method": "ocr",
+          "w": 0.0734375,
+          "x": 0.8859375,
+          "y": 0.9208333333333333
+        },
+        "bottom_right_segments": [
+          {
+            "end": 603.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 17.5
+          },
+          {
+            "end": 604.5,
+            "light_logo": false,
+            "plate": "0xF6F6FC",
+            "start": 603.7
+          }
+        ],
+        "centre_top_box": null,
+        "discovered": [
+          {
+            "frames_seen": 4,
+            "h": 0.022222222222222223,
+            "method": "discovery",
+            "w": 0.10625,
+            "x": 0.45625,
+            "y": 0.13333333333333333
+          }
+        ],
+        "encode": {
+          "crf": "16",
+          "preset": "slow",
+          "tune": "stillimage"
+        },
+        "outro_appended": true,
+        "outro_cut_at": 603.25
+      }
     },
     "cse404-java/u3": {
       "artifact_id": "6c6843f9-c8f8-45ff-9a8c-a40a8cd42db5",
