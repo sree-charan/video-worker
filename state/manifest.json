@@ -2,6 +2,7 @@
   "units": {
     "bee-y1/u1": {
       "artifact_id": "3ee4de70-4de1-4aaa-b070-dc03956a1b32",
+      "captions": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/captions.vtt",
       "chapter_anchors": [
         "engineering",
         "ohm's",
@@ -26,10 +27,68 @@
         "Transient Response of Series R-L Circuit for DC Excitation:",
         "Transient Response of Series RC Circuit for DC Excitation:-"
       ],
+      "chapters": [
+        {
+          "label": "Overview",
+          "t": 0
+        },
+        {
+          "label": "Introduction to Electrical Engineering:",
+          "t": 10
+        },
+        {
+          "label": "2.5 Ohm's Law",
+          "t": 32
+        },
+        {
+          "label": "2.14.1 Kirchhoff's Current Law (KCL)",
+          "t": 91
+        },
+        {
+          "label": "2.14.2 Kirchhoff's Voltage Law (KVL)",
+          "t": 134
+        },
+        {
+          "label": "2.4 Energy Sources",
+          "t": 188
+        },
+        {
+          "label": "2.17 Superposition Theorem",
+          "t": 242
+        },
+        {
+          "label": "2.18 Thevenin's Theorem",
+          "t": 300
+        },
+        {
+          "label": "2.19 Norton's Theorem",
+          "t": 372
+        },
+        {
+          "label": "Transient Response of Series R-L Circuit for DC Excitation:",
+          "t": 421
+        },
+        {
+          "label": "Transient Response of Series RC Circuit for DC Excitation:-",
+          "t": 477
+        }
+      ],
+      "duration_sec": 585,
+      "final_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/final.mp4",
       "notebook_id": "be9007df-abf3-4939-abc4-b0a5174980a5",
       "notebook_title": "Basic Electrical Engineering - Unit 1: DC Circuits",
       "profile": "default",
       "prompt_chars": 15727,
+      "raw_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/raw.mp4",
+      "raw_size_mb": 38.8,
+      "readability": {
+        "flesch_reading_ease": 59.4,
+        "grade_level": 6.9,
+        "long_word_pct": 3.6,
+        "sentences": 199,
+        "words": 1566,
+        "words_per_sentence": 7.9
+      },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Introduction to Electrical Engineering:\nSECTION | 2 | 2.5 Ohm's Law\nSECTION | 3 | 2.14.1 Kirchhoff's Current Law (KCL)\nSECTION | 4 | 2.14.2 Kirchhoff's Voltage Law (KVL)\nSECTION | 5 | 2.4 Energy Sources\nSECTION | 6 | 2.17 Superposition Theorem\nSECTION | 7 | 2.18 Thevenin's Theorem\nSECTION | 8 | 2.19 Norton's Theorem\nSECTION | 9 | Transient Response of Series R-L Circuit for DC Excitation:\nSECTION | 10 | Transient Response of Series RC Circuit for DC Excitation:-\nTERM | Network\nTERM | Network Element\nTERM | Node\nTERM | Linear Network\nTERM | Non linear Network\nTERM | Bilateral Network\nTERM | Unilateral Network\nTERM | Active Network\nTERM | Passive Network\nTERM | Lumped Network\nTERM | Distributed Network\nTERM | Ideal voltage source\nTERM | Practical voltage source\nTERM | Ideal current source\nTERM | Practical current source\nTERM | Dependent sources\nTERM | Voltage Dependent Voltage Source\nTERM | Current Dependent Current Source\nTERM | Current Dependent Voltage Source\nTERM | Voltage Dependent Current Source\nTERM | Series Circuit\nTERM | Parallel Circuit\nTERM | Conductance (G)\nTERM | Superposition Theorem\nTERM | Thevenin's Theorem\nTERM | Norton's Theorem\nTERM | driven Series R-L circuit\nTERM | undriven (e) Sovece free Series R-Leircuit\nTERM | steady state response\nTERM | transient response\nTERM | time constant\nMISSING | NONE",
       "round2": "DEF | 1 | An electrical network is defined as any arrangement of the various electrical energy sources along with the different circuit elements.\nMECH | 1 | In practice, electrical circuits consist of energy sources and parameters like resistors, inductors, and capacitors connected in different ways, where circuit analysis means finding the current through or voltage across any branch.\nSPEC | 1 | Active elements supply power or energy to the network, while passive elements like resistors, inductors, and capacitors either store or dissipate energy.\nSTEP | 1 | For example, a simple network consists of a 10 V DC source connected to a 5 ohm resistor that dissipates energy in the form of heat.\nTHIN | 1 | no\nDEF | 2 | Ohm's Law states that the current flowing through the electric circuit is directly proportional to the potential difference across the circuit and inversely proportional to the resistance of the circuit, provided the temperature remains constant.\nMECH | 2 | The potential difference between any two points of a conductor divided by the current flowing between them is a constant resistance, and this can be applied either to the entire circuit or to a part of the circuit.\nSPEC | 2 | Ohm's Law is not applicable to nonlinear devices such as diodes, zener diodes, and voltage regulators, and does not hold good for non-metallic conductors such as silicon carbide.\nSTEP | 2 | For example, applying Ohm's Law to a 3 ohm resistor connected across a 12 V potential difference yields a current of 4 amperes.\nTHIN | 2 | no\nDEF | 3 | Kirchhoff's Current Law (KCL) states that the total current flowing towards a junction point is equal to the total current flowing away from that junction point.\nMECH | 3 | Currents flowing towards a junction point are assumed to be positive while currents flowing away from a junction point are assumed to be negative, so that their algebraic sum is always zero.\nSPEC | 3 | Applying Kirchhoff's Current Law (KCL) at a junction in a complex network allows the determination of an unknown branch current by setting the algebraic sum of meeting currents to zero.\nSTEP | 3 | For example, at a junction with three branches, if currents of 2 amperes and 4 amperes enter, then Kirchhoff's Current Law (KCL) dictates that 6 amperes must leave.\nTHIN | 3 | no\nDEF | 4 | Kirchhoff's Voltage Law (KVL) states that in any network, the algebraic sum of the voltage drops across the circuit elements of any closed path (or loop or mesh) is equal to the algebraic sum of the e.mfs in the path.\nMECH | 4 | Tracing and noting all potential drops or rises in one particular direction along a closed path from a starting point and back to it results in a total change in potential of zero.\nSPEC | 4 | If there is a current source in the network, Kirchhoff's Voltage Law (KVL) must not be applied to loops involving that current source because the voltage drop across a current source is unknown.\nSTEP | 4 | For example, applying Kirchhoff's Voltage Law (KVL) to a single loop containing a 12 V battery, a 4 ohm resistor, and a 2 ohm resistor yields the loop equation 12 - 4I - 2I = 0, which solves to 2 amperes.\nTHIN | 4 | no\nDEF | 5 | An ideal voltage source is defined as the energy source which gives constant voltage across its terminals irrespective of the current drawn through its terminals, while an ideal current source gives constant current irrespective of terminal voltage.\nMECH | 5 | A practical voltage source has a small internal resistance in series that causes the terminal voltage to decrease slightly with an increase in current, whereas a practical current source has a high internal resistance in parallel.\nSPEC | 5 | Dependent sources are classified into four types: Voltage Dependent Voltage Source, Current Dependent Current Source, Current Dependent Voltage Source, and Voltage Dependent Current Source.\nSTEP | 5 | For example, a practical voltage source has an open-circuit voltage of 12 V and an internal series resistance of 1 ohm, which delivers a terminal voltage of 10 V when the current is 2 amperes.\nTHIN | 5 | no\nDEF | 6 | The Superposition Theorem states that in any multisource complex network consisting of linear bilateral elements, the voltage across or current through any given element of the network is equal to the algebraic sum of the individual voltages or currents, produced independently across or in that element by each source acting independently, when all the remaining sources are replaced by their respective internal resistances.\nMECH | 6 | Each source is considered acting alone while other voltage sources are replaced by short circuits and current sources are replaced by open circuits, and then the individual responses are algebraically added to find the total response.\nSPEC | 6 | The Superposition Theorem does not apply to power calculations because power is proportional to the square of the current, which is not a linear function.\nSTEP | 6 | For example, in a network with two sources, the Superposition Theorem finds the current in a 10 ohm resistor by adding 0.32 amperes from a 6 V source acting alone and 0.14 amperes from a 4 V source acting alone to get 0.46 amperes.\nTHIN | 6 | no\nDEF | 7 | Thevenin's Theorem states that any combination of linear bilateral circuit elements and active sources connected to a given load R_L may be replaced by a simple two terminal network consisting of a single voltage source of V_TH volts and a single resistance R_eq in series.\nMECH | 7 | The load resistance is removed to calculate the open-circuit voltage V_TH across the terminals, then all active sources are replaced by their internal resistances to calculate the equivalent resistance R_eq as viewed through those terminals.\nSPEC | 7 | Thevenin's Theorem is not applicable to circuits consisting of nonlinear elements or unilateral networks, and there must not be magnetic coupling or controlled sources on the load side.\nSTEP | 7 | For example, a network connected to a 16 ohm load is replaced using Thevenin's Theorem by a single voltage source of 21.43 V in series with an equivalent resistance of 3.43 ohms to find the load current of 1.10 amperes.\nTHIN | 7 | no\nDEF | 8 | Norton's Theorem states that any combination of linear bilateral circuit elements and active sources connected to a given load R_L can be replaced by a simple two terminal network consisting of a single current source of I_N amperes and a single impedance R_eq in parallel.\nMECH | 8 | The load terminals are short-circuited to calculate the short-circuit Norton's current I_N, while the equivalent resistance R_eq is calculated in the same manner as Thevenin's equivalent resistance with active sources replaced by their internal resistances.\nSPEC | 8 | Norton's Theorem is called the dual of Thevenin's Theorem because converting a Thevenin's equivalent voltage source to an equivalent current source using source transformation yields the Norton's equivalent.\nSTEP | 8 | For example, a network connected to a 2 ohm load is replaced using Norton's Theorem by a single current source of 18 amperes in parallel with an equivalent resistance of 0.5 ohms to find the load current of 3.6 amperes.\nTHIN | 8 | no\nDEF | 9 | A driven series R-L circuit is one in which an active source is introduced after transition, whereas an undriven or source free series R-L circuit is one in which an active source is absent.\nMECH | 9 | Applying Kirchhoff's Voltage Law (KVL) to the circuit yields a first-order non-homogeneous differential equation, whose solution shows that the current cannot change instantaneously and instead rises exponentially.\nSPEC | 9 | The time constant \\tau = L/R is the time required for the current to reach 0.632 times its maximum value, and the current practically reaches steady state at a time of t = 6\\tau.\nSTEP | 9 | For example, a series circuit containing a 10 V DC source, a 5 ohm resistor, and a 2 henry inductor has a time constant of 0.4 seconds, with the current rising exponentially over time.\nTHIN | 9 | no\nDEF | 10 | In a series RC circuit, the capacitor may be initially charged or uncharged, and analyzing the driven or undriven source free cases provides the voltage response as a function of time.\nMECH | 10 | Applying Kirchhoff's Voltage Law (KVL) to a driven circuit yields a first-order differential equation where the voltage across the charging capacitor rises exponentially, while the charging current decays exponentially.\nSPEC | 10 | The time constant for a series RC circuit is represented by \\tau = RC, at which point the capacitor voltage rises to 0.632 times its steady-state value.\nSTEP | 10 | For example, a series circuit containing a 12 V DC source, a 10 kiloohm resistor, and a 100 microfarad capacitor has a time constant of 1.0 second, with the capacitor voltage rising exponentially toward 12 V.\nTHIN | 10 | no",
       "round3": "TOTAL | 720\nSECTION | 1 | Introduction to Electrical Engineering: | 50\nPOINT | 1 | An electrical network consists of energy sources and circuit parameters.\nPOINT | 1 | Passive elements like resistors, inductors, and capacitors store or dissipate energy.\nPOINT | 1 | Active elements supply electrical power or energy to the network.\nSPEC | 1 | Resistors dissipate energy in the form of heat, while inductors and capacitors are capable of storing energy.\nSTEP | 1 | For example, a simple network consists of a 10 V DC source connected to a 5 ohm resistor that dissipates energy in the form of heat.\nSECTION | 2 | 2.5 Ohm's Law | 55\nPOINT | 2 | Current through a conductor is directly proportional to potential difference.\nPOINT | 2 | Resistance remains constant provided that the temperature remains constant.\nPOINT | 2 | This relationship applies to either the entire circuit or a part.\nSPEC | 2 | Ohm's Law is not applicable to non-metallic conductors such as silicon carbide or to nonlinear devices like diodes.\nSTEP | 2 | For example, applying Ohm's Law to a 3 ohm resistor connected across a 12 V potential difference yields a current of 4 amperes.\nSECTION | 3 | 2.14.1 Kirchhoff's Current Law (KCL) | 65\nPOINT | 3 | Kirchhoff's Current Law applies to currents at a junction point.\nPOINT | 3 | The total current entering a junction equals the current leaving it.\nPOINT | 3 | The algebraic sum of all currents meeting at a junction is zero.\nSPEC | 3 | Sign convention: Currents flowing towards a junction point are assumed to be positive while currents flowing away are assumed to be negative.\nSTEP | 3 | For example, at a junction with three branches, if currents of 2 amperes and 4 amperes enter, then Kirchhoff's Current Law (KCL) dictates that 6 amperes must leave.\nSECTION | 4 | 2.14.2 Kirchhoff's Voltage Law (KVL) | 75\nPOINT | 4 | Kirchhoff's Voltage Law applies to potential changes around a closed loop.\nPOINT | 4 | The algebraic sum of all branch voltages around a loop is zero.\nPOINT | 4 | Loop equations must not involve paths containing current sources.\nSPEC | 4 | KVL must be applied to a sufficient number of loops such that each element of the network is included at least once in the equations.\nSTEP | 4 | For example, applying Kirchhoff's Voltage Law (KVL) to a single loop containing a 12 V battery, a 4 ohm resistor, and a 2 ohm resistor yields the loop equation 12 - 4I - 2I = 0, which solves to 2 amperes.\nSECTION | 5 | 2.4 Energy Sources | 65\nPOINT | 5 | Ideal voltage sources give constant terminal voltage regardless of load current.\nPOINT | 5 | Practical voltage sources have internal resistance connected in series.\nPOINT | 5 | Dependent sources have values controlled by other voltages or currents.\nSPEC | 5 | Dependent sources are classified into four types: Voltage Dependent Voltage Source, Current Dependent Current Source, Current Dependent Voltage Source, and Voltage Dependent Current Source.\nSTEP | 5 | For example, a practical voltage source has an open-circuit voltage of 12 V and an internal series resistance of 1 ohm, which delivers a terminal voltage of 10 V when the current is 2 amperes.\nSECTION | 6 | 2.17 Superposition Theorem | 85\nPOINT | 6 | Superposition applies only to networks containing linear bilateral elements.\nPOINT | 6 | The total response equals the sum of individual source responses.\nPOINT | 6 | Inactive voltage sources are short-circuited while current sources are open-circuited.\nSPEC | 6 | The Superposition Theorem does not apply to power calculations because power is proportional to the square of current.\nSTEP | 6 | For example, in a network with two sources, the Superposition Theorem finds the current in a 10 ohm resistor by adding 0.32 amperes from a 6 V source acting alone and 0.14 amperes from a 4 V source acting alone to get 0.46 amperes.\nSECTION | 7 | 2.18 Thevenin's Theorem | 100\nPOINT | 7 | Any active linear network can be replaced by a series equivalent.\nPOINT | 7 | Thevenin's voltage is the open-circuit voltage across the terminals.\nPOINT | 7 | Thevenin's resistance is the equivalent resistance viewed through deactivated sources.\nSPEC | 7 | Thevenin's Theorem is not applicable to circuits consisting of non-linear elements, unilateral networks, or those with magnetic coupling between load and circuit.\nSTEP | 7 | For example, a network connected to a 16 ohm load is replaced using Thevenin's Theorem by a single voltage source of 21.43 V in series with an equivalent resistance of 3.43 ohms to find the load current of 1.10 amperes.\nSECTION | 8 | 2.19 Norton's Theorem | 80\nPOINT | 8 | Any active linear network can be replaced by a parallel equivalent.\nPOINT | 8 | Norton's current is the short-circuit current through the terminals.\nPOINT | 8 | Norton's resistance equals the series equivalent resistance of Thevenin's theorem.\nSPEC | 8 | Norton's Theorem is called the dual of Thevenin's Theorem because source transformation of a Thevenin equivalent yields the Norton equivalent.\nSTEP | 8 | For example, a network connected to a 2 ohm load is replaced using Norton's Theorem by a single current source of 18 amperes in parallel with an equivalent resistance of 0.5 ohms to find the load current of 3.6 amperes.\nSECTION | 9 | Transient Response of Series R-L Circuit for DC Excitation: | 75\nPOINT | 9 | Driven series R-L circuits feature an active source introduced after switching.\nPOINT | 9 | Applying Kirchhoff's Voltage Law yields a first-order non-homogeneous differential equation.\nPOINT | 9 | Current cannot change instantaneously and instead rises exponentially.\nSPEC | 9 | The time constant for a series R-L circuit is L/R, representing the time required to complete 63.2% of the total transition.\nSTEP | 9 | For example, a series circuit containing a 10 V DC source, a 5 ohm resistor, and a 2 henry inductor has a time constant of 0.4 seconds, with the current rising exponentially over time.\nSECTION | 10 | Transient Response of Series RC Circuit for DC Excitation:- | 70\nPOINT | 10 | Driven series R-C circuits feature exponential capacitor voltage rise.\nPOINT | 10 | The charging current in the series circuit decays exponentially over time.\nPOINT | 10 | Source-free R-C circuits discharge stored energy exponentially through the resistor.\nSPEC | 10 | The time constant for a series RC circuit is represented by \\tau = RC, representing the time required to complete 63.2% of the total transition.\nSTEP | 10 | For example, a series circuit containing a 12 V DC source, a 10 kiloohm resistor, and a 100 microfarad capacitor has a time constant of 1.0 second, with the capacitor voltage rising exponentially toward 12 V.\nGAP | NONE",
@@ -46,12 +105,188 @@
         70
       ],
       "source_added": true,
-      "state": "generating",
+      "state": "postprocessed",
       "style": "whiteboard",
       "subject": "bee-y1",
       "target_minutes": 12,
+      "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-08T07:47:02Z"
+      "updated_at": "2026-08-08T08:33:56Z",
+      "watermark": {
+        "bottom_right_box": {
+          "h": 16,
+          "w": 94,
+          "x": 1134,
+          "y": 661
+        },
+        "bottom_right_box_norm": {
+          "frames_agreeing": 86,
+          "frames_sampled": 120,
+          "h": 0.022222222222222223,
+          "method": "ocr",
+          "w": 0.0734375,
+          "x": 0.8859375,
+          "y": 0.9180555555555555
+        },
+        "bottom_right_segments": [
+          {
+            "end": 10.1,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 5.5
+          },
+          {
+            "end": 26.7,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 10.1
+          },
+          {
+            "end": 53.1,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 26.7
+          },
+          {
+            "end": 53.5,
+            "light_logo": false,
+            "plate": "0xF0F0F0",
+            "start": 53.1
+          },
+          {
+            "end": 91.2,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 65.5
+          },
+          {
+            "end": 109.5,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 91.2
+          },
+          {
+            "end": 134.8,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 109.5
+          },
+          {
+            "end": 162.6,
+            "light_logo": false,
+            "plate": "0xF0F0F0",
+            "start": 134.8
+          },
+          {
+            "end": 188.1,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 162.6
+          },
+          {
+            "end": 204.9,
+            "light_logo": true,
+            "plate": "0x06E4AE",
+            "start": 188.1
+          },
+          {
+            "end": 242.4,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 204.9
+          },
+          {
+            "end": 264.7,
+            "light_logo": true,
+            "plate": "0x36D2B4",
+            "start": 242.4
+          },
+          {
+            "end": 300.3,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 264.7
+          },
+          {
+            "end": 329.6,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 300.3
+          },
+          {
+            "end": 330.5,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 329.6
+          },
+          {
+            "end": 372.9,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 372.5
+          },
+          {
+            "end": 388.0,
+            "light_logo": true,
+            "plate": "0x06E4AE",
+            "start": 372.9
+          },
+          {
+            "end": 421.2,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 388.0
+          },
+          {
+            "end": 442.5,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 421.2
+          },
+          {
+            "end": 477.5,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 442.5
+          },
+          {
+            "end": 478.5,
+            "light_logo": false,
+            "plate": "0xF0F0F0",
+            "start": 477.5
+          },
+          {
+            "end": 575.3,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 504.5
+          },
+          {
+            "end": 575.5,
+            "light_logo": false,
+            "plate": "0xF6F6FC",
+            "start": 575.3
+          }
+        ],
+        "centre_top_box": null,
+        "discovered": [
+          {
+            "frames_seen": 1,
+            "h": 0.06666666666666667,
+            "method": "discovery",
+            "w": 0.3875,
+            "x": 0.35,
+            "y": 0.45555555555555555
+          }
+        ],
+        "encode": {
+          "crf": "16",
+          "preset": "slow",
+          "tune": "stillimage"
+        },
+        "outro_appended": true,
+        "outro_cut_at": 575.25
+      }
     },
     "bee-y1/u2": {
       "artifact_id": "96e7ac16-cd4a-4278-93df-f9b45624b891",
@@ -2504,6 +2739,8 @@
         "Object\u2010Oriented Programming and Class Hierarchies - Wiley Monthly Title Update and Image Download Site",
         "PATH and CLASSPATH (The Java\u2122 Tutorials > Essential Java Classes > The Platform Environment)"
       ],
+      "raw_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u2/raw.mp4",
+      "raw_size_mb": 29.32,
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Inheritance\nSECTION | 2 | Method Overriding\nSECTION | 3 | Preventing inheritance\nSECTION | 4 | Abstract classes\nSECTION | 5 | Interfaces\nSECTION | 6 | Interfaces Vs Abstract Classes\nSECTION | 7 | Inner classes\nSECTION | 8 | Packages\nTERM | superclass\nTERM | subclass\nTERM | extends\nTERM | overridden method\nTERM | runtime polymorphism\nTERM | abstract class\nTERM | abstract method\nTERM | concrete class\nTERM | Single Inheritance\nTERM | Multiple Inheritance\nTERM | Multilevel Inheritance\nTERM | Hierarchical inheritance\nTERM | Hybrid Inheritance\nTERM | interface\nTERM | implements\nTERM | Inner classes\nTERM | nested classes\nTERM | package\nTERM | User defined package\nTERM | Built-in package\nTERM | import\nMISSING | the Object class and its methods\nMISSING | dynamic binding\nMISSING | local inner classes\nMISSING | anonymous inner classes\nMISSING | static inner classes\nMISSING | understanding CLASSPATH\nMISSING | extending an interface",
       "round2": "DEF | 1 | The book defines Inheritance as the process by which objects of one class can get the properties of objects of another class [1].\nMECH | 1 | A subclass inherits variables and methods from its superclass and can access all non-private members of that parent class [2, 3].\nSPEC | 1 | Java uses the keyword extends to indicate that a new class is being derived from a superclass [4].\nSTEP | 1 | class Shape { double dim; Shape(double d) { dim = d; } } class Circle extends Shape { Circle() { super(5.0); } }\nTHIN | 1 | no\nDEF | 2 | When a method in a subclass has same name and type signature as a method in its superclass, then the method is known as an overridden method [5].\nMECH | 2 | A subclass redefines a method from its superclass, and at runtime the Java Virtual Machine executes the subclass version of the method when called on a subclass object [5, 6].\nSPEC | 2 | Method overriding is also referred to as runtime polymorphism [5, 7].\nSTEP | 2 | class Shape { double area() { return 0.0; } } class Circle extends Shape { double area() { return 3.14 * 5.0 * 5.0; } }\nTHIN | 2 | no\nDEF | 3 | Preventing inheritance makes sure the way a class behaves is not corrupted by a subclass [8].\nMECH | 3 | Using the final keyword in a class declaration stops it from being extended, while declaring a method as final prevents subclasses from overriding it [6, 9].\nSPEC | 3 | A method when declared final cannot be overridden, and a class when declared final cannot be inherited [6].\nSTEP | 3 | class Shape { final void show() { System.out.println(5.0); } }\nTHIN | 3 | yes\nDEF | 4 | An abstract class is a class that is declared as abstract, which cannot be instantiated but can be subclassed [10].\nMECH | 4 | It contains fields and methods, including abstract methods declared without an implementation that must be defined by concrete subclasses [10, 11].\nSPEC | 4 | If a class includes abstract methods, the class itself must be declared abstract [10].\nSTEP | 4 | abstract class Shape { abstract double area(); } class Circle extends Shape { double area() { return 78.5; } }\nTHIN | 4 | no\nDEF | 5 | An interface provides a mechanism to define a class with absolutely no implementation [12].\nMECH | 5 | An interface is defined using the interface keyword, and one or more classes can implement it by providing code and logic for all declared methods [12].\nSPEC | 5 | In Java, there is nothing which prevents from inheriting from multiple interfaces [13].\nSTEP | 5 | interface Drawable { void draw(); } class Circle implements Drawable { public void draw() { System.out.println(5.0); } }\nTHIN | 5 | no\nDEF | 6 | Interfaces are similar to abstract classes but specify a pure abstract contract rather than allowing partial implementation [14, 15].\nMECH | 6 | A class can extend only one abstract class using the extends keyword, but it can implement multiple interfaces simultaneously using the implements keyword [15].\nSPEC | 6 | All methods in an interface are abstract and all properties in an interface are static final [15].\nSTEP | 6 | abstract class Shape { } interface Drawable { } class Circle extends Shape implements Drawable { }\nTHIN | 6 | no\nDEF | 7 | Inner classes are classes that are declared within other classes [8].\nMECH | 7 | The scope of the inner class is limited to its enclosing class, and an object of the inner class can directly access members of the outer class [8].\nSPEC | 7 | Syntax for declaring these is class Outer { class Inner { } } [8].\nSTEP | 7 | class Outer { Object obj = new Object() { public String toString() { return \"5.0\"; } }; }\nTHIN | 7 | yes\nDEF | 8 | A package is a namespace that organizes a set of related classes and interfaces [9].\nMECH | 8 | The package keyword defines the namespace at the top of a file, mapping classes to directory structures, and the import keyword is used to access them [9, 16, 17].\nSPEC | 8 | Packages are divided into user-defined packages and built-in packages like java.io and java.lang [16].\nSTEP | 8 | package tools; public class Hammer { public void id() { System.out.println(\"Hammer\"); } }\nTHIN | 8 | no",
       "round3": "TOTAL | 720\nSECTION | 1 | Inheritance | 145\nPOINT | 1 | Inheritance is the process by which objects of one class can get the properties and behaviors of objects of another class using the extends keyword.\nPOINT | 1 | The class being inherited is the superclass or parent class, and the inheriting class is the subclass or child class.\nPOINT | 1 | Subclasses can access all non-private members of a superclass, while the super keyword invokes superclass constructors or hidden members.\nPOINT | 1 | The Object class is the superclass of every class in Java and defines fundamental methods like equals, toString, and clone.\nSPEC | 1 | class subclassname extends superclassname\nSTEP | 1 | class Shape { double dim; Shape(double d) { dim = d; } } class Circle extends Shape { Circle() { super(5.0); } }\nSECTION | 2 | Method Overriding | 120\nPOINT | 2 | Method overriding occurs when a subclass defines a method with the exact same name and type signature as a method in its superclass.\nPOINT | 2 | Overridden methods implement runtime polymorphism through dynamic binding, which resolves the method call at runtime based on the type of object.\nPOINT | 2 | A subclass can call the hidden superclass version of an overridden method using super followed by the method name.\nSPEC | 2 | Method overriding is also referred to as runtime polymorphism.\nSTEP | 2 | class Shape { double area() { return 0.0; } } class Circle extends Shape { double area() { return 3.14 * 5.0 * 5.0; } }\nSECTION | 3 | Preventing inheritance | 45\nPOINT | 3 | Declaring a class with the final keyword prevents any other class from extending it, securing its behavior from corruption.\nPOINT | 3 | Declaring a method as final prevents subclasses from overriding that specific method.\nPOINT | 3 | A class cannot be declared as both final and abstract because an abstract class requires subclassing.\nSPEC | 3 | A method when declared final cannot be overridden, and a class when declared final cannot be inherited.\nSTEP | 3 | class Shape { final void show() { System.out.println(5.0); } }\nSECTION | 4 | Abstract classes | 90\nPOINT | 4 | An abstract class is declared using the abstract keyword and cannot be directly instantiated.\nPOINT | 4 | Abstract methods contain signatures followed by a semicolon without method bodies, forcing subclasses to provide implementations.\nPOINT | 4 | A concrete subclass must implement all abstract methods of its superclass to be instantiated.\nSPEC | 4 | The subclass of an abstract class which can create an object is called as \"concrete class\".\nSTEP | 4 | abstract class Shape { abstract double area(); } class Circle extends Shape { double area() { return 78.5; } }\nSECTION | 5 | Interfaces | 140\nPOINT | 5 | An interface is defined using the interface keyword to specify a fully abstract contract without instance variables or method bodies.\nPOINT | 5 | Classes use the implements keyword to provide concrete implementations for all declared interface methods.\nPOINT | 5 | Polymorphic behavior is achieved by assigning implementing objects to interface reference variables.\nPOINT | 5 | One interface can extend another interface using the extends keyword, requiring implementing classes to implement all inherited methods.\nSPEC | 5 | To define an interface, use the interface keyword instead of the class keyword.\nSTEP | 5 | interface Drawable { void draw(); } class Circle implements Drawable { public void draw() { System.out.println(5.0); } }\nSECTION | 6 | Interfaces Vs Abstract Classes | 60\nPOINT | 6 | Interfaces contain only public abstract methods and static final constants, whereas abstract classes can contain non-final fields and concrete methods.\nPOINT | 6 | A class can implement multiple interfaces simultaneously, but it can extend only one abstract or concrete class.\nPOINT | 6 | Abstract classes allow partial abstraction, whereas interfaces enforce complete abstraction.\nSPEC | 6 | All methods in an interface are abstract and all properties in an interface are static final.\nSTEP | 6 | abstract class Shape { } interface Drawable { } class Circle extends Shape implements Drawable { }\nSECTION | 7 | Inner classes | 60\nPOINT | 7 | Inner classes are non-static classes declared within the enclosing scope of another class.\nPOINT | 7 | An inner class instance has direct access to all members, including private fields, of its enclosing class instance.\nPOINT | 7 | Java supports nested classes categorized as member inner classes, local inner classes, anonymous inner classes, and static inner classes.\nSPEC | 7 | Syntax for declaring these is class Outer { class Inner { } }.\nSTEP | 7 | class Outer { Object obj = new Object() { public String toString() { return \"5.0\"; } }; }\nSECTION | 8 | Packages | 60\nPOINT | 8 | A package is a named group of related classes and interfaces that provides namespace management and access protection.\nPOINT | 8 | The package keyword at the top of a file places its classes in that package, mapping to directory structures.\nPOINT | 8 | The import keyword makes classes from other packages visible, and the CLASSPATH specifies search directories for class files.\nSPEC | 8 | Packages are divided into user-defined packages and built-in packages like java.io and java.lang.\nSTEP | 8 | package tools; public class Hammer { public void id() { System.out.println(\"Hammer\"); } }\nGAP | NONE",
@@ -2518,12 +2755,12 @@
         60
       ],
       "source_added": true,
-      "state": "generating",
+      "state": "downloaded",
       "style": "classic",
       "subject": "cse404-java",
       "target_minutes": 12,
       "unit": "u2",
-      "updated_at": "2026-08-08T07:48:17Z"
+      "updated_at": "2026-08-08T08:20:25Z"
     },
     "cse404-java/u3": {
       "artifact_id": "6c6843f9-c8f8-45ff-9a8c-a40a8cd42db5",
