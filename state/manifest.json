@@ -2035,6 +2035,73 @@
     "cse404-java/u1": {
       "artifact_id": "397b88ba-d46c-4672-9ea1-881a29ae386b",
       "captions": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/captions.vtt",
+      "catalog_entry": {
+        "chapters": [
+          {
+            "label": "Overview",
+            "t": 0
+          },
+          {
+            "label": "Object-Oriented Programming :",
+            "t": 22
+          },
+          {
+            "label": "History of Java",
+            "t": 98
+          },
+          {
+            "label": "Data types:",
+            "t": 126
+          },
+          {
+            "label": "Variables:",
+            "t": 180
+          },
+          {
+            "label": "Constant:",
+            "t": 231
+          },
+          {
+            "label": "Comments:",
+            "t": 266
+          },
+          {
+            "label": "Operators:",
+            "t": 295
+          },
+          {
+            "label": "Type conversions and casting",
+            "t": 344
+          },
+          {
+            "label": "Control Structure:",
+            "t": 380
+          },
+          {
+            "label": "CLASSES",
+            "t": 438
+          },
+          {
+            "label": "Method Overloading",
+            "t": 520
+          },
+          {
+            "label": "Constructors",
+            "t": 566
+          },
+          {
+            "label": "String handling",
+            "t": 628
+          }
+        ],
+        "dur": 715,
+        "id": "cse404-java-u1",
+        "subtitle": "11 min",
+        "thumb": "1YeQzi8JE0VsfJx8nuO1vR8rLsVeYCBkl",
+        "title": "Unit 1: OOP Concepts and Java Fundamentals",
+        "url": "https://drive.google.com/file/d/1V6nRqE7CZeDINIJO0ihnHkkzSEfcMTfV/view?usp=sharing",
+        "vtt": "1z7uDxRLwVHyX94zpOiTRqv3o5zbsf5Us"
+      },
       "chapter_anchors": [
         "object-oriented",
         "history",
@@ -2104,7 +2171,7 @@
         },
         {
           "label": "Control Structure:",
-          "t": 379
+          "t": 380
         },
         {
           "label": "CLASSES",
@@ -2123,7 +2190,13 @@
           "t": 628
         }
       ],
-      "duration_sec": 705,
+      "drive_folder": "1WJSiZ0gYeLSZz_gJgU7s-Q2KxshhwkMQ",
+      "drive_ids": {
+        "thumb": "1YeQzi8JE0VsfJx8nuO1vR8rLsVeYCBkl",
+        "url": "1V6nRqE7CZeDINIJO0ihnHkkzSEfcMTfV",
+        "vtt": "1z7uDxRLwVHyX94zpOiTRqv3o5zbsf5Us"
+      },
+      "duration_sec": 715,
       "final_mp4": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/final.mp4",
       "gaps_filled": [
         "enumerated types",
@@ -2218,9 +2291,9 @@
       "raw_size_mb": 34.43,
       "readability": {
         "flesch_reading_ease": 45.1,
-        "grade_level": 9.1,
+        "grade_level": 9.2,
         "long_word_pct": 6.6,
-        "sentences": 214,
+        "sentences": 213,
         "words": 1877,
         "words_per_sentence": 8.8
       },
@@ -2243,19 +2316,28 @@
         55
       ],
       "source_added": true,
-      "state": "postprocessed",
+      "state": "published",
       "style": "classic",
       "subject": "cse404-java",
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/cse404-java-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-03T07:07:38Z",
+      "updated_at": "2026-08-08T07:50:11Z",
       "watermark": {
         "bottom_right_box": {
           "h": 20,
           "w": 130,
           "x": 1105,
           "y": 660
+        },
+        "bottom_right_box_norm": {
+          "frames_agreeing": 70,
+          "frames_sampled": 120,
+          "h": 0.029166666666666667,
+          "method": "ocr",
+          "w": 0.102375,
+          "x": 0.86365625,
+          "y": 0.9173611111111111
         },
         "bottom_right_segments": [
           {
@@ -2365,11 +2447,22 @@
           4.208333333333333
         ],
         "clamped_to_slide_cut": 4.208,
+        "discovered": [
+          {
+            "frames_seen": 1,
+            "h": 0.16666666666666666,
+            "method": "discovery",
+            "w": 0.50625,
+            "x": 0.24375,
+            "y": 0.43333333333333335
+          }
+        ],
         "encode": {
           "crf": "16",
           "preset": "slow",
           "tune": "stillimage"
         },
+        "outro_appended": true,
         "outro_cut_at": 705.75
       }
     },

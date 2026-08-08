@@ -1,0 +1,73 @@
+        {
+          "id": "cse404-java",
+          "title": "Object Oriented Programming through Java",
+          "videos": [
+            {
+              "id": "cse404-java-u1",
+              "title": "Unit 1: OOP Concepts and Java Fundamentals",
+              "url": "https://drive.google.com/file/d/1V6nRqE7CZeDINIJO0ihnHkkzSEfcMTfV/view?usp=sharing",
+              "subtitle": "11 min",
+              "dur": 715,
+              "thumb": "1YeQzi8JE0VsfJx8nuO1vR8rLsVeYCBkl",
+              "vtt": "1z7uDxRLwVHyX94zpOiTRqv3o5zbsf5Us",
+              "chapters": [
+                {
+                  "t": 0,
+                  "label": "Overview"
+                },
+                {
+                  "t": 22,
+                  "label": "Object-Oriented Programming :"
+                },
+                {
+                  "t": 98,
+                  "label": "History of Java"
+                },
+                {
+                  "t": 126,
+                  "label": "Data types:"
+                },
+                {
+                  "t": 180,
+                  "label": "Variables:"
+                },
+                {
+                  "t": 231,
+                  "label": "Constant:"
+                },
+                {
+                  "t": 266,
+                  "label": "Comments:"
+                },
+                {
+                  "t": 295,
+                  "label": "Operators:"
+                },
+                {
+                  "t": 344,
+                  "label": "Type conversions and casting"
+                },
+                {
+                  "t": 380,
+                  "label": "Control Structure:"
+                },
+                {
+                  "t": 438,
+                  "label": "CLASSES"
+                },
+                {
+                  "t": 520,
+                  "label": "Method Overloading"
+                },
+                {
+                  "t": 566,
+                  "label": "Constructors"
+                },
+                {
+                  "t": 628,
+                  "label": "String handling"
+                }
+              ]
+            }
+          ]
+        }
