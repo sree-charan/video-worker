@@ -567,9 +567,11 @@ def _norm(text: str) -> str:
     return " ".join(re.sub(r"[^0-9a-z]+", " ", lowered).split())
 
 
-# A candidate shorter than this cannot localise anything: it matches inside
-# ordinary words and lands the chapter on an unrelated section.
-MIN_CANDIDATE_LEN = 4
+# A candidate shorter than this cannot localise anything. Three is enough now
+# that matching is word-boundary: the failure this guarded against was the
+# two-character "s f" matching inside "watches for", which a whole-word search
+# cannot do. Four wrongly rejected real anchors - "ohm", "emf", "kcl".
+MIN_CANDIDATE_LEN = 3
 
 
 # Two section starts closer than this are not both real. Measured against the
@@ -627,11 +629,24 @@ def build_chapters(segs: list[dict], labels: list[str], anchors: list[str],
         """
         body = re.sub(r"^\s*\d+(?:\.\d+)*\.?\s+", "", heading.strip())
         words = _norm(body).split()
+
+        # A possessive splits into a lone "s": "Ohm's Law" becomes
+        # ["ohm","s","law"]. Whisper writes it either way, so try both the split
+        # form and the joined one. Without this, "Ohm's Law" was reported as
+        # never spoken in a video that spends a minute on it.
+        squashed: list[str] = []
+        for w in words:
+            if len(w) == 1 and squashed:
+                squashed[-1] += w
+            else:
+                squashed.append(w)
+
         out: list[str] = []
-        if len(words) > 1:
-            out.append(" ".join(words))
-            for cut in range(len(words) - 1, 1, -1):
-                out.append(" ".join(words[:cut]))
+        for variant in ([words, squashed] if squashed != words else [words]):
+            if len(variant) > 1:
+                out.append(" ".join(variant))
+                for cut in range(len(variant) - 1, 1, -1):
+                    out.append(" ".join(variant[:cut]))
 
         toks = [w for w in words if w not in STOPWORDS_NORM and len(w) >= 2]
         if toks:
