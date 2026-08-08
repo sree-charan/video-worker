@@ -78,7 +78,13 @@ def resolve_box(cfg: dict, width: int, height: int) -> dict:
     h = int(round(cfg["h"] * height))
     w = max(2, min(w - w % 2, width - x))
     h = max(2, min(h - h % 2, height - y))
-    return {"x": x, "y": y, "w": w, "h": h}
+    box = {"x": x, "y": y, "w": w, "h": h}
+    # The mark's own height, if the locator measured it. Kept separate from the
+    # plate height, which includes padding, so the logo can be sized to the thing
+    # it replaces rather than to the plate.
+    if cfg.get("mark_h"):
+        box["mark_h_px"] = int(round(cfg["mark_h"] * height))
+    return box
 
 
 def light_variant(logo: Path, dst: Path) -> Path:
@@ -193,7 +199,11 @@ def _variant_scales(segs: list[dict], box: dict, prefix: str,
     untouched background: the plate stays at the original mark's footprint,
     which is what keeps it from cutting through artwork behind it.
     """
-    lh = max(int(box["h"] * ratio) // 2 * 2, 8)
+    # From the mark's painted height where it is known, not the plate's. The
+    # plate carries padding for antialiasing; sizing the logo off that made it
+    # half again too big, so it overhung the mark instead of replacing it.
+    base = box.get("mark_h_px") or box["h"]
+    lh = max(int(base * ratio) // 2 * 2, 8)
     steps, tags = [], {}
     for want, src_idx, suffix in ((False, 1, "d"), (True, 2, "w")):
         if _enable(segs, "light_logo", want) is None:

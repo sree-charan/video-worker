@@ -667,6 +667,10 @@ def locate_mark_ocr(ff: str, mp4: str, W: int, H: int,
         "frames_agreeing": len(boxes),
         "frames_sampled": len(frames),
         "extent_px": [int(x), int(y), int(w), int(h)],
+        # The mark's own painted height, before the plate padding. The logo is
+        # sized from this: padding belongs to the plate, not to the logo, and
+        # scaling from the padded height made our logo 2.2x the mark it replaces.
+        "mark_h": h / H,
         "widest_seen_px": [int(lefts.min()), int(rights.max())],
         "method": "ocr-union",
     }
@@ -688,6 +692,21 @@ MIN_DISCOVERY_FRAMES = 2
 # The plate is colour-matched to the background, so covering a little more of an
 # empty corner costs nothing, while covering too little ships the mark.
 MIN_MARK_W_RATIO = 10.0
+
+
+def _boxes_overlap(a: dict, b: dict, min_frac: float = 0.25) -> bool:
+    """True when two normalised boxes describe the same thing on screen.
+
+    Overlap of the smaller box, so a wide plate still matches the narrow mark
+    sitting inside it.
+    """
+    ix = max(0.0, min(a["x"] + a["w"], b["x"] + b["w"]) - max(a["x"], b["x"]))
+    iy = max(0.0, min(a["y"] + a["h"], b["y"] + b["h"]) - max(a["y"], b["y"]))
+    inter = ix * iy
+    if inter <= 0:
+        return False
+    smaller = min(a["w"] * a["h"], b["w"] * b["h"])
+    return smaller > 0 and inter / smaller >= min_frac
 
 
 def discover_marks(ff: str, mp4: str, W: int, H: int, fps: float = 0.2,
@@ -734,8 +753,11 @@ def discover_marks(ff: str, mp4: str, W: int, H: int, fps: float = 0.2,
         box = {"x": x / W, "y": y / H, "w": w / W, "h": h / H,
                "frames_seen": seen, "method": "discovery"}
         # Skip anything already handled by a configured region, and near-duplicates.
-        if any(abs(box["x"] - k["x"]) < overlap_tol and abs(box["y"] - k["y"]) < overlap_tol
-               for k in (known or []) + out):
+        # Compared by area overlap, not by distance between left edges: the
+        # bottom-right box is widened to a minimum width, which moved its left
+        # edge 0.06 away from the same mark as discovered here, so an edge test
+        # called it a new placement and stamped a second logo over the first.
+        if any(_boxes_overlap(box, k) for k in (known or []) + out):
             continue
         # A wordmark is small and wide. Slide text is not, and covering it
         # destroys teaching content: a box 39% of the frame wide over the words
