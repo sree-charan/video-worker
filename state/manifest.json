@@ -82,10 +82,10 @@
       "raw_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/raw.mp4",
       "raw_size_mb": 38.8,
       "readability": {
-        "flesch_reading_ease": 59.2,
-        "grade_level": 7.0,
+        "flesch_reading_ease": 59.4,
+        "grade_level": 6.9,
         "long_word_pct": 3.6,
-        "sentences": 198,
+        "sentences": 199,
         "words": 1566,
         "words_per_sentence": 7.9
       },
@@ -111,7 +111,7 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-08T17:29:27Z",
+      "updated_at": "2026-08-08T18:02:47Z",
       "watermark": {
         "bottom_right_box": {
           "h": 28,
@@ -317,6 +317,11 @@
           }
         ],
         "centre_top_box": null,
+        "clone_donor": [
+          -214,
+          0
+        ],
+        "clone_seconds": 471.9,
         "discovered": [],
         "encode": {
           "crf": "16",
