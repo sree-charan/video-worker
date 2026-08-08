@@ -686,12 +686,17 @@ MIN_MARK_ASPECT = 1.8
 MAX_MARK_ASPECT = 14.0
 # A mark seen in a single sampled frame is an OCR misread, not branding.
 MIN_DISCOVERY_FRAMES = 2
-# Minimum plate width as a multiple of the mark's height. The wordmark is an icon
-# plus two words - it measures about 10x its own height - so anything much
-# narrower than this means the extent was under-measured, whatever the reason.
-# The plate is colour-matched to the background, so covering a little more of an
-# empty corner costs nothing, while covering too little ships the mark.
-MIN_MARK_W_RATIO = 10.0
+# Minimum plate width as a multiple of the mark's height, as insurance against a
+# gross under-measurement - not as the normal case. Measured: the mark spans
+# 1095..1226 against a height of 19, so 6.9x its height. 7 therefore barely binds
+# on a correct measurement while still catching a text-only box, which comes out
+# near 4x.
+#
+# It was 10x, which forced the plate 60px wider than the mark and out to x=1036.
+# That reached into slide artwork, and the feathered edge left a fragment of it
+# showing at the boundary. Covering more than the mark is not free after all: the
+# corner is only empty most of the time.
+MIN_MARK_W_RATIO = 7.0
 
 
 def _boxes_overlap(a: dict, b: dict, min_frac: float = 0.25) -> bool:
@@ -804,7 +809,11 @@ def discover_marks(ff: str, mp4: str, W: int, H: int, fps: float = 0.2,
 # on the whiteboard style sit about 5 levels below the paper, while text and
 # artwork are 60+ below it, so this separates "pattern worth copying" from
 # "content that must not be pasted into the corner".
-DONOR_CONTENT_DROP = 55
+# 20, not 55: coloured annotations are light in greyscale - a pink smear measured
+# only 30 levels down - and would have passed a 55 threshold. Grid lines sit about
+# 6 levels down, so they still read as pattern rather than content, which is the
+# distinction that matters.
+DONOR_CONTENT_DROP = 20
 DONOR_MAX_CONTENT = 0.02
 # The donor must also be the same colour as the area it will fill, or the clone
 # shows as a patch of the wrong shade.
