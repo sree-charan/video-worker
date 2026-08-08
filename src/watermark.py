@@ -31,9 +31,14 @@ rawvideo, so each sampled frame costs 384 bytes.
 from __future__ import annotations
 
 import subprocess
+import sys
 from collections import Counter
 from pathlib import Path
 from typing import Any, Iterable
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from common import log  # noqa: E402
 
 # Frame-accurate. At 2fps the plate colour changed up to half a second before
 # the background did, so an orange plate showed on a white slide - clearly
