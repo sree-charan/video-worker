@@ -177,7 +177,7 @@ Answer using ONLY these line formats:
 DEF | <k> | <the definition the book gives, in one sentence, using the book's own terminology>
 MECH | <k> | <how it actually works, one or two sentences. Mechanism, not motivation.>
 SPEC | <k> | <one concrete specific printed in the book: a rule, a syntax form, a numbered classification, a named method, a constraint. If the book gives none, write NONE.>
-STEP | <k> | <how the running example advances at this section, one sentence>
+STEP | <k> | <the smallest self-contained example for THIS section, with real values, one sentence>
 THIN | <k> | <yes if the book's notes for this section are too thin to fill its share of the video, else no>
 
 Rules: no preamble. Do not restate the headings. Do not write anything that is
@@ -189,7 +189,8 @@ appears in the locked headings.
 def round2_prompt(unit: dict, sections: list[str], example: str) -> str:
     listing = "\n".join(f"  {i + 1}. {s}" for i, s in enumerate(sections))
     return ROUND2.format(n=unit["n"], sections=listing) + (
-        f"\nThe running example for this unit, which STEP must advance:\n{clean(example)}\n"
+        f"\nThe kinds of examples this unit should use. Each section gets its own,\n"
+        f"and none of them may depend on another section:\n{clean(example)}\n"
     )
 
 
@@ -234,7 +235,7 @@ SECTION | <k> | <heading, copied EXACTLY from the list above, unchanged> | <seco
 POINT | <k> | <one sentence that must be said in this section>
   Two to four POINT lines per section. Each must carry new information.
 SPEC | <k> | <the concrete specific from the book to state on screen, or NONE>
-STEP | <k> | <how the running example advances here, or NONE>
+STEP | <k> | <the self-contained example for this section, or NONE>
 GAP | <syllabus topic still not covered after your merges, or NONE>
 
 You may renumber sections after merging, but you may NOT reword any heading.
@@ -336,12 +337,16 @@ repetition, never a recap.
 
 {continuity}
 
-## RUNNING EXAMPLE
+## EXAMPLES
 
 {example}
 {code_rule}
-Advance this same example as each new section arrives. Never abandon it and
-start an unrelated example.
+Every section gets its own small example, with real values in it. Do not carry
+one example across the video, and do not refer to another unit's video.
+
+Never say you are building an app, a system or a project. Promising to build
+something and not building it makes the video harder to follow, not easier. Show
+a small finished example of the thing being taught, then move on.
 
 ## OPENING - about 20 seconds
 
@@ -388,27 +393,30 @@ may remind the listener what it means in three words.
 ## LANGUAGE - treat this as important as the content
 
 {audience}
-Every sentence must be understood the first time it is heard, without pausing or
-rewinding.
+Assume they have never studied this before and will not rewind. Assume they lose
+the thread easily. Write for someone about fifteen years old.
 
-- Keep sentences short. Aim for about 10 words. Never go past 18.
-- One idea per sentence. If a sentence has two ideas, split it.
+Aim for a Flesch reading ease above 65. That is achievable and it is the target.
+
+- Sentences of about 8 words. Never past 14.
+- One idea and one clause per sentence. No semicolons. Avoid "which", "whereby",
+  "thereby", "in order to", "such that".
 - Always choose the plainest word that is still correct.{plain_swaps}
+- Say "you" and "we", in the active voice: "you store it in a field", not "it is
+  stored in a field".
+- Use verbs, not nouns built from verbs: "we store it", not "storage of it".
 - A technical term may only appear after you have said what it means in plain
   words, in the same breath.{term_example} Never introduce two new terms in one
   sentence.
 - Never use these words: {banned}.
 - Do not stack adjectives in front of a noun.{adjective_example}
-- Use the active voice and the present tense: say what a thing does, rather than
-  what is done to it.
-- Use a real number, a real value or a real worked line instead of an abstract
-  description wherever you can.
+- Every idea gets one real thing attached to it: a number, an object, a line of
+  code. Never an abstraction on its own.
 
 Simple words are NOT the same as filler. Every sentence must still teach
 something. Say the same substance in words a beginner already knows.
 
-Before you say any sentence, ask: would a nineteen-year-old hearing this once
-understand it? If not, say it shorter and plainer.
+Read each sentence back to yourself. If it needs a second reading, cut it in two.
 
 ## PACING - the most common reason a lecture fails
 
@@ -418,15 +426,18 @@ simple. So for each section:
 1. Say what the thing IS, in one short sentence.
 2. Give a CONCRETE case immediately - a real number, a real object, a real line
    of code - before any general statement about it.
-3. Then say the one hard part again, differently. Not a recap of the section:
-   one single idea, restated in other words, because a listener who missed it the
-   first time gets a second chance.
+3. Then say the one hard part again, in fewer words than the first time. Not a
+   recap of the section: one single idea, restated shorter, because a listener who
+   missed it gets a second chance.
 4. Only then move on.
 
 That second pass is REINFORCEMENT and is required. It is not filler. Filler is a
 sentence that adds nothing - "let us now look at the next topic", "this is very
 important". Reinforcement adds a second route to the same idea. Keep the first,
 cut the second.
+
+The restatement must be SHORTER than what it restates. If it is longer, it has
+become padding.
 
 Introduce at most one new term every twenty seconds. If a section has more terms
 than its time allows, teach the ones the exam asks about and name the rest in
@@ -485,12 +496,12 @@ def language_block(syl: dict, unit: dict) -> dict[str, str]:
         audience = clean(lang["audience"])
     elif code:
         audience = (f"Your listener is a {year_word(subj['year'])}-year engineering "
-                    f"student who has never written a line of {code}, and whose first "
-                    f"language is usually not English.")
+                    f"student who has never written a line of {code}. English is not "
+                    f"their first language and they are not a strong student.")
     else:
         audience = (f"Your listener is a {year_word(subj['year'])}-year engineering "
-                    f"student meeting {subj['title']} for the first time, and whose "
-                    f"first language is usually not English.")
+                    f"student meeting {subj['title']} for the first time. English is "
+                    f"not their first language and they are not a strong student.")
 
     swaps = lang.get("plain_words") or {}
     swaps_text = ""
@@ -539,9 +550,10 @@ already been taught, section by section:
 
 {covered}
 
-Do not re-teach or re-define any of it. Open by connecting from unit {prev} in a
-single clause, then go straight to new material. Where this unit builds on an
-earlier section, name it in the same words used above and move on.
+Do not re-teach or re-define any of it. This video must stand on its own: open
+directly on this unit's first section, with no recap of unit {prev} and no
+reference to an example from another video. If this unit genuinely needs an
+earlier idea, give a three-word reminder of what it was and carry on.
 {terms}"""
 
 CONTINUITY_TERMS = """

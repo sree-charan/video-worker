@@ -64,10 +64,10 @@ units:
       circuits with dc excitation. Superposition theorem. Thevenin's theorem.
       Norton's theorem. Time-domain analysis of first-order RL and RC circuits.
     example: >-
-      One two-resistor circuit fed by a 12 V battery, carried through the whole
-      unit: solve it with KVL, then again with Thevenin to show the same answer
-      falls out faster, then add a capacitor to show the current no longer
-      settles instantly.
+      A separate small example per section, each with real numbers: two
+      resistors on a 12 V battery solved with KVL; a different network reduced
+      by Thevenin; a 100 uF capacitor charging through a resistor. Do not reuse
+      one circuit for everything.
     exam_focus:
       - "KCL versus KVL: which one applies at a node and which around a loop"
       - "Thevenin versus Norton: voltage source in series or current source in parallel"
@@ -84,9 +84,10 @@ units:
       Three-phase balanced circuits. Voltage and current relations in star and
       delta connections.
     example: >-
-      The same 12 V circuit from Unit 1, now driven by a 230 V 50 Hz supply:
-      show the current lagging once an inductor is added, name the power factor
-      that causes, then tune the capacitor until the circuit resonates.
+      A separate example per section, each with real numbers: a 230 V 50 Hz
+      supply across a resistor; then a coil added to show current lagging; then
+      a power factor read off one worked case; then one series circuit tuned to
+      resonance.
     exam_focus:
       - "peak versus rms, and why meters read rms"
       - "real versus reactive versus apparent power"
@@ -100,9 +101,9 @@ units:
       transformers. Regulation and efficiency. Auto-transformer. Three-phase
       transformer connections.
     example: >-
-      One 230 V to 12 V single-phase transformer traced end to end: turns ratio
-      first, then where the losses appear as heat, then what the same unit looks
-      like wired as an auto-transformer.
+      One 230 V to 12 V transformer for the turns ratio, with the numbers
+      worked. Then separate short examples: where the losses appear as heat, and
+      the same unit wired as an auto-transformer.
     exam_focus:
       - "copper loss versus iron loss, and which varies with load"
       - "regulation versus efficiency"
@@ -118,10 +119,9 @@ units:
       of an induction motor. Single-phase induction motor construction and
       working.
     example: >-
-      One three-phase induction motor driving a pump: start from the rotating
-      field, follow it to torque, read the torque-slip curve to explain why it
-      cannot run at synchronous speed, then show what changes in a single-phase
-      version.
+      A three-phase induction motor for the rotating field and torque, with a
+      real speed in rpm. Then a separate reading of one torque-slip curve, and a
+      separate single-phase motor starting method.
     exam_focus:
       - "slip: why an induction motor never reaches synchronous speed"
       - "starting torque versus running torque"
@@ -136,10 +136,9 @@ units:
       characteristics. Calculations for energy consumption, power factor
       improvement and battery backup.
     example: >-
-      One household distribution board traced from the incoming supply: the SFU,
-      then the MCB, then the ELCB, what each one protects against, how the
-      earthing completes it, and finally what a battery backup for that board
-      must supply.
+      Separate examples, one per protective device: an SFU, an MCB with a real
+      current rating, an ELCB, and an earthing connection. Then one battery
+      backup sizing with real amp-hours.
     exam_focus:
       - "MCB versus ELCB versus MCCB: what each one actually detects"
       - "earthing versus neutral"

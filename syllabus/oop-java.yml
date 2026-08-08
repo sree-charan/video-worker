@@ -84,10 +84,10 @@ units:
       overloading methods and constructors, recursion, garbage collection,
       building strings, exploring the String class.
     example: >-
-      A single `BankAccount` class built up across the unit: start with fields and
-      a constructor, add an overloaded constructor, add a static accountCount,
-      use `this` to disambiguate, then a deposit/withdraw method pair showing
-      parameter passing and access control.
+      A class with two fields and a constructor, shown complete: a Student with
+      a name and a marks array. Then a separate tiny example for each of
+      overloading, static, and String immutability - three or four lines each,
+      each standing alone.
     anchors:
       - "procedural"
       - "encapsulation"
@@ -115,10 +115,9 @@ units:
       inner classes. Packages: definition, creating and accessing a package,
       understanding CLASSPATH, importing packages.
     example: >-
-      Extend the Unit 1 `BankAccount` into `SavingsAccount` and `CurrentAccount`,
-      override a single `calculateInterest()` method to demonstrate dynamic
-      binding, then hoist it to an `Interest` interface and show the same call
-      site working through an interface reference.
+      A two-class hierarchy shown whole: Shape with an area() method and Circle
+      overriding it. Separate small examples for super, final, an interface with
+      one method, and an anonymous inner class - none depending on the others.
     anchors:
       - "subclass"
       - "super keyword"
@@ -145,10 +144,9 @@ units:
       interrupting threads, thread priorities, synchronizing threads, inter
       thread communication, producer consumer pattern.
     example: >-
-      A withdrawal on the `BankAccount` that throws a custom
-      `InsufficientFundsException`, then two threads withdrawing from the same
-      account to expose a race condition, fixed with `synchronized`, then
-      wait/notify for the producer-consumer form.
+      A divide method that throws ArithmeticException, caught and handled in six
+      lines. Then a separate custom exception class, a separate finally example,
+      and two threads printing numbers to show why synchronized is needed.
     anchors:
       - "exception hierarchy"
       - "checked"
@@ -177,10 +175,9 @@ units:
       differences between applets and applications, life cycle of an applet,
       passing parameters, applet security issues.
     example: >-
-      One `JFrame` deposit form for the `BankAccount`: a JLabel, JTextField and
-      JButton laid out with FlowLayout, then the same form re-laid with
-      BorderLayout, then an ActionListener on the button that updates the
-      balance, then the same handler written as an anonymous adapter.
+      A JFrame with one button that changes a label when clicked, complete in
+      about ten lines. Then separate one-idea examples for FlowLayout versus
+      BorderLayout, for a mouse listener, and for the applet life cycle methods.
     anchors:
       - "AWT"
       - "Swing"
@@ -208,10 +205,9 @@ units:
       Stack, Enumeration, Iterator, StringTokenizer, Random, Scanner, Calendar
       and Properties.
     example: >-
-      Persist the `BankAccount` three ways: write transactions to a text file
-      with character streams, hold them in an `ArrayList<Transaction>` and
-      iterate, then insert and query the same rows over JDBC with a
-      PreparedStatement and ResultSet.
+      Writing three lines to a file and reading them back, complete. Then
+      separate small examples: an ArrayList of names being iterated, and a
+      single JDBC query printing one column from a ResultSet.
     anchors:
       - "JDBC driver"
       - "Connection"

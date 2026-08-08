@@ -746,8 +746,11 @@ def main() -> None:
 
     read = readability(segs)
     if read:
-        verdict = ("plain" if read["flesch_reading_ease"] >= 55
-                   else "hard" if read["flesch_reading_ease"] >= 30 else "TOO COMPLEX")
+        # Thresholds reflect the stated audience, not a generic adult reader.
+        ease = read["flesch_reading_ease"]
+        verdict = ("on target" if ease >= 65
+                   else "usable" if ease >= 50
+                   else "TOO COMPLEX - regenerate")
         log(f"readability: ease={read['flesch_reading_ease']} "
             f"grade={read['grade_level']} "
             f"{read['words_per_sentence']} words/sentence "
