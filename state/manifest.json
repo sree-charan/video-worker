@@ -778,14 +778,6 @@
           "t": 12
         },
         {
-          "label": "PRINCIPLE OF WORKING",
-          "t": 16
-        },
-        {
-          "label": "CONSTRUCTION OF TRANSFORMER:",
-          "t": 19
-        },
-        {
           "label": "1. Core Type Transformer",
           "t": 224
         },
@@ -799,7 +791,7 @@
         },
         {
           "label": "E.M.F EQUATION OF TRANSFORMER:",
-          "t": 347
+          "t": 384
         },
         {
           "label": "7.12 Exact Equivalent Circuit of a Loaded Transformer",
@@ -846,28 +838,40 @@
         70
       ],
       "source_added": true,
-      "state": "downloaded",
+      "state": "postprocessed",
       "style": "retro-print",
       "subject": "bee-y1",
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u3/thumb.jpg",
       "unit": "u3",
-      "updated_at": "2026-08-08T16:33:53Z",
+      "updated_at": "2026-08-08T17:25:24Z",
       "watermark": {
         "bottom_right_box": {
-          "h": 20,
-          "w": 130,
-          "x": 1103,
-          "y": 658
+          "h": 22,
+          "mark_h_px": 15,
+          "w": 156,
+          "x": 1081,
+          "y": 659
         },
         "bottom_right_box_norm": {
-          "frames_agreeing": 46,
+          "extent_px": [
+            1084,
+            663,
+            150,
+            15
+          ],
+          "frames_agreeing": 85,
           "frames_sampled": 120,
-          "h": 0.029166666666666667,
-          "method": "ocr",
-          "w": 0.102375,
-          "x": 0.86209375,
-          "y": 0.9145833333333333
+          "h": 0.03125,
+          "mark_h": 0.020833333333333332,
+          "method": "ocr-union",
+          "w": 0.121875,
+          "widest_seen_px": [
+            1107,
+            1234
+          ],
+          "x": 0.84453125,
+          "y": 0.915625
         },
         "bottom_right_segments": [
           {
@@ -877,40 +881,22 @@
             "start": 12.5
           },
           {
-            "end": 22.5,
+            "end": 32.6,
             "light_logo": false,
             "plate": "0xE4DECC",
             "start": 13.0
           },
           {
-            "end": 23.8,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 22.5
-          },
-          {
-            "end": 27.8,
-            "light_logo": false,
-            "plate": "0xE4DECC",
-            "start": 23.8
-          },
-          {
-            "end": 29.2,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 27.8
-          },
-          {
-            "end": 32.6,
-            "light_logo": false,
-            "plate": "0xE4DECC",
-            "start": 29.2
+            "end": 32.8,
+            "light_logo": true,
+            "plate": "0xF0CC54",
+            "start": 32.6
           },
           {
             "end": 33.5,
             "light_logo": true,
             "plate": "0xF0CC54",
-            "start": 32.6
+            "start": 32.8
           },
           {
             "end": 37.1,
@@ -925,16 +911,10 @@
             "start": 37.1
           },
           {
-            "end": 84.8,
-            "light_logo": false,
-            "plate": "0xE4E4D2",
-            "start": 84.4
-          },
-          {
             "end": 144.0,
             "light_logo": false,
             "plate": "0xE4E4D2",
-            "start": 84.8
+            "start": 84.4
           },
           {
             "end": 147.2,
@@ -949,292 +929,28 @@
             "start": 147.2
           },
           {
-            "end": 224.2,
+            "end": 224.8,
             "light_logo": true,
             "plate": "0xEAE4CC",
             "start": 213.8
           },
           {
-            "end": 226.5,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 224.2
-          },
-          {
-            "end": 229.4,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 226.5
-          },
-          {
-            "end": 229.5,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 229.4
-          },
-          {
-            "end": 229.7,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 229.5
-          },
-          {
-            "end": 230.3,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 229.7
-          },
-          {
-            "end": 231.8,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 230.3
-          },
-          {
-            "end": 234.3,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 231.8
-          },
-          {
-            "end": 234.7,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 234.3
-          },
-          {
-            "end": 237.2,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 234.7
-          },
-          {
-            "end": 239.7,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 237.2
-          },
-          {
-            "end": 240.0,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 239.7
-          },
-          {
-            "end": 242.5,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 240.0
-          },
-          {
-            "end": 245.0,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 242.5
-          },
-          {
-            "end": 245.3,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 245.0
-          },
-          {
-            "end": 247.9,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 245.3
-          },
-          {
-            "end": 248.0,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 247.9
-          },
-          {
-            "end": 250.4,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 248.0
-          },
-          {
-            "end": 250.7,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 250.4
-          },
-          {
-            "end": 253.2,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 250.7
-          },
-          {
-            "end": 255.7,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 253.2
-          },
-          {
-            "end": 256.0,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 255.7
-          },
-          {
-            "end": 258.6,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 256.0
-          },
-          {
-            "end": 259.8,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 258.6
-          },
-          {
-            "end": 261.3,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 259.8
-          },
-          {
-            "end": 263.8,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 261.3
-          },
-          {
-            "end": 266.3,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 263.8
-          },
-          {
-            "end": 266.7,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 266.3
-          },
-          {
-            "end": 269.2,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 266.7
-          },
-          {
-            "end": 269.4,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 269.2
-          },
-          {
-            "end": 271.7,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 269.4
-          },
-          {
-            "end": 272.0,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 271.7
-          },
-          {
-            "end": 274.5,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 272.0
-          },
-          {
-            "end": 277.0,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 274.5
-          },
-          {
-            "end": 277.3,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 277.0
-          },
-          {
-            "end": 279.9,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 277.3
-          },
-          {
-            "end": 280.0,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 279.9
-          },
-          {
-            "end": 282.3,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 280.0
-          },
-          {
-            "end": 282.7,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 282.3
-          },
-          {
-            "end": 285.2,
-            "light_logo": false,
-            "plate": "0xEAE4D2",
-            "start": 282.7
-          },
-          {
-            "end": 287.7,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 285.2
-          },
-          {
-            "end": 288.0,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 287.7
-          },
-          {
-            "end": 288.2,
-            "light_logo": false,
-            "plate": "0xEAE4D8",
-            "start": 288.0
-          },
-          {
-            "end": 288.3,
+            "end": 311.8,
             "light_logo": false,
             "plate": "0xE4E4D2",
-            "start": 288.2
+            "start": 224.8
           },
           {
-            "end": 288.5,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 288.3
-          },
-          {
-            "end": 293.0,
-            "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 288.5
-          },
-          {
-            "end": 293.3,
+            "end": 314.3,
             "light_logo": false,
             "plate": "0xE4E4D8",
-            "start": 293.0
+            "start": 311.8
           },
           {
             "end": 343.9,
             "light_logo": false,
-            "plate": "0xE4DED2",
-            "start": 293.3
+            "plate": "0xE4E4D2",
+            "start": 314.3
           },
           {
             "end": 384.4,
@@ -1304,21 +1020,13 @@
           }
         ],
         "centre_top_box": null,
-        "discovered": [
-          {
-            "frames_seen": 1,
-            "h": 0.16666666666666666,
-            "method": "discovery",
-            "w": 0.50625,
-            "x": 0.24375,
-            "y": 0.43333333333333335
-          }
-        ],
+        "discovered": [],
         "encode": {
           "crf": "16",
           "preset": "slow",
           "tune": "stillimage"
         },
+        "outro_appended": true,
         "outro_cut_at": 760.75
       }
     },
@@ -1991,7 +1699,7 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u5/thumb.jpg",
       "unit": "u5",
-      "updated_at": "2026-08-08T16:33:58Z",
+      "updated_at": "2026-08-08T17:06:49Z",
       "watermark": {
         "bottom_right_box": {
           "h": 20,
