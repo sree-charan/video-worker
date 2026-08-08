@@ -1602,7 +1602,7 @@
         },
         {
           "label": "S.F.U (Switched Fuse Unit)",
-          "t": 87
+          "t": 71
         },
         {
           "label": "Earth-leakage circuit breaker (ELCB)",
@@ -1621,32 +1621,8 @@
           "t": 508
         },
         {
-          "label": "Electrical Wire",
-          "t": 509
-        },
-        {
-          "label": "Understanding Electrical Cable",
-          "t": 510
-        },
-        {
-          "label": "Electrical Earthing",
-          "t": 511
-        },
-        {
-          "label": "Types of Electrical Earthing",
-          "t": 512
-        },
-        {
           "label": "Power Factor",
-          "t": 513
-        },
-        {
-          "label": "Power Factor Improvement",
-          "t": 514
-        },
-        {
-          "label": "How can I calculate the consumption of an electrical appliance?",
-          "t": 515
+          "t": 563
         }
       ],
       "duration_sec": 584,
@@ -1684,28 +1660,40 @@
         50
       ],
       "source_added": true,
-      "state": "downloaded",
+      "state": "postprocessed",
       "style": "paper-craft",
       "subject": "bee-y1",
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u5/thumb.jpg",
       "unit": "u5",
-      "updated_at": "2026-08-08T17:06:49Z",
+      "updated_at": "2026-08-08T18:01:41Z",
       "watermark": {
         "bottom_right_box": {
-          "h": 20,
-          "w": 130,
-          "x": 1103,
-          "y": 658
+          "h": 22,
+          "mark_h_px": 15,
+          "w": 156,
+          "x": 1081,
+          "y": 659
         },
         "bottom_right_box_norm": {
-          "frames_agreeing": 96,
+          "extent_px": [
+            1084,
+            663,
+            150,
+            15
+          ],
+          "frames_agreeing": 104,
           "frames_sampled": 120,
-          "h": 0.029166666666666667,
-          "method": "ocr",
-          "w": 0.102375,
-          "x": 0.86209375,
-          "y": 0.9145833333333333
+          "h": 0.03125,
+          "mark_h": 0.020833333333333332,
+          "method": "ocr-union",
+          "w": 0.121875,
+          "widest_seen_px": [
+            1107,
+            1275
+          ],
+          "x": 0.84453125,
+          "y": 0.915625
         },
         "bottom_right_segments": [
           {
@@ -1715,46 +1703,10 @@
             "start": 7.5
           },
           {
-            "end": 8.4,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 8.2
-          },
-          {
-            "end": 10.3,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 8.4
-          },
-          {
-            "end": 10.7,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 10.3
-          },
-          {
-            "end": 10.8,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 10.7
-          },
-          {
-            "end": 15.7,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 10.8
-          },
-          {
-            "end": 21.0,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 15.7
-          },
-          {
             "end": 21.2,
             "light_logo": false,
             "plate": "0xF6F6F6",
-            "start": 21.0
+            "start": 8.2
           },
           {
             "end": 25.4,
@@ -1763,58 +1715,10 @@
             "start": 21.2
           },
           {
-            "end": 110.5,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 25.4
-          },
-          {
-            "end": 114.6,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 110.5
-          },
-          {
-            "end": 119.9,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 114.6
-          },
-          {
-            "end": 122.3,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 119.9
-          },
-          {
-            "end": 122.7,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 122.3
-          },
-          {
-            "end": 130.5,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 122.7
-          },
-          {
-            "end": 133.0,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 130.5
-          },
-          {
-            "end": 133.3,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 133.0
-          },
-          {
             "end": 135.8,
             "light_logo": false,
             "plate": "0xF6F6F6",
-            "start": 133.3
+            "start": 25.4
           },
           {
             "end": 175.0,
@@ -1823,15 +1727,21 @@
             "start": 135.8
           },
           {
-            "end": 175.5,
+            "end": 175.1,
             "light_logo": true,
             "plate": "0xA8A29C",
             "start": 175.0
           },
           {
+            "end": 175.5,
+            "light_logo": true,
+            "plate": "0xA29C9C",
+            "start": 175.1
+          },
+          {
             "end": 180.0,
             "light_logo": true,
-            "plate": "0xA8A29C",
+            "plate": "0xA29C9C",
             "start": 179.5
           },
           {
@@ -1841,22 +1751,16 @@
             "start": 180.0
           },
           {
-            "end": 260.2,
+            "end": 260.0,
             "light_logo": false,
             "plate": "0xFCFCFC",
             "start": 213.3
           },
           {
-            "end": 260.4,
-            "light_logo": true,
-            "plate": "0xF08418",
-            "start": 260.2
-          },
-          {
             "end": 263.5,
             "light_logo": true,
             "plate": "0xF08A18",
-            "start": 260.4
+            "start": 260.0
           },
           {
             "end": 303.6,
@@ -1879,7 +1783,7 @@
           {
             "end": 372.0,
             "light_logo": false,
-            "plate": "0xF0F0F0",
+            "plate": "0xEAEAEA",
             "start": 344.4
           },
           {
@@ -1889,34 +1793,100 @@
             "start": 372.0
           },
           {
-            "end": 400.8,
+            "end": 404.7,
             "light_logo": true,
-            "plate": "0xFC9012",
+            "plate": "0xFC9018",
             "start": 400.1
           },
           {
-            "end": 402.5,
-            "light_logo": true,
-            "plate": "0xFC9018",
-            "start": 400.8
-          },
-          {
-            "end": 404.7,
-            "light_logo": true,
-            "plate": "0xFC9012",
-            "start": 402.5
-          },
-          {
-            "end": 456.0,
+            "end": 456.1,
             "light_logo": false,
             "plate": "0xF6F6F6",
             "start": 404.7
           },
           {
-            "end": 500.7,
+            "end": 456.2,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 456.1
+          },
+          {
+            "end": 469.3,
             "light_logo": false,
             "plate": "0xFCFCFC",
-            "start": 456.0
+            "start": 456.2
+          },
+          {
+            "end": 474.4,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 469.3
+          },
+          {
+            "end": 477.2,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 474.4
+          },
+          {
+            "end": 479.2,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 477.2
+          },
+          {
+            "end": 479.8,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 479.2
+          },
+          {
+            "end": 480.0,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 479.8
+          },
+          {
+            "end": 485.0,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 480.0
+          },
+          {
+            "end": 487.8,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 485.0
+          },
+          {
+            "end": 489.6,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 487.8
+          },
+          {
+            "end": 490.7,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 489.6
+          },
+          {
+            "end": 495.7,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 490.7
+          },
+          {
+            "end": 496.0,
+            "light_logo": false,
+            "plate": "0xFCFCFC",
+            "start": 495.7
+          },
+          {
+            "end": 500.7,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 496.0
           },
           {
             "end": 545.4,
@@ -1925,82 +1895,10 @@
             "start": 500.7
           },
           {
-            "end": 545.6,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 545.4
-          },
-          {
-            "end": 545.9,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 545.6
-          },
-          {
-            "end": 547.9,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 545.9
-          },
-          {
-            "end": 551.8,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 547.9
-          },
-          {
-            "end": 554.3,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 551.8
-          },
-          {
-            "end": 554.7,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 554.3
-          },
-          {
-            "end": 559.7,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 554.7
-          },
-          {
-            "end": 560.0,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 559.7
-          },
-          {
-            "end": 565.0,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 560.0
-          },
-          {
-            "end": 565.3,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 565.0
-          },
-          {
-            "end": 570.3,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 565.3
-          },
-          {
-            "end": 574.5,
-            "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 570.3
-          },
-          {
             "end": 575.5,
             "light_logo": false,
             "plate": "0xF6F6F6",
-            "start": 574.5
+            "start": 545.4
           }
         ],
         "centre_top_box": null,
