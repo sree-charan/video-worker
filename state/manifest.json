@@ -37,16 +37,12 @@
           "t": 10
         },
         {
-          "label": "2.5 Ohm's Law",
-          "t": 32
-        },
-        {
           "label": "2.14.1 Kirchhoff's Current Law (KCL)",
-          "t": 91
+          "t": 93
         },
         {
           "label": "2.14.2 Kirchhoff's Voltage Law (KVL)",
-          "t": 134
+          "t": 136
         },
         {
           "label": "2.4 Energy Sources",
@@ -111,12 +107,12 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-08T08:33:56Z",
+      "updated_at": "2026-08-08T09:35:45Z",
       "watermark": {
         "bottom_right_box": {
           "h": 16,
           "w": 94,
-          "x": 1134,
+          "x": 1112,
           "y": 661
         },
         "bottom_right_box_norm": {
@@ -125,7 +121,7 @@
           "h": 0.022222222222222223,
           "method": "ocr",
           "w": 0.0734375,
-          "x": 0.8859375,
+          "x": 0.86875,
           "y": 0.9180555555555555
         },
         "bottom_right_segments": [
@@ -148,7 +144,7 @@
             "start": 26.7
           },
           {
-            "end": 53.5,
+            "end": 65.5,
             "light_logo": false,
             "plate": "0xF0F0F0",
             "start": 53.1
@@ -202,16 +198,40 @@
             "start": 242.4
           },
           {
-            "end": 300.3,
+            "end": 300.1,
             "light_logo": false,
             "plate": "0xFCFCFC",
             "start": 264.7
           },
           {
-            "end": 329.6,
+            "end": 304.0,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 300.1
+          },
+          {
+            "end": 306.5,
             "light_logo": true,
             "plate": "0x06EAAE",
-            "start": 300.3
+            "start": 304.0
+          },
+          {
+            "end": 309.3,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 306.5
+          },
+          {
+            "end": 311.8,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 309.3
+          },
+          {
+            "end": 329.6,
+            "light_logo": true,
+            "plate": "0x00EAAE",
+            "start": 311.8
           },
           {
             "end": 330.5,
@@ -220,16 +240,46 @@
             "start": 329.6
           },
           {
-            "end": 372.9,
+            "end": 372.8,
             "light_logo": false,
             "plate": "0xF6F6F6",
             "start": 372.5
           },
           {
+            "end": 378.3,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 372.8
+          },
+          {
+            "end": 378.7,
+            "light_logo": true,
+            "plate": "0x06E4AE",
+            "start": 378.3
+          },
+          {
+            "end": 383.7,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 378.7
+          },
+          {
+            "end": 384.0,
+            "light_logo": true,
+            "plate": "0x06E4AE",
+            "start": 383.7
+          },
+          {
+            "end": 386.5,
+            "light_logo": true,
+            "plate": "0x06EAAE",
+            "start": 384.0
+          },
+          {
             "end": 388.0,
             "light_logo": true,
             "plate": "0x06E4AE",
-            "start": 372.9
+            "start": 386.5
           },
           {
             "end": 421.2,
@@ -250,7 +300,7 @@
             "start": 442.5
           },
           {
-            "end": 478.5,
+            "end": 504.5,
             "light_logo": false,
             "plate": "0xF0F0F0",
             "start": 477.5
@@ -269,16 +319,7 @@
           }
         ],
         "centre_top_box": null,
-        "discovered": [
-          {
-            "frames_seen": 1,
-            "h": 0.06666666666666667,
-            "method": "discovery",
-            "w": 0.3875,
-            "x": 0.35,
-            "y": 0.45555555555555555
-          }
-        ],
+        "discovered": [],
         "encode": {
           "crf": "16",
           "preset": "slow",
