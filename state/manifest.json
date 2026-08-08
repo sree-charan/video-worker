@@ -38,15 +38,15 @@
         },
         {
           "label": "2.5 Ohm's Law",
-          "t": 53
+          "t": 65
         },
         {
           "label": "2.14.1 Kirchhoff's Current Law (KCL)",
-          "t": 93
+          "t": 91
         },
         {
           "label": "2.14.2 Kirchhoff's Voltage Law (KVL)",
-          "t": 136
+          "t": 134
         },
         {
           "label": "2.4 Energy Sources",
@@ -82,11 +82,11 @@
       "raw_mp4": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/raw.mp4",
       "raw_size_mb": 38.8,
       "readability": {
-        "flesch_reading_ease": 59.4,
-        "grade_level": 6.9,
+        "flesch_reading_ease": 59.2,
+        "grade_level": 7.0,
         "long_word_pct": 3.6,
-        "sentences": 199,
-        "words": 1566,
+        "sentences": 197,
+        "words": 1564,
         "words_per_sentence": 7.9
       },
       "round1": "NOTES_PRESENT | yes\nSECTION | 1 | Introduction to Electrical Engineering:\nSECTION | 2 | 2.5 Ohm's Law\nSECTION | 3 | 2.14.1 Kirchhoff's Current Law (KCL)\nSECTION | 4 | 2.14.2 Kirchhoff's Voltage Law (KVL)\nSECTION | 5 | 2.4 Energy Sources\nSECTION | 6 | 2.17 Superposition Theorem\nSECTION | 7 | 2.18 Thevenin's Theorem\nSECTION | 8 | 2.19 Norton's Theorem\nSECTION | 9 | Transient Response of Series R-L Circuit for DC Excitation:\nSECTION | 10 | Transient Response of Series RC Circuit for DC Excitation:-\nTERM | Network\nTERM | Network Element\nTERM | Node\nTERM | Linear Network\nTERM | Non linear Network\nTERM | Bilateral Network\nTERM | Unilateral Network\nTERM | Active Network\nTERM | Passive Network\nTERM | Lumped Network\nTERM | Distributed Network\nTERM | Ideal voltage source\nTERM | Practical voltage source\nTERM | Ideal current source\nTERM | Practical current source\nTERM | Dependent sources\nTERM | Voltage Dependent Voltage Source\nTERM | Current Dependent Current Source\nTERM | Current Dependent Voltage Source\nTERM | Voltage Dependent Current Source\nTERM | Series Circuit\nTERM | Parallel Circuit\nTERM | Conductance (G)\nTERM | Superposition Theorem\nTERM | Thevenin's Theorem\nTERM | Norton's Theorem\nTERM | driven Series R-L circuit\nTERM | undriven (e) Sovece free Series R-Leircuit\nTERM | steady state response\nTERM | transient response\nTERM | time constant\nMISSING | NONE",
@@ -111,20 +111,20 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-08T18:02:47Z",
+      "updated_at": "2026-08-08T18:16:38Z",
       "watermark": {
         "bottom_right_box": {
           "h": 28,
           "mark_h_px": 19,
-          "w": 198,
-          "x": 1032,
+          "w": 138,
+          "x": 1090,
           "y": 660
         },
         "bottom_right_box_norm": {
           "extent_px": [
-            1036,
+            1093,
             665,
-            190,
+            133,
             19
           ],
           "frames_agreeing": 204,
@@ -132,17 +132,17 @@
           "h": 0.03958333333333333,
           "mark_h": 0.02638888888888889,
           "method": "ocr-union",
-          "w": 0.15437499999999998,
+          "w": 0.10806249999999999,
           "widest_seen_px": [
             1095,
             1226
           ],
-          "x": 0.80640625,
+          "x": 0.8518281249999999,
           "y": 0.9170138888888889
         },
         "bottom_right_segments": [
           {
-            "end": 10.2,
+            "end": 10.1,
             "light_logo": false,
             "plate": "0xF6F6F6",
             "start": 5.5
@@ -151,25 +151,25 @@
             "end": 26.7,
             "light_logo": true,
             "plate": "0x06EAAE",
-            "start": 10.2
-          },
-          {
-            "end": 27.3,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 26.7
+            "start": 10.1
           },
           {
             "end": 53.1,
             "light_logo": false,
             "plate": "0xF6F6F6",
-            "start": 27.3
+            "start": 26.7
+          },
+          {
+            "end": 59.5,
+            "light_logo": false,
+            "plate": "0xF0F0F0",
+            "start": 53.1
           },
           {
             "end": 65.5,
             "light_logo": false,
             "plate": "0xF0F0F0",
-            "start": 53.1
+            "start": 63.5
           },
           {
             "end": 91.2,
@@ -214,46 +214,34 @@
             "start": 204.9
           },
           {
-            "end": 242.8,
+            "end": 244.9,
             "light_logo": true,
             "plate": "0x3CD2B4",
             "start": 242.4
           },
           {
-            "end": 243.4,
-            "light_logo": true,
-            "plate": "0x3CD2B4",
-            "start": 242.8
-          },
-          {
-            "end": 244.9,
-            "light_logo": true,
-            "plate": "0x3CD2B4",
-            "start": 243.4
-          },
-          {
-            "end": 247.8,
+            "end": 245.3,
             "light_logo": true,
             "plate": "0x36D2B4",
             "start": 244.9
           },
           {
-            "end": 250.7,
+            "end": 250.3,
             "light_logo": true,
             "plate": "0x3CD2B4",
-            "start": 247.8
+            "start": 245.3
           },
           {
-            "end": 263.8,
+            "end": 250.7,
             "light_logo": true,
             "plate": "0x36D2B4",
-            "start": 250.7
+            "start": 250.3
           },
           {
             "end": 264.7,
             "light_logo": true,
             "plate": "0x3CD2B4",
-            "start": 263.8
+            "start": 250.7
           },
           {
             "end": 300.1,
@@ -276,7 +264,7 @@
           {
             "end": 388.0,
             "light_logo": true,
-            "plate": "0x06E4AE",
+            "plate": "0x06EAAE",
             "start": 372.8
           },
           {
@@ -298,10 +286,22 @@
             "start": 442.5
           },
           {
-            "end": 504.5,
+            "end": 478.5,
             "light_logo": false,
             "plate": "0xF0F0F0",
             "start": 477.5
+          },
+          {
+            "end": 493.5,
+            "light_logo": false,
+            "plate": "0xF0F0F0",
+            "start": 490.5
+          },
+          {
+            "end": 504.5,
+            "light_logo": false,
+            "plate": "0xF0F0F0",
+            "start": 495.5
           },
           {
             "end": 575.3,
@@ -318,10 +318,10 @@
         ],
         "centre_top_box": null,
         "clone_donor": [
-          -214,
+          -154,
           0
         ],
-        "clone_seconds": 471.9,
+        "clone_seconds": 512.0,
         "discovered": [],
         "encode": {
           "crf": "16",
