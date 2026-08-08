@@ -142,6 +142,26 @@ def feathered_plate(colour: str, w: int, h: int, path: Path,
     return path
 
 
+def feather_mask(w: int, h: int, path: Path, feather_px: int = 4) -> Path:
+    """A greyscale alpha mask: white inside, ramping to black at the edges.
+
+    Used with alphamerge to feather a cloned background patch. Same ramp as
+    feathered_plate, but as a separate mask because the patch is live video, not
+    a flat colour that can carry its own alpha.
+    """
+    from PIL import Image
+
+    pad = max(int(feather_px), 1)
+    img = Image.new("L", (w, h), 0)
+    px = img.load()
+    for y in range(h):
+        for x in range(w):
+            d = min(x, y, w - 1 - x, h - 1 - y)
+            px[x, y] = 255 if d >= pad else int(255 * (d + 1) / (pad + 1))
+    img.save(path)
+    return path
+
+
 def append_outro(ff: str, main: Path, outro: Path, dst: Path, meta: dict,
                  enc: dict, bars: dict | None = None) -> None:
     """Concatenate the branded outro onto the finished lecture.
@@ -214,6 +234,95 @@ def _variant_scales(segs: list[dict], box: dict, prefix: str,
     return steps, tags
 
 
+def _bool_ranges(series: list[tuple[float, bool]], min_len: float = 0.25
+                 ) -> list[tuple[float, float]]:
+    """Contiguous True runs of a sampled boolean series."""
+    out: list[tuple[float, float]] = []
+    start = None
+    step = (series[1][0] - series[0][0]) if len(series) > 1 else 0.5
+    for t, ok in series:
+        if ok and start is None:
+            start = t
+        elif not ok and start is not None:
+            if t - start >= min_len:
+                out.append((start, t))
+            start = None
+    if start is not None and series:
+        end = series[-1][0] + step
+        if end - start >= min_len:
+            out.append((start, end))
+    return out
+
+
+def _split_by_viability(segs: list[dict], viable: list[tuple[float, float]]
+                        ) -> tuple[list[tuple[float, float]], list[dict]]:
+    """Split colour segments into clone ranges and leftover plate segments.
+
+    Disjoint by construction, so no frame is filled twice - overlaying a plate on
+    top of a cloned patch would put the flat rectangle straight back.
+    """
+    clone: list[tuple[float, float]] = []
+    plate: list[dict] = []
+    for sg in segs:
+        s0, e0 = float(sg["start"]), float(sg["end"])
+        cuts = []
+        for a, b in viable:
+            ia, ib = max(s0, a), min(e0, b)
+            if ib - ia > 0.05:
+                cuts.append((ia, ib))
+        cuts.sort()
+        clone += cuts
+        pos = s0
+        for a, b in cuts:
+            if a - pos > 0.05:
+                plate.append({**sg, "start": pos, "end": a})
+            pos = max(pos, b)
+        if e0 - pos > 0.05:
+            plate.append({**sg, "start": pos, "end": e0})
+    return clone, plate
+
+
+def _clone_overlay(tag_in: str, tag_out: str, box: dict, ranges: list[tuple[float, float]],
+                   workdir: Path, extra_inputs: list[Path], base_index: int,
+                   donor: tuple[int, int], feather_px: int = 4,
+                   grow: int = 6) -> tuple[list[str], str]:
+    """Fill the mark's footprint with live background copied from a donor strip.
+
+    A flat plate is only correct on a flat background. On the whiteboard style it
+    reads as a faint rectangle because the grid lines stop inside it - measured
+    13.8 levels darker than its surroundings with none of their texture. Copying
+    a strip of the real background instead keeps whatever pattern is there, and
+    tracks it automatically as the slide changes, because the patch is taken from
+    the same frame it is pasted into.
+
+    Only used where the donor was measured clean; the caller plates the rest.
+    """
+    if not ranges:
+        return [], tag_in
+
+    pw, ph = box["w"] + 2 * grow, box["h"] + 2 * grow
+    px0, py0 = max(box["x"] - grow, 0), max(box["y"] - grow, 0)
+    dx, dy = donor
+    sx, sy = max(px0 + dx, 0), max(py0 + dy, 0)
+
+    mask = feather_mask(pw, ph, workdir / f"clonemask-{tag_out}.png",
+                        feather_px=feather_px)
+    extra_inputs.append(mask)
+    midx = base_index + len(extra_inputs) - 1
+
+    expr = "+".join(f"between(t,{a:.2f},{b:.2f})" for a, b in ranges)
+    src, patch = f"{tag_out}src", f"{tag_out}patch"
+    alpha, out = f"{tag_out}alpha", f"{tag_out}cl"
+    steps = [
+        f"[{tag_in}]split=2[{tag_out}base][{src}]",
+        f"[{src}]crop={pw}:{ph}:{sx}:{sy}[{patch}]",
+        f"[{patch}][{midx}:v]alphamerge[{alpha}]",
+        f"[{tag_out}base][{alpha}]overlay={px0}:{py0}:"
+        f"format=auto:enable='{expr}'[{out}]",
+    ]
+    return steps, out
+
+
 def _plate_overlays(tag_in: str, tag_out: str, box: dict, segs: list[dict],
                     workdir: Path, extra_inputs: list[Path],
                     base_index: int) -> tuple[list[str], str]:
@@ -257,17 +366,33 @@ def _cover_chain(tag_in: str, tag_out: str, tags: dict,
                  box: dict, segs: list[dict], align: str,
                  window=None, workdir: Path | None = None,
                  extra_inputs: list[Path] | None = None,
-                 base_index: int = 3) -> list[str]:
-    """Per-segment plate matching the background, then the right logo variant.
+                 base_index: int = 3,
+                 donor: tuple[int, int] | None = None,
+                 clone_ranges: list[tuple[float, float]] | None = None,
+                 plate_segs: list[dict] | None = None) -> list[str]:
+    """Cover the mark's footprint, then draw the right logo variant over it.
 
-    Two overlays with complementary time gates: the brand-coloured logo over
-    light segments, the white one over saturated segments. No card, no inset -
-    the plate already matches, so only the glyphs need to change.
+    The footprint is filled two ways. Where a donor strip was measured clean, the
+    real background is cloned in, so a pattern behind the mark continues through.
+    Everywhere else a flat plate matching the background colour is used. The two
+    are time-gated to disjoint ranges, so every frame gets exactly one fill.
+
+    The logo itself is two overlays with complementary gates: the brand-coloured
+    one over light segments, the white one over saturated segments.
     """
     x, y, w, h = box["x"], box["y"], box["w"], box["h"]
-    steps, cur = _plate_overlays(tag_in, tag_out, box, segs,
-                                 workdir or Path("."), extra_inputs
-                                 if extra_inputs is not None else [], base_index)
+    inputs = extra_inputs if extra_inputs is not None else []
+    wd = workdir or Path(".")
+
+    steps: list[str] = []
+    cur = tag_in
+    if donor and clone_ranges:
+        steps, cur = _clone_overlay(cur, tag_out, box, clone_ranges, wd, inputs,
+                                    base_index, donor)
+    plate_steps, cur = _plate_overlays(cur, tag_out, box,
+                                       segs if plate_segs is None else plate_segs,
+                                       wd, inputs, base_index)
+    steps += plate_steps
 
     # Centred on the plate. Right-aligned boxes keep the right edge flush with
     # the plate, matching where the original mark sat.
@@ -340,13 +465,34 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
     report["bottom_right_segments"] = [
         {**s, "start": round(s["start"], 1), "end": round(s["end"], 1)} for s in br_segs]
 
+    # Prefer cloning the real background over a flat plate, where a donor strip
+    # is clean. On patterned styles the flat plate is visible as a rectangle.
+    br_donor, br_viable = (None, [])
+    br_clone: list[tuple[float, float]] = []
+    br_plate_segs = br_segs
+    if br_segs and cfg.get("clone_fill", True):
+        br_donor, series = watermark.clone_viability(ff, str(src), br, W, H)
+        if br_donor:
+            br_viable = _bool_ranges(series)
+            br_clone, br_plate_segs = _split_by_viability(br_segs, br_viable)
+            clone_s = sum(b - a for a, b in br_clone)
+            plate_s = sum(sg["end"] - sg["start"] for sg in br_plate_segs)
+            log(f"  clone fill: donor offset {br_donor}, "
+                f"{clone_s:.0f}s cloned, {plate_s:.0f}s on a flat plate")
+        else:
+            log("  clone fill: no clean donor strip; using flat plates")
+    report["clone_donor"] = br_donor
+    report["clone_seconds"] = round(sum(b - a for a, b in br_clone), 1)
+
     extra_inputs: list[Path] = []
     wd = workdir or dst.parent
     filters, br_tags = _variant_scales(
         br_segs, br, "lgbr", float(cfg["bottom_right"].get("logo_height_ratio", 1.5)))
     filters += _cover_chain("0:v", "v1", br_tags, br, br_segs,
                             cfg["bottom_right"].get("align", "right"),
-                            workdir=wd, extra_inputs=extra_inputs, base_index=3)
+                            workdir=wd, extra_inputs=extra_inputs, base_index=3,
+                            donor=br_donor, clone_ranges=br_clone,
+                            plate_segs=br_plate_segs)
     last = "v1"
 
     # Title-card mark: present only for the opening seconds, and how many is not

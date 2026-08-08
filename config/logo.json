@@ -43,5 +43,7 @@
     "_comment": "Branded outro concatenated after everything else. Appended last so chapter times and captions still describe the lecture - the outro only lands after the final chapter. The light cut matches NotebookLM's output exactly (1280x720, 24fps), so no scaling is needed; the dark cut is 848x478 at 60fps and would be padded.",
     "enabled": true,
     "file": "assets/outro-light.mp4"
-  }
+  },
+  "clone_fill": true,
+  "_clone_fill_comment": "Fill the mark footprint by cloning a clean strip of the real background instead of painting a flat colour. A flat plate is only correct on a flat background: on the whiteboard style the grid lines stop inside it, measured 13.8 levels darker than its surroundings with none of their texture. The donor strip is checked per frame for content, and any frame where it is not clean falls back to the flat plate - pasting a strip that happens to contain a heading would be far worse than a rectangle."
 }

@@ -797,6 +797,99 @@ def discover_marks(ff: str, mp4: str, W: int, H: int, fps: float = 0.2,
     return out
 
 
+
+# ---------------------------------------------------------------- clone fill
+
+# A donor strip is usable only if it is background and nothing else. Grid lines
+# on the whiteboard style sit about 5 levels below the paper, while text and
+# artwork are 60+ below it, so this separates "pattern worth copying" from
+# "content that must not be pasted into the corner".
+DONOR_CONTENT_DROP = 55
+DONOR_MAX_CONTENT = 0.02
+# The donor must also be the same colour as the area it will fill, or the clone
+# shows as a patch of the wrong shade.
+DONOR_MAX_LEVEL_DIFF = 18.0
+
+
+def padded_rect(box: dict, grow: int = 6) -> tuple[int, int, int, int]:
+    """The rectangle actually filled: the mark's box plus the feather margin.
+
+    Donor offsets must be measured against this, not the bare box. Using the bare
+    height put the donor 32px above a 40px tall fill, so the strip overlapped the
+    very region it was replacing and carried 8px of the mark into the copy.
+    """
+    return (max(int(box["x"]) - grow, 0), max(int(box["y"]) - grow, 0),
+            int(box["w"]) + 2 * grow, int(box["h"]) + 2 * grow)
+
+
+def donor_candidates(box: dict, W: int, H: int, gap: int = 4, grow: int = 6
+                     ) -> list[tuple[int, int]]:
+    """Offsets to try for a donor strip, best first.
+
+    Directly above is preferred: on a ruled or gridded background the pattern
+    repeats vertically, so a strip from above continues it, and the corner above
+    the mark is empty in every layout seen so far.
+    """
+    px, py, pw, ph = padded_rect(box, grow)
+    out = []
+    for dx, dy in ((0, -(ph + gap)), (0, -(2 * ph + gap)), (0, ph + gap),
+                   (-(pw + gap), 0)):
+        x, y = px + dx, py + dy
+        if 0 <= x and x + pw <= W and 0 <= y and y + ph <= H:
+            out.append((dx, dy))
+    return out
+
+
+def clone_viability(ff: str, mp4: str, box: dict, W: int, H: int,
+                    fps: float = 2.0, limit: float | None = None,
+                    grow: int = 6
+                    ) -> tuple[tuple[int, int] | None, list[tuple[float, bool]]]:
+    """Pick a donor offset and report when it is safe to clone from it.
+
+    Returns the chosen offset and a per-sample series. Where the series is False
+    the caller must fall back to the flat colour plate: pasting a strip that
+    happens to contain a heading is far worse than a visible rectangle.
+    """
+    import numpy as np
+
+    cands = donor_candidates(box, W, H, grow=grow)
+    if not cands:
+        return None, []
+
+    # Same rectangle the filter will crop and paste, so what is measured here is
+    # exactly what ends up on screen.
+    x, y, w, h = padded_rect(box, grow)
+    frames = _frames_gray(ff, mp4, W, H, limit, fps)
+    if not frames:
+        return None, []
+
+    scores: dict[tuple[int, int], list[bool]] = {c: [] for c in cands}
+    for _t, fr in frames:
+        # Reference level from the ring around the plate, which is background by
+        # construction - the mark's own glyphs are inside the plate, not around it.
+        ring = np.concatenate([
+            fr[max(y - h, 0):y, x:x + w].ravel(),
+            fr[y + h:min(y + 2 * h, H), x:x + w].ravel(),
+        ]) if y + h < H else fr[max(y - h, 0):y, x:x + w].ravel()
+        ref = float(np.median(ring)) if ring.size else 255.0
+        for dx, dy in cands:
+            d = fr[y + dy:y + dy + h, x + dx:x + dx + w].astype(float)
+            if d.size == 0:
+                scores[(dx, dy)].append(False)
+                continue
+            med = float(np.median(d))
+            content = float((d < med - DONOR_CONTENT_DROP).mean())
+            scores[(dx, dy)].append(
+                content <= DONOR_MAX_CONTENT
+                and abs(med - ref) <= DONOR_MAX_LEVEL_DIFF)
+
+    best = max(cands, key=lambda c: sum(scores[c]))
+    if not sum(scores[best]):
+        return None, []
+    series = [(t, ok) for (t, _fr), ok in zip(frames, scores[best])]
+    return best, series
+
+
 def presence_ocr(ff: str, mp4: str, box: dict, W: int, H: int,
                  fps: float = 1.0, limit: float | None = None,
                  upscale: int = 3, slack: float = 0.6) -> list[tuple[float, bool]]:
