@@ -111,41 +111,57 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-08T16:45:29Z",
+      "updated_at": "2026-08-08T16:59:30Z",
       "watermark": {
         "bottom_right_box": {
-          "h": 16,
-          "w": 94,
-          "x": 1112,
-          "y": 661
+          "h": 28,
+          "w": 198,
+          "x": 1032,
+          "y": 660
         },
         "bottom_right_box_norm": {
-          "frames_agreeing": 86,
+          "extent_px": [
+            1036,
+            665,
+            190,
+            19
+          ],
+          "frames_agreeing": 204,
           "frames_sampled": 120,
-          "h": 0.022222222222222223,
-          "method": "ocr",
-          "w": 0.0734375,
-          "x": 0.86875,
-          "y": 0.9180555555555555
+          "h": 0.03958333333333333,
+          "method": "ocr-union",
+          "w": 0.15437499999999998,
+          "widest_seen_px": [
+            1095,
+            1226
+          ],
+          "x": 0.80640625,
+          "y": 0.9170138888888889
         },
         "bottom_right_segments": [
           {
-            "end": 10.1,
+            "end": 10.2,
             "light_logo": false,
-            "plate": "0xFCFCFC",
+            "plate": "0xF6F6F6",
             "start": 5.5
           },
           {
             "end": 26.7,
             "light_logo": true,
             "plate": "0x06EAAE",
-            "start": 10.1
+            "start": 10.2
+          },
+          {
+            "end": 27.3,
+            "light_logo": false,
+            "plate": "0xF6F6F6",
+            "start": 26.7
           },
           {
             "end": 53.1,
             "light_logo": false,
-            "plate": "0xFCFCFC",
-            "start": 26.7
+            "plate": "0xF6F6F6",
+            "start": 27.3
           },
           {
             "end": 65.5,
@@ -180,7 +196,7 @@
           {
             "end": 188.1,
             "light_logo": false,
-            "plate": "0xFCFCFC",
+            "plate": "0xF6F6F6",
             "start": 162.6
           },
           {
@@ -192,98 +208,74 @@
           {
             "end": 242.4,
             "light_logo": false,
-            "plate": "0xFCFCFC",
+            "plate": "0xF6F6F6",
             "start": 204.9
+          },
+          {
+            "end": 242.8,
+            "light_logo": true,
+            "plate": "0x3CD2B4",
+            "start": 242.4
+          },
+          {
+            "end": 243.4,
+            "light_logo": true,
+            "plate": "0x3CD2B4",
+            "start": 242.8
+          },
+          {
+            "end": 244.9,
+            "light_logo": true,
+            "plate": "0x3CD2B4",
+            "start": 243.4
+          },
+          {
+            "end": 247.8,
+            "light_logo": true,
+            "plate": "0x36D2B4",
+            "start": 244.9
+          },
+          {
+            "end": 250.7,
+            "light_logo": true,
+            "plate": "0x3CD2B4",
+            "start": 247.8
+          },
+          {
+            "end": 263.8,
+            "light_logo": true,
+            "plate": "0x36D2B4",
+            "start": 250.7
           },
           {
             "end": 264.7,
             "light_logo": true,
-            "plate": "0x36D2B4",
-            "start": 242.4
+            "plate": "0x3CD2B4",
+            "start": 263.8
           },
           {
             "end": 300.1,
             "light_logo": false,
-            "plate": "0xFCFCFC",
+            "plate": "0xF6F6F6",
             "start": 264.7
-          },
-          {
-            "end": 304.0,
-            "light_logo": true,
-            "plate": "0x00EAAE",
-            "start": 300.1
-          },
-          {
-            "end": 306.5,
-            "light_logo": true,
-            "plate": "0x06EAAE",
-            "start": 304.0
-          },
-          {
-            "end": 309.3,
-            "light_logo": true,
-            "plate": "0x00EAAE",
-            "start": 306.5
-          },
-          {
-            "end": 311.8,
-            "light_logo": true,
-            "plate": "0x06EAAE",
-            "start": 309.3
           },
           {
             "end": 329.6,
             "light_logo": true,
-            "plate": "0x00EAAE",
-            "start": 311.8
-          },
-          {
-            "end": 330.5,
-            "light_logo": false,
-            "plate": "0xF6F6F6",
-            "start": 329.6
+            "plate": "0x06EAAE",
+            "start": 300.1
           },
           {
             "end": 372.8,
             "light_logo": false,
             "plate": "0xF6F6F6",
-            "start": 372.5
-          },
-          {
-            "end": 378.3,
-            "light_logo": true,
-            "plate": "0x06EAAE",
-            "start": 372.8
-          },
-          {
-            "end": 378.7,
-            "light_logo": true,
-            "plate": "0x06E4AE",
-            "start": 378.3
-          },
-          {
-            "end": 383.7,
-            "light_logo": true,
-            "plate": "0x06EAAE",
-            "start": 378.7
-          },
-          {
-            "end": 384.0,
-            "light_logo": true,
-            "plate": "0x06E4AE",
-            "start": 383.7
-          },
-          {
-            "end": 386.5,
-            "light_logo": true,
-            "plate": "0x06EAAE",
-            "start": 384.0
+            "start": 329.6
           },
           {
             "end": 388.0,
             "light_logo": true,
             "plate": "0x06E4AE",
-            "start": 386.5
+            "start": 372.8
           },
           {
             "end": 421.2,
@@ -323,7 +315,16 @@
           }
         ],
         "centre_top_box": null,
-        "discovered": [],
+        "discovered": [
+          {
+            "frames_seen": 51,
+            "h": 0.011111111111111112,
+            "method": "discovery",
+            "w": 0.0875,
+            "x": 0.86875,
+            "y": 0.9222222222222223
+          }
+        ],
         "encode": {
           "crf": "16",
           "preset": "slow",
