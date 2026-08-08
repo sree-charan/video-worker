@@ -304,10 +304,13 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
     br_cfg = cfg["bottom_right"]
     found_br = watermark.locate_mark_any(
         ff, str(src), W, H, tuple(br_cfg["search_region"]), MARK_TEMPLATE,
-        limit=float(br_cfg.get("search_seconds", 60)))
+        limit=float(br_cfg.get("search_seconds", 60)),
+        align=br_cfg.get("align", "right"))
     if found_br:
         log(f"  bottom-right mark located by {found_br.get('method')} at "
-            f"y={found_br['y']:.4f} x={found_br['x']:.4f}")
+            f"y={found_br['y']:.4f} x={found_br['x']:.4f} "
+            f"w={found_br['w']:.4f} (widest seen px "
+            f"{found_br.get('widest_seen_px')})")
         br = resolve_box(found_br, W, H)
     else:
         log("  bottom-right mark not located; using the configured fallback box")
@@ -344,7 +347,7 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
         search = float(tc_cfg.get("search_seconds", 25))
         found_tc = watermark.locate_mark_any(
             ff, str(src), W, H, tuple(tc_cfg["search_region"]), MARK_TEMPLATE,
-            limit=search)
+            limit=search, align=tc_cfg.get("align", "centre"))
         report["centre_top_box"] = found_tc
         if not found_tc:
             log("  centre-top mark not present in this video")

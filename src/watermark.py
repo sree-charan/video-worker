@@ -591,7 +591,8 @@ def refine_extent(frame, box: dict, W: int, H: int, drop: int = 40,
 def locate_mark_ocr(ff: str, mp4: str, W: int, H: int,
                     region: tuple[float, float, float, float],
                     limit: float = 20.0, fps: float = 2.0, upscale: int = 3,
-                    icon_ratio: float = 1.5, pad: float = 0.30) -> dict | None:
+                    icon_ratio: float = 1.5, pad: float = 0.30,
+                    align: str = "right") -> dict | None:
     """Find the wordmark by reading it, rather than guessing from its shape.
 
     Shape filtering was not safe: on a two-line title card the top edge of the
@@ -603,8 +604,6 @@ def locate_mark_ocr(ff: str, mp4: str, W: int, H: int,
     upscaled before OCR because the mark is only ~19px tall at 720p, and the box
     is widened to the left to take in the icon that precedes the text.
     """
-    from collections import Counter
-
     import numpy as np
     from PIL import Image
 
@@ -613,7 +612,7 @@ def locate_mark_ocr(ff: str, mp4: str, W: int, H: int,
     rh, rw = int(H * y1f) - ry0, int(W * x1f) - rx0
 
     frames = _frames_gray(ff, mp4, W, H, limit, fps)
-    votes: Counter = Counter()
+    boxes: list[dict] = []
     for _t, fr in frames:
         crop = fr[ry0:ry0 + rh, rx0:rx0 + rw]
         img = Image.fromarray(crop.astype(np.uint8)).resize(
@@ -621,13 +620,43 @@ def locate_mark_ocr(ff: str, mp4: str, W: int, H: int,
         for hit in _ocr_boxes(img):
             raw_box = {"x": rx0 + hit["x"] / upscale, "y": ry0 + hit["y"] / upscale,
                        "w": hit["w"] / upscale, "h": hit["h"] / upscale}
-            ext = refine_extent(fr, raw_box, W, H)
-            votes[(ext["x"] // 2, ext["y"] // 2, ext["w"] // 2, ext["h"] // 2)] += 1
+            boxes.append(refine_extent(fr, raw_box, W, H))
 
-    if not votes:
+    if not boxes:
         return None
-    (qx, qy, qw, qh), seen = votes.most_common(1)[0]
-    x, y, w, h = qx * 2, qy * 2, qw * 2, qh * 2
+
+    # The mark sits at a fixed place, so the question is not "which box is most
+    # common" but "how far does it ever reach". A modal vote answered the first
+    # question and lost: on the segments where the mark is white on a saturated
+    # background the extent measures short, those frames outnumbered the rest,
+    # and the winning box stopped 18px short of the icon - which then stayed
+    # visible next to our logo in every one of those segments.
+    #
+    # Percentiles rather than outright min/max so one frame where adjacent slide
+    # artwork merges into the run cannot stretch the plate across the picture.
+    lefts = np.array([b["x"] for b in boxes], dtype=float)
+    rights = np.array([b["x"] + b["w"] for b in boxes], dtype=float)
+    tops = np.array([b["y"] for b in boxes], dtype=float)
+    bottoms = np.array([b["y"] + b["h"] for b in boxes], dtype=float)
+
+    x = float(np.percentile(lefts, 10))
+    right = float(np.percentile(rights, 90))
+    y = float(np.percentile(tops, 10))
+    bottom = float(np.percentile(bottoms, 90))
+    w, h = max(right - x, 1.0), max(bottom - y, 1.0)
+
+    floor = h * MIN_MARK_W_RATIO
+    if w < floor:
+        # Right edge is the trustworthy one: the mark is anchored to it in the
+        # corner, and it is the left side - icon first, then "Google" - that
+        # OCR loses. So grow leftwards for a right-aligned mark, and outwards
+        # from the centre for a centred one.
+        if align == "right":
+            x = max(x - (floor - w), 0.0)
+        else:
+            x = max(x - (floor - w) / 2.0, 0.0)
+        w = floor
+
     # Small uniform pad: the extent is measured, so this only covers antialiasing.
     px, py = max(w * 0.02, 2.0), max(h * 0.25, 3.0)
     return {
@@ -635,9 +664,11 @@ def locate_mark_ocr(ff: str, mp4: str, W: int, H: int,
         "y": max((y - py) / H, 0.0),
         "w": min((w + 2 * px) / W, 1.0),
         "h": min((h + 2 * py) / H, 1.0),
-        "frames_agreeing": seen,
+        "frames_agreeing": len(boxes),
         "frames_sampled": len(frames),
-        "method": "ocr",
+        "extent_px": [int(x), int(y), int(w), int(h)],
+        "widest_seen_px": [int(lefts.min()), int(rights.max())],
+        "method": "ocr-union",
     }
 
 
@@ -651,6 +682,12 @@ MIN_MARK_ASPECT = 1.8
 MAX_MARK_ASPECT = 14.0
 # A mark seen in a single sampled frame is an OCR misread, not branding.
 MIN_DISCOVERY_FRAMES = 2
+# Minimum plate width as a multiple of the mark's height. The wordmark is an icon
+# plus two words - it measures about 10x its own height - so anything much
+# narrower than this means the extent was under-measured, whatever the reason.
+# The plate is colour-matched to the background, so covering a little more of an
+# empty corner costs nothing, while covering too little ships the mark.
+MIN_MARK_W_RATIO = 10.0
 
 
 def discover_marks(ff: str, mp4: str, W: int, H: int, fps: float = 0.2,
@@ -761,7 +798,7 @@ def ocr_available() -> bool:
 
 
 def locate_mark_any(ff: str, mp4: str, W: int, H: int, region, template_path,
-                    limit: float = 20.0) -> dict | None:
+                    limit: float = 20.0, align: str = "right") -> dict | None:
     """Locate the mark, preferring OCR and falling back to template matching.
 
     OCR is preferred because it is the only unambiguous signal. Greyscale
@@ -771,7 +808,7 @@ def locate_mark_any(ff: str, mp4: str, W: int, H: int, region, template_path,
     is unavailable.
     """
     if ocr_available():
-        found = locate_mark_ocr(ff, mp4, W, H, region, limit=limit)
+        found = locate_mark_ocr(ff, mp4, W, H, region, limit=limit, align=align)
         if found:
             return found
     return locate_mark_template(ff, mp4, W, H, region, template_path, limit=limit)
