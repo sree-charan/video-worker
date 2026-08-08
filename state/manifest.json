@@ -111,10 +111,11 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-08T16:59:30Z",
+      "updated_at": "2026-08-08T17:17:36Z",
       "watermark": {
         "bottom_right_box": {
           "h": 28,
+          "mark_h_px": 19,
           "w": 198,
           "x": 1032,
           "y": 660
@@ -129,6 +130,7 @@
           "frames_agreeing": 204,
           "frames_sampled": 120,
           "h": 0.03958333333333333,
+          "mark_h": 0.02638888888888889,
           "method": "ocr-union",
           "w": 0.15437499999999998,
           "widest_seen_px": [
@@ -317,12 +319,12 @@
         "centre_top_box": null,
         "discovered": [
           {
-            "frames_seen": 51,
+            "frames_seen": 9,
             "h": 0.011111111111111112,
             "method": "discovery",
-            "w": 0.0875,
+            "w": 0.06875,
             "x": 0.86875,
-            "y": 0.9222222222222223
+            "y": 0.9
           }
         ],
         "encode": {
