@@ -37,6 +37,10 @@
           "t": 10
         },
         {
+          "label": "2.5 Ohm's Law",
+          "t": 53
+        },
+        {
           "label": "2.14.1 Kirchhoff's Current Law (KCL)",
           "t": 93
         },
@@ -107,7 +111,7 @@
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u1/thumb.jpg",
       "unit": "u1",
-      "updated_at": "2026-08-08T09:35:45Z",
+      "updated_at": "2026-08-08T16:45:29Z",
       "watermark": {
         "bottom_right_box": {
           "h": 16,
@@ -839,13 +843,13 @@
         70
       ],
       "source_added": true,
-      "state": "postprocessed",
+      "state": "downloaded",
       "style": "retro-print",
       "subject": "bee-y1",
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u3/thumb.jpg",
       "unit": "u3",
-      "updated_at": "2026-08-07T03:41:21Z",
+      "updated_at": "2026-08-08T16:33:53Z",
       "watermark": {
         "bottom_right_box": {
           "h": 20,
@@ -1978,13 +1982,13 @@
         50
       ],
       "source_added": true,
-      "state": "postprocessed",
+      "state": "downloaded",
       "style": "paper-craft",
       "subject": "bee-y1",
       "target_minutes": 12,
       "thumb": "/home/runner/work/video-worker/video-worker/build/bee-y1-u5/thumb.jpg",
       "unit": "u5",
-      "updated_at": "2026-08-07T19:44:09Z",
+      "updated_at": "2026-08-08T16:33:58Z",
       "watermark": {
         "bottom_right_box": {
           "h": 20,
