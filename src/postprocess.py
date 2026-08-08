@@ -411,9 +411,12 @@ def swap_logo(src: Path, dst: Path, logo: Path, cfg: dict, meta: dict,
     if cfg.get("discover", True):
         known = [b for b in (report.get("bottom_right_box_norm"),
                              report.get("centre_top_box")) if b]
+        configured = [tuple(cfg["bottom_right"]["search_region"])]
+        if cfg.get("centre_top", {}).get("search_region"):
+            configured.append(tuple(cfg["centre_top"]["search_region"]))
         extra = watermark.discover_marks(ff, str(src), W, H,
                                          fps=float(cfg.get("discover_fps", 0.2)),
-                                         known=known)
+                                         known=known, regions=configured)
         report["discovered"] = extra
         for b in extra:
             log(f"  WARNING unhandled NotebookLM mark found at "

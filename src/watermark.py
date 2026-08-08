@@ -712,7 +712,9 @@ def _boxes_overlap(a: dict, b: dict, min_frac: float = 0.25) -> bool:
 def discover_marks(ff: str, mp4: str, W: int, H: int, fps: float = 0.2,
                    limit: float | None = None, upscale: int = 2,
                    known: list[dict] | None = None,
-                   overlap_tol: float = 0.04) -> list[dict]:
+                   overlap_tol: float = 0.04,
+                   regions: list[tuple[float, float, float, float]] | None = None
+                   ) -> list[dict]:
     """Sweep the whole frame for the wordmark, anywhere it might appear.
 
     The two configured regions cover every placement seen so far - bottom right
@@ -757,6 +759,19 @@ def discover_marks(ff: str, mp4: str, W: int, H: int, fps: float = 0.2,
         # bottom-right box is widened to a minimum width, which moved its left
         # edge 0.06 away from the same mark as discovered here, so an edge test
         # called it a new placement and stamped a second logo over the first.
+        # Inside a configured search region is not a discovery. That region has
+        # its own locator, presence test and plate, and stamping again on top of
+        # it puts a second logo over the first. This is the whole point of the
+        # sweep: placements the configured regions do NOT cover.
+        #
+        # Checked by region rather than by overlap with the resulting plate.
+        # Overlap failed here: the coarse full-frame pass measured the same mark
+        # 12px higher than the plate, so the two boxes did not intersect at all
+        # and it stamped a second logo anyway.
+        cy, cx = box["y"] + box["h"] / 2, box["x"] + box["w"] / 2
+        if any(ry0 <= cy <= ry1 and rx0 <= cx <= rx1
+               for ry0, ry1, rx0, rx1 in (regions or [])):
+            continue
         if any(_boxes_overlap(box, k) for k in (known or []) + out):
             continue
         # A wordmark is small and wide. Slide text is not, and covering it
